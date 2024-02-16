@@ -1,0 +1,4441 @@
+{
+  "id" : "Workshop_3",
+  "shifts" : [ {
+    "id" : "AM",
+    "start" : [ 2021, 2, 23, 6, 30 ],
+    "end" : [ 2021, 2, 23, 14, 20 ]
+  }, {
+    "id" : "PM",
+    "start" : [ 2021, 2, 23, 14, 30 ],
+    "end" : [ 2021, 2, 23, 22, 20 ]
+  } ],
+  "stations" : [ {
+    "id" : "S0",
+    "activityTypes" : [ "TRANSFORMATION", "CHECK" ]
+  }, {
+    "id" : "S1",
+    "activityTypes" : [ "TRANSFORMATION", "CHECK" ]
+  }, {
+    "id" : "S2",
+    "activityTypes" : [ "TRANSFORMATION", "CHECK" ]
+  }, {
+    "id" : "S3",
+    "activityTypes" : [ "TRANSFORMATION", "CHECK" ]
+  }, {
+    "id" : "S4",
+    "activityTypes" : [ "TRANSFORMATION", "CHECK" ]
+  }, {
+    "id" : "S5",
+    "activityTypes" : [ "PAINT", "STICKER", "CHECK" ]
+  }, {
+    "id" : "S6",
+    "activityTypes" : [ "PAINT", "STICKER", "CHECK" ]
+  }, {
+    "id" : "S7",
+    "activityTypes" : [ "PAINT", "STICKER", "CHECK" ]
+  }, {
+    "id" : "S8",
+    "activityTypes" : [ "PAINT", "STICKER", "CHECK" ]
+  }, {
+    "id" : "S9",
+    "activityTypes" : [ "STICKER", "CHECK" ]
+  } ],
+  "workers" : [ {
+    "id" : "W0",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8" ]
+  }, {
+    "id" : "W1",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W2",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8" ]
+  }, {
+    "id" : "W3",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S9" ]
+  }, {
+    "id" : "W4",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W5",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S9" ]
+  }, {
+    "id" : "W6",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W7",
+    "shift" : "AM",
+    "breaks" : [ [ [ 2021, 2, 23, 8, 30 ], [ 2021, 2, 23, 8, 40 ] ], [ [ 2021, 2, 23, 10, 40 ], [ 2021, 2, 23, 10, 50 ] ], [ [ 2021, 2, 23, 11, 50 ], [ 2021, 2, 23, 12, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W8",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4" ]
+  }, {
+    "id" : "W9",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W10",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W11",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W12",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S5", "S6", "S7", "S8", "S9" ]
+  }, {
+    "id" : "W13",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8" ]
+  }, {
+    "id" : "W14",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S5", "S6", "S7", "S8" ]
+  }, {
+    "id" : "W15",
+    "shift" : "PM",
+    "breaks" : [ [ [ 2021, 2, 23, 16, 30 ], [ 2021, 2, 23, 16, 40 ] ], [ [ 2021, 2, 23, 18, 40 ], [ 2021, 2, 23, 18, 50 ] ], [ [ 2021, 2, 23, 19, 50 ], [ 2021, 2, 23, 20, 20 ] ] ],
+    "stations" : [ "S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9" ]
+  } ],
+  "furnitures" : [ {
+    "id" : "F0",
+    "activities" : [ {
+      "id" : "A882",
+      "type" : "TRANSFORMATION",
+      "duration" : 100
+    }, {
+      "id" : "A883",
+      "type" : "TRANSFORMATION",
+      "duration" : 17
+    }, {
+      "id" : "A884",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A885",
+      "type" : "TRANSFORMATION",
+      "duration" : 16
+    }, {
+      "id" : "A886",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A887",
+      "type" : "PAINT",
+      "duration" : 109
+    }, {
+      "id" : "A888",
+      "type" : "PAINT",
+      "duration" : 44
+    }, {
+      "id" : "A889",
+      "type" : "STICKER",
+      "duration" : 4
+    }, {
+      "id" : "A890",
+      "type" : "CHECK",
+      "duration" : 41
+    }, {
+      "id" : "A891",
+      "type" : "CHECK",
+      "duration" : 4
+    } ],
+    "precedence" : [ [ {
+      "id" : "A882",
+      "type" : "TRANSFORMATION",
+      "duration" : 100
+    }, {
+      "id" : "A884",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    } ], [ {
+      "id" : "A882",
+      "type" : "TRANSFORMATION",
+      "duration" : 100
+    }, {
+      "id" : "A886",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    } ], [ {
+      "id" : "A884",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A886",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A882",
+      "type" : "TRANSFORMATION",
+      "duration" : 100
+    }, {
+      "id" : "A883",
+      "type" : "TRANSFORMATION",
+      "duration" : 17
+    }, {
+      "id" : "A884",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A885",
+      "type" : "TRANSFORMATION",
+      "duration" : 16
+    }, {
+      "id" : "A886",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    } ], [ {
+      "id" : "A887",
+      "type" : "PAINT",
+      "duration" : 109
+    }, {
+      "id" : "A888",
+      "type" : "PAINT",
+      "duration" : 44
+    } ], [ {
+      "id" : "A890",
+      "type" : "CHECK",
+      "duration" : 41
+    }, {
+      "id" : "A891",
+      "type" : "CHECK",
+      "duration" : 4
+    } ] ]
+  }, {
+    "id" : "F1",
+    "activities" : [ {
+      "id" : "A892",
+      "type" : "TRANSFORMATION",
+      "duration" : 36
+    }, {
+      "id" : "A893",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A894",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A895",
+      "type" : "PAINT",
+      "duration" : 35
+    }, {
+      "id" : "A896",
+      "type" : "PAINT",
+      "duration" : 5
+    }, {
+      "id" : "A897",
+      "type" : "STICKER",
+      "duration" : 1
+    }, {
+      "id" : "A898",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A899",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A900",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A901",
+      "type" : "CHECK",
+      "duration" : 7
+    } ],
+    "precedence" : [ [ {
+      "id" : "A892",
+      "type" : "TRANSFORMATION",
+      "duration" : 36
+    }, {
+      "id" : "A893",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A892",
+      "type" : "TRANSFORMATION",
+      "duration" : 36
+    }, {
+      "id" : "A894",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A895",
+      "type" : "PAINT",
+      "duration" : 35
+    }, {
+      "id" : "A896",
+      "type" : "PAINT",
+      "duration" : 5
+    } ], [ {
+      "id" : "A898",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A900",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A898",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A901",
+      "type" : "CHECK",
+      "duration" : 7
+    } ], [ {
+      "id" : "A899",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A900",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A892",
+      "type" : "TRANSFORMATION",
+      "duration" : 36
+    }, {
+      "id" : "A893",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A894",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A895",
+      "type" : "PAINT",
+      "duration" : 35
+    }, {
+      "id" : "A896",
+      "type" : "PAINT",
+      "duration" : 5
+    } ], [ {
+      "id" : "A898",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A899",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A900",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A901",
+      "type" : "CHECK",
+      "duration" : 7
+    } ] ]
+  }, {
+    "id" : "F2",
+    "activities" : [ {
+      "id" : "A902",
+      "type" : "TRANSFORMATION",
+      "duration" : 87
+    }, {
+      "id" : "A903",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    }, {
+      "id" : "A904",
+      "type" : "PAINT",
+      "duration" : 71
+    }, {
+      "id" : "A905",
+      "type" : "PAINT",
+      "duration" : 4
+    }, {
+      "id" : "A906",
+      "type" : "PAINT",
+      "duration" : 9
+    }, {
+      "id" : "A907",
+      "type" : "PAINT",
+      "duration" : 1
+    }, {
+      "id" : "A908",
+      "type" : "CHECK",
+      "duration" : 23
+    }, {
+      "id" : "A909",
+      "type" : "CHECK",
+      "duration" : 4
+    } ],
+    "precedence" : [ [ {
+      "id" : "A902",
+      "type" : "TRANSFORMATION",
+      "duration" : 87
+    }, {
+      "id" : "A903",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    } ], [ {
+      "id" : "A904",
+      "type" : "PAINT",
+      "duration" : 71
+    }, {
+      "id" : "A906",
+      "type" : "PAINT",
+      "duration" : 9
+    } ], [ {
+      "id" : "A904",
+      "type" : "PAINT",
+      "duration" : 71
+    }, {
+      "id" : "A907",
+      "type" : "PAINT",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A902",
+      "type" : "TRANSFORMATION",
+      "duration" : 87
+    }, {
+      "id" : "A903",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    } ], [ {
+      "id" : "A904",
+      "type" : "PAINT",
+      "duration" : 71
+    }, {
+      "id" : "A905",
+      "type" : "PAINT",
+      "duration" : 4
+    }, {
+      "id" : "A906",
+      "type" : "PAINT",
+      "duration" : 9
+    }, {
+      "id" : "A907",
+      "type" : "PAINT",
+      "duration" : 1
+    } ], [ {
+      "id" : "A908",
+      "type" : "CHECK",
+      "duration" : 23
+    }, {
+      "id" : "A909",
+      "type" : "CHECK",
+      "duration" : 4
+    } ] ]
+  }, {
+    "id" : "F3",
+    "activities" : [ {
+      "id" : "A910",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A911",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    }, {
+      "id" : "A912",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A913",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A914",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A915",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A916",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A917",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A910",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A911",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    } ], [ {
+      "id" : "A910",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A913",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A911",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    }, {
+      "id" : "A913",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A912",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A913",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A914",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A915",
+      "type" : "CHECK",
+      "duration" : 3
+    } ], [ {
+      "id" : "A914",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A916",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A916",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A917",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A910",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A911",
+      "type" : "TRANSFORMATION",
+      "duration" : 25
+    }, {
+      "id" : "A912",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A913",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A914",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A915",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A916",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A917",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F4",
+    "activities" : [ {
+      "id" : "A918",
+      "type" : "TRANSFORMATION",
+      "duration" : 56
+    }, {
+      "id" : "A919",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A920",
+      "type" : "PAINT",
+      "duration" : 15
+    }, {
+      "id" : "A921",
+      "type" : "PAINT",
+      "duration" : 13
+    }, {
+      "id" : "A922",
+      "type" : "PAINT",
+      "duration" : 2
+    }, {
+      "id" : "A923",
+      "type" : "PAINT",
+      "duration" : 2
+    }, {
+      "id" : "A924",
+      "type" : "CHECK",
+      "duration" : 9
+    }, {
+      "id" : "A925",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A926",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A918",
+      "type" : "TRANSFORMATION",
+      "duration" : 56
+    }, {
+      "id" : "A919",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A920",
+      "type" : "PAINT",
+      "duration" : 15
+    }, {
+      "id" : "A921",
+      "type" : "PAINT",
+      "duration" : 13
+    } ], [ {
+      "id" : "A921",
+      "type" : "PAINT",
+      "duration" : 13
+    }, {
+      "id" : "A922",
+      "type" : "PAINT",
+      "duration" : 2
+    } ], [ {
+      "id" : "A921",
+      "type" : "PAINT",
+      "duration" : 13
+    }, {
+      "id" : "A923",
+      "type" : "PAINT",
+      "duration" : 2
+    } ], [ {
+      "id" : "A922",
+      "type" : "PAINT",
+      "duration" : 2
+    }, {
+      "id" : "A923",
+      "type" : "PAINT",
+      "duration" : 2
+    } ], [ {
+      "id" : "A924",
+      "type" : "CHECK",
+      "duration" : 9
+    }, {
+      "id" : "A926",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A925",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A926",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A918",
+      "type" : "TRANSFORMATION",
+      "duration" : 56
+    }, {
+      "id" : "A919",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A920",
+      "type" : "PAINT",
+      "duration" : 15
+    }, {
+      "id" : "A921",
+      "type" : "PAINT",
+      "duration" : 13
+    }, {
+      "id" : "A922",
+      "type" : "PAINT",
+      "duration" : 2
+    }, {
+      "id" : "A923",
+      "type" : "PAINT",
+      "duration" : 2
+    } ], [ {
+      "id" : "A924",
+      "type" : "CHECK",
+      "duration" : 9
+    }, {
+      "id" : "A925",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A926",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F5",
+    "activities" : [ {
+      "id" : "A927",
+      "type" : "TRANSFORMATION",
+      "duration" : 62
+    }, {
+      "id" : "A928",
+      "type" : "TRANSFORMATION",
+      "duration" : 43
+    }, {
+      "id" : "A929",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A930",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A931",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A932",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A933",
+      "type" : "PAINT",
+      "duration" : 46
+    }, {
+      "id" : "A934",
+      "type" : "PAINT",
+      "duration" : 27
+    }, {
+      "id" : "A935",
+      "type" : "PAINT",
+      "duration" : 18
+    }, {
+      "id" : "A936",
+      "type" : "STICKER",
+      "duration" : 9
+    }, {
+      "id" : "A937",
+      "type" : "CHECK",
+      "duration" : 33
+    }, {
+      "id" : "A938",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A939",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A940",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A927",
+      "type" : "TRANSFORMATION",
+      "duration" : 62
+    }, {
+      "id" : "A931",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A927",
+      "type" : "TRANSFORMATION",
+      "duration" : 62
+    }, {
+      "id" : "A932",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A928",
+      "type" : "TRANSFORMATION",
+      "duration" : 43
+    }, {
+      "id" : "A929",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    } ], [ {
+      "id" : "A928",
+      "type" : "TRANSFORMATION",
+      "duration" : 43
+    }, {
+      "id" : "A930",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A929",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A931",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A929",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A932",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A930",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A931",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A930",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A932",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A933",
+      "type" : "PAINT",
+      "duration" : 46
+    }, {
+      "id" : "A934",
+      "type" : "PAINT",
+      "duration" : 27
+    } ], [ {
+      "id" : "A933",
+      "type" : "PAINT",
+      "duration" : 46
+    }, {
+      "id" : "A935",
+      "type" : "PAINT",
+      "duration" : 18
+    } ], [ {
+      "id" : "A934",
+      "type" : "PAINT",
+      "duration" : 27
+    }, {
+      "id" : "A935",
+      "type" : "PAINT",
+      "duration" : 18
+    } ], [ {
+      "id" : "A937",
+      "type" : "CHECK",
+      "duration" : 33
+    }, {
+      "id" : "A938",
+      "type" : "CHECK",
+      "duration" : 3
+    } ], [ {
+      "id" : "A937",
+      "type" : "CHECK",
+      "duration" : 33
+    }, {
+      "id" : "A940",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A939",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A940",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A927",
+      "type" : "TRANSFORMATION",
+      "duration" : 62
+    }, {
+      "id" : "A928",
+      "type" : "TRANSFORMATION",
+      "duration" : 43
+    }, {
+      "id" : "A929",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A930",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A931",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A932",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A933",
+      "type" : "PAINT",
+      "duration" : 46
+    }, {
+      "id" : "A934",
+      "type" : "PAINT",
+      "duration" : 27
+    }, {
+      "id" : "A935",
+      "type" : "PAINT",
+      "duration" : 18
+    } ], [ {
+      "id" : "A937",
+      "type" : "CHECK",
+      "duration" : 33
+    }, {
+      "id" : "A938",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A939",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A940",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F6",
+    "activities" : [ {
+      "id" : "A941",
+      "type" : "TRANSFORMATION",
+      "duration" : 49
+    }, {
+      "id" : "A942",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A943",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A944",
+      "type" : "PAINT",
+      "duration" : 27
+    }, {
+      "id" : "A945",
+      "type" : "PAINT",
+      "duration" : 2
+    }, {
+      "id" : "A946",
+      "type" : "STICKER",
+      "duration" : 1
+    }, {
+      "id" : "A947",
+      "type" : "CHECK",
+      "duration" : 6
+    }, {
+      "id" : "A948",
+      "type" : "CHECK",
+      "duration" : 4
+    } ],
+    "precedence" : [ [ {
+      "id" : "A943",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A945",
+      "type" : "PAINT",
+      "duration" : 2
+    } ], [ {
+      "id" : "A944",
+      "type" : "PAINT",
+      "duration" : 27
+    }, {
+      "id" : "A945",
+      "type" : "PAINT",
+      "duration" : 2
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A941",
+      "type" : "TRANSFORMATION",
+      "duration" : 49
+    }, {
+      "id" : "A942",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A943",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A944",
+      "type" : "PAINT",
+      "duration" : 27
+    }, {
+      "id" : "A945",
+      "type" : "PAINT",
+      "duration" : 2
+    } ], [ {
+      "id" : "A947",
+      "type" : "CHECK",
+      "duration" : 6
+    }, {
+      "id" : "A948",
+      "type" : "CHECK",
+      "duration" : 4
+    } ] ]
+  }, {
+    "id" : "F7",
+    "activities" : [ {
+      "id" : "A949",
+      "type" : "PAINT",
+      "duration" : 159
+    }, {
+      "id" : "A950",
+      "type" : "STICKER",
+      "duration" : 5
+    }, {
+      "id" : "A951",
+      "type" : "CHECK",
+      "duration" : 45
+    }, {
+      "id" : "A952",
+      "type" : "CHECK",
+      "duration" : 2
+    } ],
+    "precedence" : [ ],
+    "sequences" : [ [ {
+      "id" : "A951",
+      "type" : "CHECK",
+      "duration" : 45
+    }, {
+      "id" : "A952",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ]
+  }, {
+    "id" : "F8",
+    "activities" : [ {
+      "id" : "A953",
+      "type" : "TRANSFORMATION",
+      "duration" : 89
+    }, {
+      "id" : "A954",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A955",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A956",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A957",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A958",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A959",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A960",
+      "type" : "STICKER",
+      "duration" : 13
+    }, {
+      "id" : "A961",
+      "type" : "CHECK",
+      "duration" : 26
+    }, {
+      "id" : "A962",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A963",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A964",
+      "type" : "CHECK",
+      "duration" : 2
+    } ],
+    "precedence" : [ [ {
+      "id" : "A953",
+      "type" : "TRANSFORMATION",
+      "duration" : 89
+    }, {
+      "id" : "A954",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    } ], [ {
+      "id" : "A953",
+      "type" : "TRANSFORMATION",
+      "duration" : 89
+    }, {
+      "id" : "A956",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    } ], [ {
+      "id" : "A953",
+      "type" : "TRANSFORMATION",
+      "duration" : 89
+    }, {
+      "id" : "A958",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A954",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A955",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    } ], [ {
+      "id" : "A954",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A957",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ], [ {
+      "id" : "A954",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A959",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A955",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A958",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A955",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A959",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A961",
+      "type" : "CHECK",
+      "duration" : 26
+    }, {
+      "id" : "A962",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A961",
+      "type" : "CHECK",
+      "duration" : 26
+    }, {
+      "id" : "A963",
+      "type" : "CHECK",
+      "duration" : 2
+    } ], [ {
+      "id" : "A963",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A964",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A953",
+      "type" : "TRANSFORMATION",
+      "duration" : 89
+    }, {
+      "id" : "A954",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A955",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A956",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A957",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A958",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A959",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A961",
+      "type" : "CHECK",
+      "duration" : 26
+    }, {
+      "id" : "A962",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A963",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A964",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ]
+  }, {
+    "id" : "F9",
+    "activities" : [ {
+      "id" : "A965",
+      "type" : "TRANSFORMATION",
+      "duration" : 85
+    }, {
+      "id" : "A966",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    }, {
+      "id" : "A967",
+      "type" : "PAINT",
+      "duration" : 3
+    }, {
+      "id" : "A968",
+      "type" : "PAINT",
+      "duration" : 45
+    }, {
+      "id" : "A969",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A970",
+      "type" : "STICKER",
+      "duration" : 8
+    } ],
+    "precedence" : [ [ {
+      "id" : "A965",
+      "type" : "TRANSFORMATION",
+      "duration" : 85
+    }, {
+      "id" : "A966",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A965",
+      "type" : "TRANSFORMATION",
+      "duration" : 85
+    }, {
+      "id" : "A966",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    } ], [ {
+      "id" : "A967",
+      "type" : "PAINT",
+      "duration" : 3
+    }, {
+      "id" : "A968",
+      "type" : "PAINT",
+      "duration" : 45
+    }, {
+      "id" : "A969",
+      "type" : "PAINT",
+      "duration" : 21
+    } ] ]
+  }, {
+    "id" : "F10",
+    "activities" : [ {
+      "id" : "A971",
+      "type" : "TRANSFORMATION",
+      "duration" : 75
+    }, {
+      "id" : "A972",
+      "type" : "TRANSFORMATION",
+      "duration" : 86
+    }, {
+      "id" : "A973",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A974",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A975",
+      "type" : "TRANSFORMATION",
+      "duration" : 12
+    }, {
+      "id" : "A976",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A977",
+      "type" : "CHECK",
+      "duration" : 13
+    } ],
+    "precedence" : [ [ {
+      "id" : "A971",
+      "type" : "TRANSFORMATION",
+      "duration" : 75
+    }, {
+      "id" : "A972",
+      "type" : "TRANSFORMATION",
+      "duration" : 86
+    } ], [ {
+      "id" : "A971",
+      "type" : "TRANSFORMATION",
+      "duration" : 75
+    }, {
+      "id" : "A973",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A971",
+      "type" : "TRANSFORMATION",
+      "duration" : 75
+    }, {
+      "id" : "A976",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A972",
+      "type" : "TRANSFORMATION",
+      "duration" : 86
+    }, {
+      "id" : "A974",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A972",
+      "type" : "TRANSFORMATION",
+      "duration" : 86
+    }, {
+      "id" : "A975",
+      "type" : "TRANSFORMATION",
+      "duration" : 12
+    } ], [ {
+      "id" : "A972",
+      "type" : "TRANSFORMATION",
+      "duration" : 86
+    }, {
+      "id" : "A976",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A973",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A975",
+      "type" : "TRANSFORMATION",
+      "duration" : 12
+    } ], [ {
+      "id" : "A973",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A976",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A974",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A975",
+      "type" : "TRANSFORMATION",
+      "duration" : 12
+    } ], [ {
+      "id" : "A974",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A976",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A971",
+      "type" : "TRANSFORMATION",
+      "duration" : 75
+    }, {
+      "id" : "A972",
+      "type" : "TRANSFORMATION",
+      "duration" : 86
+    }, {
+      "id" : "A973",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A974",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A975",
+      "type" : "TRANSFORMATION",
+      "duration" : 12
+    }, {
+      "id" : "A976",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F11",
+    "activities" : [ {
+      "id" : "A978",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A979",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A980",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A981",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A982",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A983",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A984",
+      "type" : "PAINT",
+      "duration" : 10
+    }, {
+      "id" : "A985",
+      "type" : "STICKER",
+      "duration" : 1
+    }, {
+      "id" : "A986",
+      "type" : "CHECK",
+      "duration" : 6
+    } ],
+    "precedence" : [ [ {
+      "id" : "A978",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A980",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A978",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A981",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A978",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A982",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A979",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A980",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A979",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A982",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A980",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A982",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A981",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A982",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A978",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A979",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A980",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A981",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A982",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A983",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A984",
+      "type" : "PAINT",
+      "duration" : 10
+    } ] ]
+  }, {
+    "id" : "F12",
+    "activities" : [ {
+      "id" : "A987",
+      "type" : "TRANSFORMATION",
+      "duration" : 99
+    }, {
+      "id" : "A988",
+      "type" : "TRANSFORMATION",
+      "duration" : 91
+    }, {
+      "id" : "A989",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A990",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A991",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A992",
+      "type" : "STICKER",
+      "duration" : 10
+    }, {
+      "id" : "A993",
+      "type" : "CHECK",
+      "duration" : 44
+    } ],
+    "precedence" : [ [ {
+      "id" : "A987",
+      "type" : "TRANSFORMATION",
+      "duration" : 99
+    }, {
+      "id" : "A988",
+      "type" : "TRANSFORMATION",
+      "duration" : 91
+    } ], [ {
+      "id" : "A987",
+      "type" : "TRANSFORMATION",
+      "duration" : 99
+    }, {
+      "id" : "A989",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A988",
+      "type" : "TRANSFORMATION",
+      "duration" : 91
+    }, {
+      "id" : "A989",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A988",
+      "type" : "TRANSFORMATION",
+      "duration" : 91
+    }, {
+      "id" : "A990",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A989",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A990",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A989",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A991",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A990",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A991",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A987",
+      "type" : "TRANSFORMATION",
+      "duration" : 99
+    }, {
+      "id" : "A988",
+      "type" : "TRANSFORMATION",
+      "duration" : 91
+    }, {
+      "id" : "A989",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A990",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A991",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ] ]
+  }, {
+    "id" : "F13",
+    "activities" : [ {
+      "id" : "A994",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    }, {
+      "id" : "A995",
+      "type" : "STICKER",
+      "duration" : 7
+    }, {
+      "id" : "A996",
+      "type" : "CHECK",
+      "duration" : 22
+    }, {
+      "id" : "A997",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A998",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A996",
+      "type" : "CHECK",
+      "duration" : 22
+    }, {
+      "id" : "A997",
+      "type" : "CHECK",
+      "duration" : 3
+    } ], [ {
+      "id" : "A997",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A998",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A996",
+      "type" : "CHECK",
+      "duration" : 22
+    }, {
+      "id" : "A997",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A998",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F14",
+    "activities" : [ {
+      "id" : "A999",
+      "type" : "TRANSFORMATION",
+      "duration" : 52
+    }, {
+      "id" : "A1000",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1001",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1002",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1003",
+      "type" : "PAINT",
+      "duration" : 42
+    }, {
+      "id" : "A1004",
+      "type" : "PAINT",
+      "duration" : 15
+    }, {
+      "id" : "A1005",
+      "type" : "CHECK",
+      "duration" : 16
+    }, {
+      "id" : "A1006",
+      "type" : "CHECK",
+      "duration" : 9
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1000",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1001",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1000",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1002",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1001",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1002",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1003",
+      "type" : "PAINT",
+      "duration" : 42
+    }, {
+      "id" : "A1004",
+      "type" : "PAINT",
+      "duration" : 15
+    } ], [ {
+      "id" : "A1005",
+      "type" : "CHECK",
+      "duration" : 16
+    }, {
+      "id" : "A1006",
+      "type" : "CHECK",
+      "duration" : 9
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A999",
+      "type" : "TRANSFORMATION",
+      "duration" : 52
+    }, {
+      "id" : "A1000",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1001",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1002",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1003",
+      "type" : "PAINT",
+      "duration" : 42
+    }, {
+      "id" : "A1004",
+      "type" : "PAINT",
+      "duration" : 15
+    } ], [ {
+      "id" : "A1005",
+      "type" : "CHECK",
+      "duration" : 16
+    }, {
+      "id" : "A1006",
+      "type" : "CHECK",
+      "duration" : 9
+    } ] ]
+  }, {
+    "id" : "F15",
+    "activities" : [ {
+      "id" : "A1007",
+      "type" : "PAINT",
+      "duration" : 45
+    }, {
+      "id" : "A1008",
+      "type" : "PAINT",
+      "duration" : 25
+    }, {
+      "id" : "A1009",
+      "type" : "PAINT",
+      "duration" : 14
+    }, {
+      "id" : "A1010",
+      "type" : "STICKER",
+      "duration" : 13
+    } ],
+    "precedence" : [ ],
+    "sequences" : [ [ {
+      "id" : "A1007",
+      "type" : "PAINT",
+      "duration" : 45
+    }, {
+      "id" : "A1008",
+      "type" : "PAINT",
+      "duration" : 25
+    }, {
+      "id" : "A1009",
+      "type" : "PAINT",
+      "duration" : 14
+    } ] ]
+  }, {
+    "id" : "F16",
+    "activities" : [ {
+      "id" : "A1011",
+      "type" : "TRANSFORMATION",
+      "duration" : 33
+    }, {
+      "id" : "A1012",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A1013",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1014",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    }, {
+      "id" : "A1015",
+      "type" : "PAINT",
+      "duration" : 121
+    }, {
+      "id" : "A1016",
+      "type" : "PAINT",
+      "duration" : 2
+    }, {
+      "id" : "A1017",
+      "type" : "STICKER",
+      "duration" : 18
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1011",
+      "type" : "TRANSFORMATION",
+      "duration" : 33
+    }, {
+      "id" : "A1013",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1011",
+      "type" : "TRANSFORMATION",
+      "duration" : 33
+    }, {
+      "id" : "A1014",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    } ], [ {
+      "id" : "A1012",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A1013",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1012",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A1014",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1011",
+      "type" : "TRANSFORMATION",
+      "duration" : 33
+    }, {
+      "id" : "A1012",
+      "type" : "TRANSFORMATION",
+      "duration" : 72
+    }, {
+      "id" : "A1013",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1014",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    } ], [ {
+      "id" : "A1015",
+      "type" : "PAINT",
+      "duration" : 121
+    }, {
+      "id" : "A1016",
+      "type" : "PAINT",
+      "duration" : 2
+    } ] ]
+  }, {
+    "id" : "F17",
+    "activities" : [ {
+      "id" : "A1018",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1019",
+      "type" : "TRANSFORMATION",
+      "duration" : 59
+    }, {
+      "id" : "A1020",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A1021",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1022",
+      "type" : "PAINT",
+      "duration" : 8
+    }, {
+      "id" : "A1023",
+      "type" : "PAINT",
+      "duration" : 1
+    }, {
+      "id" : "A1024",
+      "type" : "STICKER",
+      "duration" : 8
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1018",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1019",
+      "type" : "TRANSFORMATION",
+      "duration" : 59
+    } ], [ {
+      "id" : "A1020",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A1022",
+      "type" : "PAINT",
+      "duration" : 8
+    } ], [ {
+      "id" : "A1021",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1022",
+      "type" : "PAINT",
+      "duration" : 8
+    } ], [ {
+      "id" : "A1022",
+      "type" : "PAINT",
+      "duration" : 8
+    }, {
+      "id" : "A1023",
+      "type" : "PAINT",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1018",
+      "type" : "TRANSFORMATION",
+      "duration" : 28
+    }, {
+      "id" : "A1019",
+      "type" : "TRANSFORMATION",
+      "duration" : 59
+    } ], [ {
+      "id" : "A1020",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A1021",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1022",
+      "type" : "PAINT",
+      "duration" : 8
+    }, {
+      "id" : "A1023",
+      "type" : "PAINT",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F18",
+    "activities" : [ {
+      "id" : "A1025",
+      "type" : "TRANSFORMATION",
+      "duration" : 88
+    }, {
+      "id" : "A1026",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    }, {
+      "id" : "A1027",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1028",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    }, {
+      "id" : "A1029",
+      "type" : "PAINT",
+      "duration" : 48
+    }, {
+      "id" : "A1030",
+      "type" : "PAINT",
+      "duration" : 82
+    }, {
+      "id" : "A1031",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A1032",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1033",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1025",
+      "type" : "TRANSFORMATION",
+      "duration" : 88
+    }, {
+      "id" : "A1026",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    } ], [ {
+      "id" : "A1025",
+      "type" : "TRANSFORMATION",
+      "duration" : 88
+    }, {
+      "id" : "A1028",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    } ], [ {
+      "id" : "A1026",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    }, {
+      "id" : "A1027",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1029",
+      "type" : "PAINT",
+      "duration" : 48
+    }, {
+      "id" : "A1030",
+      "type" : "PAINT",
+      "duration" : 82
+    } ], [ {
+      "id" : "A1032",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1033",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1025",
+      "type" : "TRANSFORMATION",
+      "duration" : 88
+    }, {
+      "id" : "A1026",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    }, {
+      "id" : "A1027",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1028",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    } ], [ {
+      "id" : "A1029",
+      "type" : "PAINT",
+      "duration" : 48
+    }, {
+      "id" : "A1030",
+      "type" : "PAINT",
+      "duration" : 82
+    } ], [ {
+      "id" : "A1031",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A1032",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1033",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F19",
+    "activities" : [ {
+      "id" : "A1034",
+      "type" : "TRANSFORMATION",
+      "duration" : 104
+    }, {
+      "id" : "A1035",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    }, {
+      "id" : "A1036",
+      "type" : "TRANSFORMATION",
+      "duration" : 29
+    }, {
+      "id" : "A1037",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    }, {
+      "id" : "A1038",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1039",
+      "type" : "PAINT",
+      "duration" : 150
+    }, {
+      "id" : "A1040",
+      "type" : "PAINT",
+      "duration" : 16
+    }, {
+      "id" : "A1041",
+      "type" : "STICKER",
+      "duration" : 25
+    }, {
+      "id" : "A1042",
+      "type" : "CHECK",
+      "duration" : 16
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1034",
+      "type" : "TRANSFORMATION",
+      "duration" : 104
+    }, {
+      "id" : "A1035",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    } ], [ {
+      "id" : "A1034",
+      "type" : "TRANSFORMATION",
+      "duration" : 104
+    }, {
+      "id" : "A1037",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    } ], [ {
+      "id" : "A1034",
+      "type" : "TRANSFORMATION",
+      "duration" : 104
+    }, {
+      "id" : "A1038",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1035",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    }, {
+      "id" : "A1037",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    } ], [ {
+      "id" : "A1036",
+      "type" : "TRANSFORMATION",
+      "duration" : 29
+    }, {
+      "id" : "A1038",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1039",
+      "type" : "PAINT",
+      "duration" : 150
+    }, {
+      "id" : "A1040",
+      "type" : "PAINT",
+      "duration" : 16
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1034",
+      "type" : "TRANSFORMATION",
+      "duration" : 104
+    }, {
+      "id" : "A1035",
+      "type" : "TRANSFORMATION",
+      "duration" : 44
+    }, {
+      "id" : "A1036",
+      "type" : "TRANSFORMATION",
+      "duration" : 29
+    }, {
+      "id" : "A1037",
+      "type" : "TRANSFORMATION",
+      "duration" : 11
+    }, {
+      "id" : "A1038",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1039",
+      "type" : "PAINT",
+      "duration" : 150
+    }, {
+      "id" : "A1040",
+      "type" : "PAINT",
+      "duration" : 16
+    } ] ]
+  }, {
+    "id" : "F20",
+    "activities" : [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1044",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1045",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1046",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A1047",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1048",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1050",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1051",
+      "type" : "PAINT",
+      "duration" : 50
+    }, {
+      "id" : "A1052",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1053",
+      "type" : "CHECK",
+      "duration" : 8
+    }, {
+      "id" : "A1054",
+      "type" : "CHECK",
+      "duration" : 5
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1045",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1046",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1047",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1048",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1050",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1044",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1047",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1044",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1045",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1046",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    } ], [ {
+      "id" : "A1045",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1047",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1045",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1050",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1046",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1047",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1048",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1048",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1050",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1052",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1053",
+      "type" : "CHECK",
+      "duration" : 8
+    } ], [ {
+      "id" : "A1052",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1054",
+      "type" : "CHECK",
+      "duration" : 5
+    } ], [ {
+      "id" : "A1053",
+      "type" : "CHECK",
+      "duration" : 8
+    }, {
+      "id" : "A1054",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1043",
+      "type" : "TRANSFORMATION",
+      "duration" : 92
+    }, {
+      "id" : "A1044",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1045",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1046",
+      "type" : "TRANSFORMATION",
+      "duration" : 5
+    }, {
+      "id" : "A1047",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1048",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1049",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1050",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1052",
+      "type" : "CHECK",
+      "duration" : 12
+    }, {
+      "id" : "A1053",
+      "type" : "CHECK",
+      "duration" : 8
+    }, {
+      "id" : "A1054",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ]
+  }, {
+    "id" : "F21",
+    "activities" : [ {
+      "id" : "A1055",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1056",
+      "type" : "PAINT",
+      "duration" : 18
+    }, {
+      "id" : "A1057",
+      "type" : "STICKER",
+      "duration" : 2
+    }, {
+      "id" : "A1058",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A1059",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1060",
+      "type" : "CHECK",
+      "duration" : 5
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1059",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1060",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1058",
+      "type" : "CHECK",
+      "duration" : 3
+    }, {
+      "id" : "A1059",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1060",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ]
+  }, {
+    "id" : "F22",
+    "activities" : [ {
+      "id" : "A1061",
+      "type" : "PAINT",
+      "duration" : 10
+    }, {
+      "id" : "A1062",
+      "type" : "PAINT",
+      "duration" : 53
+    }, {
+      "id" : "A1063",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1064",
+      "type" : "CHECK",
+      "duration" : 18
+    }, {
+      "id" : "A1065",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1066",
+      "type" : "CHECK",
+      "duration" : 2
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1063",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1064",
+      "type" : "CHECK",
+      "duration" : 18
+    } ], [ {
+      "id" : "A1063",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1066",
+      "type" : "CHECK",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1064",
+      "type" : "CHECK",
+      "duration" : 18
+    }, {
+      "id" : "A1065",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1065",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1066",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1061",
+      "type" : "PAINT",
+      "duration" : 10
+    }, {
+      "id" : "A1062",
+      "type" : "PAINT",
+      "duration" : 53
+    } ], [ {
+      "id" : "A1063",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1064",
+      "type" : "CHECK",
+      "duration" : 18
+    }, {
+      "id" : "A1065",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1066",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ]
+  }, {
+    "id" : "F23",
+    "activities" : [ {
+      "id" : "A1067",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A1068",
+      "type" : "PAINT",
+      "duration" : 24
+    }, {
+      "id" : "A1069",
+      "type" : "PAINT",
+      "duration" : 6
+    }, {
+      "id" : "A1070",
+      "type" : "PAINT",
+      "duration" : 6
+    }, {
+      "id" : "A1071",
+      "type" : "STICKER",
+      "duration" : 12
+    }, {
+      "id" : "A1072",
+      "type" : "CHECK",
+      "duration" : 17
+    }, {
+      "id" : "A1073",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1074",
+      "type" : "CHECK",
+      "duration" : 7
+    }, {
+      "id" : "A1075",
+      "type" : "CHECK",
+      "duration" : 5
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1068",
+      "type" : "PAINT",
+      "duration" : 24
+    }, {
+      "id" : "A1069",
+      "type" : "PAINT",
+      "duration" : 6
+    } ], [ {
+      "id" : "A1073",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1075",
+      "type" : "CHECK",
+      "duration" : 5
+    } ], [ {
+      "id" : "A1074",
+      "type" : "CHECK",
+      "duration" : 7
+    }, {
+      "id" : "A1075",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1067",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A1068",
+      "type" : "PAINT",
+      "duration" : 24
+    }, {
+      "id" : "A1069",
+      "type" : "PAINT",
+      "duration" : 6
+    }, {
+      "id" : "A1070",
+      "type" : "PAINT",
+      "duration" : 6
+    } ], [ {
+      "id" : "A1072",
+      "type" : "CHECK",
+      "duration" : 17
+    }, {
+      "id" : "A1073",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1074",
+      "type" : "CHECK",
+      "duration" : 7
+    }, {
+      "id" : "A1075",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ]
+  }, {
+    "id" : "F24",
+    "activities" : [ {
+      "id" : "A1076",
+      "type" : "TRANSFORMATION",
+      "duration" : 33
+    }, {
+      "id" : "A1077",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1078",
+      "type" : "CHECK",
+      "duration" : 9
+    }, {
+      "id" : "A1079",
+      "type" : "CHECK",
+      "duration" : 3
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1078",
+      "type" : "CHECK",
+      "duration" : 9
+    }, {
+      "id" : "A1079",
+      "type" : "CHECK",
+      "duration" : 3
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1076",
+      "type" : "TRANSFORMATION",
+      "duration" : 33
+    }, {
+      "id" : "A1077",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    } ], [ {
+      "id" : "A1078",
+      "type" : "CHECK",
+      "duration" : 9
+    }, {
+      "id" : "A1079",
+      "type" : "CHECK",
+      "duration" : 3
+    } ] ]
+  }, {
+    "id" : "F25",
+    "activities" : [ {
+      "id" : "A1080",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1081",
+      "type" : "TRANSFORMATION",
+      "duration" : 71
+    }, {
+      "id" : "A1082",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1083",
+      "type" : "TRANSFORMATION",
+      "duration" : 31
+    }, {
+      "id" : "A1084",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1085",
+      "type" : "PAINT",
+      "duration" : 4
+    }, {
+      "id" : "A1086",
+      "type" : "PAINT",
+      "duration" : 5
+    }, {
+      "id" : "A1087",
+      "type" : "STICKER",
+      "duration" : 10
+    }, {
+      "id" : "A1088",
+      "type" : "CHECK",
+      "duration" : 7
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1080",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1081",
+      "type" : "TRANSFORMATION",
+      "duration" : 71
+    } ], [ {
+      "id" : "A1080",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1084",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1081",
+      "type" : "TRANSFORMATION",
+      "duration" : 71
+    }, {
+      "id" : "A1083",
+      "type" : "TRANSFORMATION",
+      "duration" : 31
+    } ], [ {
+      "id" : "A1081",
+      "type" : "TRANSFORMATION",
+      "duration" : 71
+    }, {
+      "id" : "A1084",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1082",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1083",
+      "type" : "TRANSFORMATION",
+      "duration" : 31
+    } ], [ {
+      "id" : "A1082",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1084",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1083",
+      "type" : "TRANSFORMATION",
+      "duration" : 31
+    }, {
+      "id" : "A1084",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1085",
+      "type" : "PAINT",
+      "duration" : 4
+    }, {
+      "id" : "A1086",
+      "type" : "PAINT",
+      "duration" : 5
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1080",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1081",
+      "type" : "TRANSFORMATION",
+      "duration" : 71
+    }, {
+      "id" : "A1082",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1083",
+      "type" : "TRANSFORMATION",
+      "duration" : 31
+    }, {
+      "id" : "A1084",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1085",
+      "type" : "PAINT",
+      "duration" : 4
+    }, {
+      "id" : "A1086",
+      "type" : "PAINT",
+      "duration" : 5
+    } ] ]
+  }, {
+    "id" : "F26",
+    "activities" : [ {
+      "id" : "A1089",
+      "type" : "TRANSFORMATION",
+      "duration" : 53
+    }, {
+      "id" : "A1090",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1091",
+      "type" : "PAINT",
+      "duration" : 1
+    }, {
+      "id" : "A1092",
+      "type" : "CHECK",
+      "duration" : 4
+    }, {
+      "id" : "A1093",
+      "type" : "CHECK",
+      "duration" : 6
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1092",
+      "type" : "CHECK",
+      "duration" : 4
+    }, {
+      "id" : "A1093",
+      "type" : "CHECK",
+      "duration" : 6
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1090",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1091",
+      "type" : "PAINT",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1092",
+      "type" : "CHECK",
+      "duration" : 4
+    }, {
+      "id" : "A1093",
+      "type" : "CHECK",
+      "duration" : 6
+    } ] ]
+  }, {
+    "id" : "F27",
+    "activities" : [ {
+      "id" : "A1094",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1095",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1096",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1097",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    }, {
+      "id" : "A1098",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1099",
+      "type" : "PAINT",
+      "duration" : 19
+    }, {
+      "id" : "A1100",
+      "type" : "PAINT",
+      "duration" : 9
+    }, {
+      "id" : "A1101",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A1102",
+      "type" : "CHECK",
+      "duration" : 8
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1095",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1097",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    } ], [ {
+      "id" : "A1096",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1097",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    } ], [ {
+      "id" : "A1101",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A1102",
+      "type" : "CHECK",
+      "duration" : 8
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1094",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1095",
+      "type" : "TRANSFORMATION",
+      "duration" : 24
+    }, {
+      "id" : "A1096",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1097",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    } ], [ {
+      "id" : "A1098",
+      "type" : "PAINT",
+      "duration" : 41
+    }, {
+      "id" : "A1099",
+      "type" : "PAINT",
+      "duration" : 19
+    }, {
+      "id" : "A1100",
+      "type" : "PAINT",
+      "duration" : 9
+    } ], [ {
+      "id" : "A1101",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A1102",
+      "type" : "CHECK",
+      "duration" : 8
+    } ] ]
+  }, {
+    "id" : "F28",
+    "activities" : [ {
+      "id" : "A1103",
+      "type" : "TRANSFORMATION",
+      "duration" : 32
+    }, {
+      "id" : "A1104",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1105",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A1106",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1107",
+      "type" : "PAINT",
+      "duration" : 25
+    }, {
+      "id" : "A1108",
+      "type" : "PAINT",
+      "duration" : 17
+    }, {
+      "id" : "A1109",
+      "type" : "PAINT",
+      "duration" : 6
+    }, {
+      "id" : "A1110",
+      "type" : "STICKER",
+      "duration" : 5
+    }, {
+      "id" : "A1111",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1112",
+      "type" : "CHECK",
+      "duration" : 18
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1103",
+      "type" : "TRANSFORMATION",
+      "duration" : 32
+    }, {
+      "id" : "A1104",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    } ], [ {
+      "id" : "A1104",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1105",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    } ], [ {
+      "id" : "A1104",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1106",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1105",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A1106",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1107",
+      "type" : "PAINT",
+      "duration" : 25
+    }, {
+      "id" : "A1108",
+      "type" : "PAINT",
+      "duration" : 17
+    } ], [ {
+      "id" : "A1107",
+      "type" : "PAINT",
+      "duration" : 25
+    }, {
+      "id" : "A1109",
+      "type" : "PAINT",
+      "duration" : 6
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1103",
+      "type" : "TRANSFORMATION",
+      "duration" : 32
+    }, {
+      "id" : "A1104",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1105",
+      "type" : "TRANSFORMATION",
+      "duration" : 19
+    }, {
+      "id" : "A1106",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1107",
+      "type" : "PAINT",
+      "duration" : 25
+    }, {
+      "id" : "A1108",
+      "type" : "PAINT",
+      "duration" : 17
+    }, {
+      "id" : "A1109",
+      "type" : "PAINT",
+      "duration" : 6
+    } ], [ {
+      "id" : "A1111",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1112",
+      "type" : "CHECK",
+      "duration" : 18
+    } ] ]
+  }, {
+    "id" : "F29",
+    "activities" : [ {
+      "id" : "A1113",
+      "type" : "TRANSFORMATION",
+      "duration" : 56
+    }, {
+      "id" : "A1114",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    }, {
+      "id" : "A1115",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A1116",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A1117",
+      "type" : "STICKER",
+      "duration" : 3
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1113",
+      "type" : "TRANSFORMATION",
+      "duration" : 56
+    }, {
+      "id" : "A1116",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A1114",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    }, {
+      "id" : "A1115",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ], [ {
+      "id" : "A1114",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    }, {
+      "id" : "A1116",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A1115",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A1116",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1113",
+      "type" : "TRANSFORMATION",
+      "duration" : 56
+    }, {
+      "id" : "A1114",
+      "type" : "TRANSFORMATION",
+      "duration" : 15
+    }, {
+      "id" : "A1115",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A1116",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ] ]
+  }, {
+    "id" : "F30",
+    "activities" : [ {
+      "id" : "A1118",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1119",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1120",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1121",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1122",
+      "type" : "STICKER",
+      "duration" : 5
+    }, {
+      "id" : "A1123",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1124",
+      "type" : "CHECK",
+      "duration" : 3
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1118",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1120",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1119",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1121",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1118",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1119",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1120",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1121",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1123",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1124",
+      "type" : "CHECK",
+      "duration" : 3
+    } ] ]
+  }, {
+    "id" : "F31",
+    "activities" : [ {
+      "id" : "A1125",
+      "type" : "TRANSFORMATION",
+      "duration" : 68
+    }, {
+      "id" : "A1126",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1127",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1128",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    }, {
+      "id" : "A1129",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1130",
+      "type" : "PAINT",
+      "duration" : 3
+    }, {
+      "id" : "A1131",
+      "type" : "CHECK",
+      "duration" : 20
+    }, {
+      "id" : "A1132",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1125",
+      "type" : "TRANSFORMATION",
+      "duration" : 68
+    }, {
+      "id" : "A1126",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    } ], [ {
+      "id" : "A1125",
+      "type" : "TRANSFORMATION",
+      "duration" : 68
+    }, {
+      "id" : "A1129",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1126",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1127",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1126",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1128",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    } ], [ {
+      "id" : "A1126",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1129",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1127",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1129",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1128",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    }, {
+      "id" : "A1129",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1125",
+      "type" : "TRANSFORMATION",
+      "duration" : 68
+    }, {
+      "id" : "A1126",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1127",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1128",
+      "type" : "TRANSFORMATION",
+      "duration" : 18
+    }, {
+      "id" : "A1129",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1131",
+      "type" : "CHECK",
+      "duration" : 20
+    }, {
+      "id" : "A1132",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F32",
+    "activities" : [ {
+      "id" : "A1133",
+      "type" : "TRANSFORMATION",
+      "duration" : 78
+    }, {
+      "id" : "A1134",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1135",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1136",
+      "type" : "PAINT",
+      "duration" : 91
+    }, {
+      "id" : "A1137",
+      "type" : "PAINT",
+      "duration" : 12
+    }, {
+      "id" : "A1138",
+      "type" : "PAINT",
+      "duration" : 9
+    }, {
+      "id" : "A1139",
+      "type" : "PAINT",
+      "duration" : 1
+    }, {
+      "id" : "A1140",
+      "type" : "CHECK",
+      "duration" : 6
+    }, {
+      "id" : "A1141",
+      "type" : "CHECK",
+      "duration" : 33
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1133",
+      "type" : "TRANSFORMATION",
+      "duration" : 78
+    }, {
+      "id" : "A1134",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    } ], [ {
+      "id" : "A1133",
+      "type" : "TRANSFORMATION",
+      "duration" : 78
+    }, {
+      "id" : "A1135",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1136",
+      "type" : "PAINT",
+      "duration" : 91
+    }, {
+      "id" : "A1138",
+      "type" : "PAINT",
+      "duration" : 9
+    } ], [ {
+      "id" : "A1137",
+      "type" : "PAINT",
+      "duration" : 12
+    }, {
+      "id" : "A1139",
+      "type" : "PAINT",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1140",
+      "type" : "CHECK",
+      "duration" : 6
+    }, {
+      "id" : "A1141",
+      "type" : "CHECK",
+      "duration" : 33
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1133",
+      "type" : "TRANSFORMATION",
+      "duration" : 78
+    }, {
+      "id" : "A1134",
+      "type" : "TRANSFORMATION",
+      "duration" : 2
+    }, {
+      "id" : "A1135",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1136",
+      "type" : "PAINT",
+      "duration" : 91
+    }, {
+      "id" : "A1137",
+      "type" : "PAINT",
+      "duration" : 12
+    }, {
+      "id" : "A1138",
+      "type" : "PAINT",
+      "duration" : 9
+    }, {
+      "id" : "A1139",
+      "type" : "PAINT",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1140",
+      "type" : "CHECK",
+      "duration" : 6
+    }, {
+      "id" : "A1141",
+      "type" : "CHECK",
+      "duration" : 33
+    } ] ]
+  }, {
+    "id" : "F33",
+    "activities" : [ {
+      "id" : "A1142",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A1143",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1144",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1145",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1146",
+      "type" : "PAINT",
+      "duration" : 3
+    }, {
+      "id" : "A1147",
+      "type" : "PAINT",
+      "duration" : 26
+    }, {
+      "id" : "A1148",
+      "type" : "STICKER",
+      "duration" : 1
+    }, {
+      "id" : "A1149",
+      "type" : "CHECK",
+      "duration" : 7
+    }, {
+      "id" : "A1150",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1151",
+      "type" : "CHECK",
+      "duration" : 2
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1142",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A1143",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A1142",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A1144",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1143",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1144",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1143",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1145",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A1144",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1145",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A1146",
+      "type" : "PAINT",
+      "duration" : 3
+    }, {
+      "id" : "A1147",
+      "type" : "PAINT",
+      "duration" : 26
+    } ], [ {
+      "id" : "A1149",
+      "type" : "CHECK",
+      "duration" : 7
+    }, {
+      "id" : "A1150",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1150",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1151",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1142",
+      "type" : "TRANSFORMATION",
+      "duration" : 51
+    }, {
+      "id" : "A1143",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    }, {
+      "id" : "A1144",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1145",
+      "type" : "TRANSFORMATION",
+      "duration" : 3
+    } ], [ {
+      "id" : "A1146",
+      "type" : "PAINT",
+      "duration" : 3
+    }, {
+      "id" : "A1147",
+      "type" : "PAINT",
+      "duration" : 26
+    } ], [ {
+      "id" : "A1149",
+      "type" : "CHECK",
+      "duration" : 7
+    }, {
+      "id" : "A1150",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1151",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ]
+  }, {
+    "id" : "F34",
+    "activities" : [ {
+      "id" : "A1152",
+      "type" : "CHECK",
+      "duration" : 21
+    } ],
+    "precedence" : [ ],
+    "sequences" : [ ]
+  }, {
+    "id" : "F35",
+    "activities" : [ {
+      "id" : "A1153",
+      "type" : "TRANSFORMATION",
+      "duration" : 134
+    }, {
+      "id" : "A1154",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1155",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1156",
+      "type" : "STICKER",
+      "duration" : 6
+    }, {
+      "id" : "A1157",
+      "type" : "CHECK",
+      "duration" : 9
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1153",
+      "type" : "TRANSFORMATION",
+      "duration" : 134
+    }, {
+      "id" : "A1154",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    } ], [ {
+      "id" : "A1154",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1155",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1153",
+      "type" : "TRANSFORMATION",
+      "duration" : 134
+    }, {
+      "id" : "A1154",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1155",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ] ]
+  }, {
+    "id" : "F36",
+    "activities" : [ {
+      "id" : "A1158",
+      "type" : "TRANSFORMATION",
+      "duration" : 20
+    }, {
+      "id" : "A1159",
+      "type" : "TRANSFORMATION",
+      "duration" : 23
+    }, {
+      "id" : "A1160",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1161",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    }, {
+      "id" : "A1162",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1163",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1164",
+      "type" : "PAINT",
+      "duration" : 20
+    }, {
+      "id" : "A1165",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A1166",
+      "type" : "PAINT",
+      "duration" : 6
+    }, {
+      "id" : "A1167",
+      "type" : "PAINT",
+      "duration" : 4
+    }, {
+      "id" : "A1168",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1169",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A1170",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1171",
+      "type" : "CHECK",
+      "duration" : 1
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1158",
+      "type" : "TRANSFORMATION",
+      "duration" : 20
+    }, {
+      "id" : "A1160",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1158",
+      "type" : "TRANSFORMATION",
+      "duration" : 20
+    }, {
+      "id" : "A1161",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    } ], [ {
+      "id" : "A1159",
+      "type" : "TRANSFORMATION",
+      "duration" : 23
+    }, {
+      "id" : "A1160",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1159",
+      "type" : "TRANSFORMATION",
+      "duration" : 23
+    }, {
+      "id" : "A1162",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1160",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1161",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    } ], [ {
+      "id" : "A1161",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    }, {
+      "id" : "A1162",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1162",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1163",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1164",
+      "type" : "PAINT",
+      "duration" : 20
+    }, {
+      "id" : "A1165",
+      "type" : "PAINT",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1164",
+      "type" : "PAINT",
+      "duration" : 20
+    }, {
+      "id" : "A1167",
+      "type" : "PAINT",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1165",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A1167",
+      "type" : "PAINT",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1168",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1170",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1168",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1171",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1169",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A1170",
+      "type" : "CHECK",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1170",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1171",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1158",
+      "type" : "TRANSFORMATION",
+      "duration" : 20
+    }, {
+      "id" : "A1159",
+      "type" : "TRANSFORMATION",
+      "duration" : 23
+    }, {
+      "id" : "A1160",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1161",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    }, {
+      "id" : "A1162",
+      "type" : "TRANSFORMATION",
+      "duration" : 4
+    }, {
+      "id" : "A1163",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1164",
+      "type" : "PAINT",
+      "duration" : 20
+    }, {
+      "id" : "A1165",
+      "type" : "PAINT",
+      "duration" : 7
+    }, {
+      "id" : "A1166",
+      "type" : "PAINT",
+      "duration" : 6
+    }, {
+      "id" : "A1167",
+      "type" : "PAINT",
+      "duration" : 4
+    } ], [ {
+      "id" : "A1168",
+      "type" : "CHECK",
+      "duration" : 5
+    }, {
+      "id" : "A1169",
+      "type" : "CHECK",
+      "duration" : 2
+    }, {
+      "id" : "A1170",
+      "type" : "CHECK",
+      "duration" : 1
+    }, {
+      "id" : "A1171",
+      "type" : "CHECK",
+      "duration" : 1
+    } ] ]
+  }, {
+    "id" : "F37",
+    "activities" : [ {
+      "id" : "A1172",
+      "type" : "TRANSFORMATION",
+      "duration" : 97
+    }, {
+      "id" : "A1173",
+      "type" : "TRANSFORMATION",
+      "duration" : 58
+    }, {
+      "id" : "A1174",
+      "type" : "STICKER",
+      "duration" : 13
+    }, {
+      "id" : "A1175",
+      "type" : "CHECK",
+      "duration" : 22
+    }, {
+      "id" : "A1176",
+      "type" : "CHECK",
+      "duration" : 5
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1175",
+      "type" : "CHECK",
+      "duration" : 22
+    }, {
+      "id" : "A1176",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1172",
+      "type" : "TRANSFORMATION",
+      "duration" : 97
+    }, {
+      "id" : "A1173",
+      "type" : "TRANSFORMATION",
+      "duration" : 58
+    } ], [ {
+      "id" : "A1175",
+      "type" : "CHECK",
+      "duration" : 22
+    }, {
+      "id" : "A1176",
+      "type" : "CHECK",
+      "duration" : 5
+    } ] ]
+  }, {
+    "id" : "F38",
+    "activities" : [ {
+      "id" : "A1177",
+      "type" : "TRANSFORMATION",
+      "duration" : 77
+    }, {
+      "id" : "A1178",
+      "type" : "TRANSFORMATION",
+      "duration" : 16
+    }, {
+      "id" : "A1179",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1180",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1181",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1182",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A1183",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    }, {
+      "id" : "A1184",
+      "type" : "CHECK",
+      "duration" : 32
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1177",
+      "type" : "TRANSFORMATION",
+      "duration" : 77
+    }, {
+      "id" : "A1180",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    } ], [ {
+      "id" : "A1177",
+      "type" : "TRANSFORMATION",
+      "duration" : 77
+    }, {
+      "id" : "A1181",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1178",
+      "type" : "TRANSFORMATION",
+      "duration" : 16
+    }, {
+      "id" : "A1179",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1178",
+      "type" : "TRANSFORMATION",
+      "duration" : 16
+    }, {
+      "id" : "A1182",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    } ], [ {
+      "id" : "A1179",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1181",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1180",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1181",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    } ], [ {
+      "id" : "A1181",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1183",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    } ], [ {
+      "id" : "A1182",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A1183",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1177",
+      "type" : "TRANSFORMATION",
+      "duration" : 77
+    }, {
+      "id" : "A1178",
+      "type" : "TRANSFORMATION",
+      "duration" : 16
+    }, {
+      "id" : "A1179",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1180",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1181",
+      "type" : "TRANSFORMATION",
+      "duration" : 7
+    }, {
+      "id" : "A1182",
+      "type" : "TRANSFORMATION",
+      "duration" : 6
+    }, {
+      "id" : "A1183",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    } ] ]
+  }, {
+    "id" : "F39",
+    "activities" : [ {
+      "id" : "A1185",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1186",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1189",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1190",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    }, {
+      "id" : "A1191",
+      "type" : "TRANSFORMATION",
+      "duration" : 38
+    }, {
+      "id" : "A1192",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1193",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    }, {
+      "id" : "A1194",
+      "type" : "PAINT",
+      "duration" : 39
+    }, {
+      "id" : "A1195",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A1196",
+      "type" : "PAINT",
+      "duration" : 45
+    }, {
+      "id" : "A1197",
+      "type" : "STICKER",
+      "duration" : 11
+    } ],
+    "precedence" : [ [ {
+      "id" : "A1185",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    } ], [ {
+      "id" : "A1185",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1191",
+      "type" : "TRANSFORMATION",
+      "duration" : 38
+    } ], [ {
+      "id" : "A1185",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1192",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1185",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1193",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ], [ {
+      "id" : "A1186",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    } ], [ {
+      "id" : "A1186",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    } ], [ {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    } ], [ {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1189",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    } ], [ {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1190",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    } ], [ {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1191",
+      "type" : "TRANSFORMATION",
+      "duration" : 38
+    } ], [ {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1192",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1189",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    } ], [ {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1191",
+      "type" : "TRANSFORMATION",
+      "duration" : 38
+    } ], [ {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1193",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ], [ {
+      "id" : "A1189",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1190",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    } ], [ {
+      "id" : "A1189",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1193",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ], [ {
+      "id" : "A1190",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    }, {
+      "id" : "A1192",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    } ], [ {
+      "id" : "A1190",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    }, {
+      "id" : "A1193",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ] ],
+    "sequences" : [ [ {
+      "id" : "A1185",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A1186",
+      "type" : "TRANSFORMATION",
+      "duration" : 40
+    }, {
+      "id" : "A1187",
+      "type" : "TRANSFORMATION",
+      "duration" : 14
+    }, {
+      "id" : "A1188",
+      "type" : "TRANSFORMATION",
+      "duration" : 22
+    }, {
+      "id" : "A1189",
+      "type" : "TRANSFORMATION",
+      "duration" : 21
+    }, {
+      "id" : "A1190",
+      "type" : "TRANSFORMATION",
+      "duration" : 13
+    }, {
+      "id" : "A1191",
+      "type" : "TRANSFORMATION",
+      "duration" : 38
+    }, {
+      "id" : "A1192",
+      "type" : "TRANSFORMATION",
+      "duration" : 1
+    }, {
+      "id" : "A1193",
+      "type" : "TRANSFORMATION",
+      "duration" : 10
+    } ], [ {
+      "id" : "A1194",
+      "type" : "PAINT",
+      "duration" : 39
+    }, {
+      "id" : "A1195",
+      "type" : "PAINT",
+      "duration" : 21
+    }, {
+      "id" : "A1196",
+      "type" : "PAINT",
+      "duration" : 45
+    } ] ]
+  } ]
+}

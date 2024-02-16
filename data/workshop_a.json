@@ -1,0 +1,119 @@
+{
+  "id" : "Workshop_0",
+  "shifts" : [ {
+    "id" : "AM",
+    "start" : [ 6, 30 ],
+    "end" : [ 14, 20 ]
+  }, {
+    "id" : "PM",
+    "start" : [ 14, 30 ],
+    "end" : [ 22, 20 ]
+  } ],
+  "stations" : [ {
+    "id" : "S0",
+    "activityTypes" : [ "TRANSFORMATION", "CHECK" ]
+  }, {
+    "id" : "S1",
+    "activityTypes" : [ "PAINT", "STICKER", "CHECK" ]
+  } ],
+  "workers" : [ {
+    "id" : "W0",
+    "shift" : "AM",
+    "breaks" : [ [ [ 8, 30 ], [ 8, 40 ] ], [ [ 10, 40 ], [ 10, 50 ] ], [ [ 11, 50 ], [ 12, 20 ] ] ],
+    "stations" : [ "S0", "S1" ]
+  }, {
+    "id" : "W1",
+    "shift" : "AM",
+    "breaks" : [ [ [ 8, 30 ], [ 8, 40 ] ], [ [ 10, 40 ], [ 10, 50 ] ], [ [ 11, 50 ], [ 12, 20 ] ] ],
+    "stations" : [ "S0", "S1" ]
+  }, {
+    "id" : "W2",
+    "shift" : "AM",
+    "breaks" : [ [ [ 8, 30 ], [ 8, 40 ] ], [ [ 10, 40 ], [ 10, 50 ] ], [ [ 11, 50 ], [ 12, 20 ] ] ],
+    "stations" : [ ]
+  }, {
+    "id" : "W3",
+    "shift" : "PM",
+    "breaks" : [ [ [ 16, 30 ], [ 16, 40 ] ], [ [ 18, 40 ], [ 18, 50 ] ], [ [ 19, 50 ], [ 20, 20 ] ] ],
+    "stations" : [ "S0" ]
+  }, {
+    "id" : "W4",
+    "shift" : "PM",
+    "breaks" : [ [ [ 16, 30 ], [ 16, 40 ] ], [ [ 18, 40 ], [ 18, 50 ] ], [ [ 19, 50 ], [ 20, 20 ] ] ],
+    "stations" : [ "S0" ]
+  }, {
+    "id" : "W5",
+    "shift" : "PM",
+    "breaks" : [ [ [ 16, 30 ], [ 16, 40 ] ], [ [ 18, 40 ], [ 18, 50 ] ], [ [ 19, 50 ], [ 20, 20 ] ] ],
+    "stations" : [ "S0", "S1" ]
+  } ],
+  "furnitures" : [ {
+    "id" : "F0",
+    "activities" : [ {
+      "id" : "A0",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    }, {
+      "id" : "A1",
+      "type" : "TRANSFORMATION",
+      "duration" : 60
+    }, {
+      "id" : "A2",
+      "type" : "TRANSFORMATION",
+      "duration" : 23
+    }, {
+      "id" : "A3",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    }, {
+      "id" : "A4",
+      "type" : "PAINT",
+      "duration" : 65
+    }, {
+      "id" : "A5",
+      "type" : "PAINT",
+      "duration" : 20
+    }, {
+      "id" : "A6",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A7",
+      "type" : "CHECK",
+      "duration" : 2
+    } ],
+    "sequences" : [ [ {
+      "id" : "A0",
+      "type" : "TRANSFORMATION",
+      "duration" : 8
+    }, {
+      "id" : "A1",
+      "type" : "TRANSFORMATION",
+      "duration" : 60
+    }, {
+      "id" : "A2",
+      "type" : "TRANSFORMATION",
+      "duration" : 23
+    }, {
+      "id" : "A3",
+      "type" : "TRANSFORMATION",
+      "duration" : 9
+    } ], [ {
+      "id" : "A4",
+      "type" : "PAINT",
+      "duration" : 65
+    }, {
+      "id" : "A5",
+      "type" : "PAINT",
+      "duration" : 20
+    } ], [ {
+      "id" : "A6",
+      "type" : "CHECK",
+      "duration" : 21
+    }, {
+      "id" : "A7",
+      "type" : "CHECK",
+      "duration" : 2
+    } ] ]
+  } ]
+}
