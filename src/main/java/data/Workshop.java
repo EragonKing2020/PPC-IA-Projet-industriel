@@ -60,13 +60,31 @@ public class Workshop {
     	return tMax;
     }
     
-    public int[] getStationsAct(ActivityType type) {
-    	int length = 0;
-    	for
+    public LinkedList<Station> getStationsFromActivityType(ActivityType type) {
+    	LinkedList<Station> activitiesStations = new LinkedList<Station>();
+    	for(Station station : this.stations) {
+    		for(ActivityType actType : station.getActivityTypes()) {
+    			if(actType==type){
+    				activitiesStations.add(station);
+    			}
+    		}
+    	}
+    	return activitiesStations;
     }
     
-    public int[] getWorkersAct(ActivityType type) {
-    	
+    public LinkedList<Worker> getWorkersFromActivityType(ActivityType type) {
+    	LinkedList<Station> activitiesStations = getStationsFromActivityType(type);
+    	LinkedList<Worker> activitiesWorker = new LinkedList<Worker>();
+    	for(Worker worker : this.workers) {
+    		for(String stationName : worker.getStations()) {
+    			for(Station station : activitiesStations) {
+    				if(station.getId()==stationName) {
+    					activitiesWorker.add(worker);
+    				}
+    			}
+    		}
+    	}
+    	return activitiesWorker;
     }
     
     public String getId() {
