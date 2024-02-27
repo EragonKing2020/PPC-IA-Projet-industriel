@@ -1,5 +1,8 @@
 package data;
 
+import org.chocosolver.solver.Model;
+import org.chocosolver.solver.variables.IntVar;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,6 +12,12 @@ public class Activity {
     private final ActivityType type;
 
     private final int duration;
+    
+    private IntVar tDebut;
+    private IntVar tFin;
+    private IntVar worker;
+    private IntVar station;
+    
 
     @JsonCreator
     public Activity(
@@ -20,7 +29,14 @@ public class Activity {
         this.type = type;
         this.duration = duration;
     }
-
+    
+    public void setVariables(Model model, int tMax, int[] workers, int[] stations) {
+    	this.tDebut = model.intVar(0, tMax - this.duration);
+    	this.tFin = model.intVar(this.duration, tMax);
+    	this.worker = model.intVar(workers);
+    	this.station = model.intVar(stations);
+    }
+    
     public String getId() {
         return id;
     }

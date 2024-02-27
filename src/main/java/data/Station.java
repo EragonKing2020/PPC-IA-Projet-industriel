@@ -8,6 +8,8 @@ import java.util.Arrays;
 public class Station {
     private final String id;
     private final ActivityType[] activityTypes;
+    private final int intId;
+    private static int intIdStations = -1;
 
     @JsonCreator
     public Station(
@@ -16,8 +18,18 @@ public class Station {
     ) {
         this.id = id;
         this.activityTypes = activityTypes;
+        this.intId = Station.getNextId();
     }
-
+    
+    private static int getNextId() {
+    	intIdStations += 1;
+    	return intIdStations;
+    }
+    
+    public int getIntId() {
+    	return this.intId;
+    }
+    
     public String getId() {
         return id;
     }

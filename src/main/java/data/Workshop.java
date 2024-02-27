@@ -2,8 +2,11 @@ package data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.chocosolver.solver.Model;
+import org.chocosolver.solver.Solver;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Workshop {
     private final String id;
@@ -15,6 +18,12 @@ public class Workshop {
     private final Worker[] workers;
 
     private final Furniture[] furnitures;
+    
+    private Model model;
+    
+    private Solver solver;
+    
+    private int tMax;
 
     @JsonCreator
     public Workshop(
@@ -29,8 +38,37 @@ public class Workshop {
         this.stations = stations;
         this.workers = workers;
         this.furnitures = furnitures;
+        this.tMax = this.getTMax();
+        this.createVariables();
     }
-
+    
+    private void createVariables() {
+    	this.model = new Model();
+		this.solver = this.model.getSolver();
+    	for (Furniture furniture : this.getFurnitures()) {
+    		for (Activity act : furniture.getActivities()) {
+    			act.setVariables(model, tMax, this.getWorkersAct(act.getType()), this.getStationsAct(act.getType()));;
+    		}
+    	}
+    }
+    
+    public int getTMax() {
+    	int tMax = 0;
+    	for (Furniture furniture : this.getFurnitures())
+    		for (Activity act : furniture.getActivities())
+    			tMax += act.getDuration();
+    	return tMax;
+    }
+    
+    public int[] getStationsAct(ActivityType type) {
+    	int length = 0;
+    	for
+    }
+    
+    public int[] getWorkersAct(ActivityType type) {
+    	
+    }
+    
     public String getId() {
         return id;
     }

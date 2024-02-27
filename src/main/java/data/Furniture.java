@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Furniture {
     private final String id;
@@ -34,6 +35,16 @@ public class Furniture {
 
     public Activity[] getActivities() {
         return activities;
+    }
+    
+    public Activity[] getActivitiesType(ActivityType type) {
+    	LinkedList<Activity> activities = new LinkedList<Activity>();
+    	for (Activity activity : this.getActivities()) {
+    		if (activity.getType() == type) {
+    			activities.add(activity);
+    		}
+    	}
+    	return (Activity[]) activities.toArray();
     }
 
     public Activity[][] getPrecedence() {
