@@ -6,6 +6,7 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Workshop {
@@ -50,16 +51,29 @@ public class Workshop {
     		for (Activity act : furniture.getActivities()) {
     			ActivityType type = act.getType();
     			LinkedList<Station> activitiesStations = getStationsFromActivityType(type);
+    			LinkedList<Worker> activitiesWorker = new LinkedList<Worker>();
     			int[] stationsNumbers = new int[activitiesStations.size()];
     			for(int i = 0;i<activitiesStations.size();i++) {
     				stationsNumbers[i] = activitiesStations.get(i).getNumberId();
+    				LinkedList<Worker> workers = getWorkersFromStation(activitiesStations.get(i));
+//    				System.out.println(workers);
+    				for(Worker w : workers) {
+    					boolean t = true;
+    					for(Worker w2 : activitiesWorker) {
+    						if(w.getId().equals(w2.getId())) {
+    							t = false;
+    						}
+    					}
+    					if(t == true) {
+    						activitiesWorker.add(w);
+    					}
+    				}
     			}
-    			LinkedList<Worker> activitiesWorker = getWorkersFromStation(type);
     			int[] workersNumbers = new int[activitiesWorker.size()];
     			for(int i = 0;i<activitiesWorker.size();i++) {
     				workersNumbers[i] = activitiesWorker.get(i).getNumberId();
     			}
-//    			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
+    			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
     		}
     	}
     }
@@ -84,16 +98,13 @@ public class Workshop {
     	return activitiesStations;
     }
     
-    public LinkedList<Worker> getWorkersFromStation(ActivityType type) {
-    	LinkedList<Station> activitiesStations = getStationsFromActivityType(type);
+    public LinkedList<Worker> getWorkersFromStation(Station station) {
     	LinkedList<Worker> activitiesWorker = new LinkedList<Worker>();
     	for(Worker worker : this.workers) {
     		for(String stationName : worker.getStations()) {
-    			for(Station station : activitiesStations) {
-    				if(station.getId()==stationName) {
-    					activitiesWorker.add(worker);
-    				}
-    			}
+				if(station.getId().equals(stationName)) {
+					activitiesWorker.add(worker);
+				}
     		}
     	}
     	return activitiesWorker;
