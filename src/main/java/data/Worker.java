@@ -31,7 +31,9 @@ public class Worker {
     public String getId() {
         return id;
     }
-
+    public int getNumberId() {
+    	return Integer.valueOf((String) id.subSequence(1, -1)) ;
+    }
     public String getShift() {
         return shift;
     }

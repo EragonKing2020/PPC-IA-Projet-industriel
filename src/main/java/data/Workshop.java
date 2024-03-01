@@ -45,9 +45,21 @@ public class Workshop {
     private void createVariables() {
     	this.model = new Model();
 		this.solver = this.model.getSolver();
+		
     	for (Furniture furniture : this.getFurnitures()) {
     		for (Activity act : furniture.getActivities()) {
-    			act.setVariables(model, tMax, this.getWorkersAct(act.getType()), this.getStationsAct(act.getType()));;
+    			ActivityType type = act.getType();
+    			LinkedList<Station> activitiesStations = getStationsFromActivityType(type);
+    			int[] stationsNumbers = new int[activitiesStations.size()];
+    			for(int i = 0;i<activitiesStations.size();i++) {
+    				stationsNumbers[i] = activitiesStations.get(i).getNumberId();
+    			}
+    			LinkedList<Worker> activitiesWorker = getWorkersFromStation(type);
+    			int[] workersNumbers = new int[activitiesWorker.size()];
+    			for(int i = 0;i<activitiesWorker.size();i++) {
+    				workersNumbers[i] = activitiesWorker.get(i).getNumberId();
+    			}
+    			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
     		}
     	}
     }
@@ -72,7 +84,7 @@ public class Workshop {
     	return activitiesStations;
     }
     
-    public LinkedList<Worker> getWorkersFromActivityType(ActivityType type) {
+    public LinkedList<Worker> getWorkersFromStation(ActivityType type) {
     	LinkedList<Station> activitiesStations = getStationsFromActivityType(type);
     	LinkedList<Worker> activitiesWorker = new LinkedList<Worker>();
     	for(Worker worker : this.workers) {
@@ -85,6 +97,20 @@ public class Workshop {
     		}
     	}
     	return activitiesWorker;
+    }
+    
+    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type) {
+    	LinkedList<Activity> act = new LinkedList<Activity>();
+    	LinkedList<Activity> activities = new LinkedList<Activity>();
+    	for(Furniture f : this.furnitures) {
+    		for(Activity actf : f.getActivities())
+    			act.add(actf);
+    	}
+    	for(Activity a : act) {
+    		if(a.getType()==type)
+    			activities.add(a);
+    	}
+    	return activities;
     }
     
     public String getId() {

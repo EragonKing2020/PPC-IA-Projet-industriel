@@ -1,7 +1,11 @@
 package data;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.Task;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,8 +19,10 @@ public class Activity {
     
     private IntVar tDebut;
     private IntVar tFin;
+    private IntVar durationVar;
     private IntVar worker;
     private IntVar station;
+    private Task task;
     
 
     @JsonCreator
@@ -30,12 +36,41 @@ public class Activity {
         this.duration = duration;
     }
     
-    public void setVariables(Model model, int tMax, int[] workers, int[] stations) {
-    	this.tDebut = model.intVar(0, tMax - this.duration);
-    	this.tFin = model.intVar(this.duration, tMax);
+    public IntVar gettDebut() {
+		return tDebut;
+	}
+
+	public IntVar gettFin() {
+		return tFin;
+	}
+
+	public IntVar getDurationVar() {
+		return durationVar;
+	}
+
+	public IntVar getWorker() {
+		return worker;
+	}
+
+	public IntVar getStation() {
+		return station;
+	}
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setVariables(Model model, Shift[] shifts, int[] workers, int[] stations) {
     	this.worker = model.intVar(workers);
     	this.station = model.intVar(stations);
+    	LocalDateTime start = shifts[0].getStart();
+    	LocalDateTime end = shifts[-1].getEnd();
+    	this.tDebut = model.intVar(0, Duration.between(start, end).toMinutesPart());
+		this.tFin = model.intVar(duration, Duration.between(start, end).toMinutesPart());
+		this.durationVar = model.intVar(duration, Duration.between(start, end).toMinutesPart());
+		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
+    
     
     public String getId() {
         return id;
@@ -48,6 +83,7 @@ public class Activity {
     public int getDuration() {
         return duration;
     }
+    
 
     @Override
     public boolean equals(Object o) {
