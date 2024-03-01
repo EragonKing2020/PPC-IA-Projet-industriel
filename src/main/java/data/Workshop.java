@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Workshop {
@@ -62,6 +64,8 @@ public class Workshop {
     			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
     		}
     	}
+    	for (Worker worker : this.getWorkers())
+    		worker.setVariables(model, this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker)));
     }
     
     public int getTMax() {
@@ -99,18 +103,40 @@ public class Workshop {
     	return activitiesWorker;
     }
     
+    public LinkedList<ActivityType> getActivityTypesFromWorker(Worker worker){
+    	HashSet<ActivityType> activities = new HashSet<ActivityType>();
+    	for (String idStation : worker.getStations()) 
+    		for (ActivityType actT : this.getStationFromId(idStation).getActivityTypes())
+    			activities.add(actT);
+    	
+    	return new LinkedList<ActivityType>(activities);
+    }
+    
+    public Station getStationFromId(String id) {
+    	for (Station station : this.getStations())
+    		if (station.getId().equals(id))
+    			return station;
+    	throw new Error("T'as mis n'imp comme id de station");
+    }
+    
     public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type) {
-    	LinkedList<Activity> act = new LinkedList<Activity>();
-    	LinkedList<Activity> activities = new LinkedList<Activity>();
-    	for(Furniture f : this.furnitures) {
+    	HashSet<Activity> activities = new HashSet<Activity>();
+    	for(Furniture f : this.furnitures)
     		for(Activity actf : f.getActivities())
-    			act.add(actf);
-    	}
-    	for(Activity a : act) {
-    		if(a.getType()==type)
-    			activities.add(a);
-    	}
-    	return activities;
+    			if (actf.getType() == type)
+    				activities.add(actf);
+    	
+    	return new LinkedList<Activity>(activities);
+    }
+    
+    public LinkedList<Activity> getActivitiesFromActivityTypes(LinkedList<ActivityType> types){
+    	LinkedList<Activity> activities = new LinkedList<Activity>();
+    	for(Furniture f : this.furnitures)
+    		for(Activity actf : f.getActivities())
+    			if (types.contains(actf.getType()))
+    				activities.add(actf);
+    	
+    	return new LinkedList<Activity>(activities);
     }
     
     public String getId() {
