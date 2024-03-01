@@ -59,7 +59,7 @@ public class Workshop {
     			for(int i = 0;i<activitiesWorker.size();i++) {
     				workersNumbers[i] = activitiesWorker.get(i).getNumberId();
     			}
-    			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
+//    			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
     		}
     	}
     }
@@ -111,7 +111,7 @@ public class Workshop {
     			activities.add(a);
     	}
     	return activities;
-    }
+    }    
     
     public String getId() {
         return id;
@@ -143,4 +143,5 @@ public class Workshop {
                 ", furnitures=" + Arrays.toString(furnitures) +
                 '}';
     }
+    
 }

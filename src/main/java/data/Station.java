@@ -19,7 +19,7 @@ public class Station {
     }
     
     public int getNumberId() {
-    	return Integer.valueOf((String) id.subSequence(1, -1)) ;
+    	return Integer.parseInt(id.substring(1, id.length())) ;
     }
     
     public String getId() {
