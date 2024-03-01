@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.Task;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -62,6 +64,17 @@ public class Workshop {
 //    			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
     		}
     	}
+    }
+
+    public void postConstraints(Model model){
+        // Furniture cumulative constraint
+        for (Furniture furniture : this.getFurnitures()) {
+            Task[] tasks = furniture.getTasks();
+            IntVar[] heights = new IntVar[furniture.getActivities().length];
+            Arrays.fill(heights, model.intVar(1));
+            IntVar capacity = model.intVar(1);
+            model.cumulative(tasks, heights, capacity);
+        }
     }
     
     public int getTMax() {
