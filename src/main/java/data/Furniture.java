@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.chocosolver.solver.variables.Task;
+
 public class Furniture {
     private final String id;
 
@@ -35,6 +37,14 @@ public class Furniture {
 
     public Activity[] getActivities() {
         return activities;
+    }
+
+    public Task[] getTasks() {
+        Task[] tasks = new Task[activities.length];
+        for (int i = 0; i < activities.length; i++) {
+            tasks[i] = activities[i].getTask();
+        }
+        return tasks;
     }
     
     public Activity[] getActivitiesType(ActivityType type) {

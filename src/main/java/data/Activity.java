@@ -64,10 +64,10 @@ public class Activity {
     	this.worker = model.intVar(workers);
     	this.station = model.intVar(stations);
     	LocalDateTime start = shifts[0].getStart();
-    	LocalDateTime end = shifts[-1].getEnd();
-    	this.tDebut = model.intVar(0, Duration.between(start, end).toMinutesPart());
-		this.tFin = model.intVar(duration, Duration.between(start, end).toMinutesPart());
-		this.durationVar = model.intVar(duration, Duration.between(start, end).toMinutesPart());
+    	LocalDateTime end = shifts[shifts.length-1].getEnd();
+    	this.tDebut = model.intVar(0, (int)Duration.between(start, end).toMinutes());
+		this.tFin = model.intVar(duration, (int)Duration.between(start, end).toMinutes());
+		this.durationVar = model.intVar(duration, (int)Duration.between(start, end).toMinutes());
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
     
