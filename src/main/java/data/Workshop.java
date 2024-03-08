@@ -92,7 +92,8 @@ public class Workshop {
             Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
         this.postCumulativeFurnitures(model);
         this.postCumulativeWorkers(model);
-        }
+        
+        
     }
     
     public void postCumulativeFurnitures(Model model) {

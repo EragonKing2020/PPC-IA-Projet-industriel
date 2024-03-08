@@ -55,7 +55,7 @@ public class Furniture {
     	for(Activity[] sequence : sequences) {
     		tasks.add(model.taskVar(sequence[0].gettDebut(), null, sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
-    			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut());
+    			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
     		}
     	}
     }
