@@ -47,6 +47,8 @@ public class Workshop {
         this.furnitures = furnitures;
         this.tMax = this.getTMax();
         this.createVariables();
+        this.postConstraints(model);
+        solver.solve();
     }
     
     private void createVariables() {
