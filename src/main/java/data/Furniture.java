@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.chocosolver.solver.Model;
+import org.chocosolver.solver.exception.ContradictionException;
 import org.chocosolver.solver.variables.Task;
 
 public class Furniture {
@@ -19,7 +20,7 @@ public class Furniture {
 
     private final Activity[][] sequences;
     
-    private LinkedList<Task> tasks;
+    private LinkedList<Task> tasks = new LinkedList<Task>();
     
     @JsonCreator
     public Furniture(
@@ -35,7 +36,7 @@ public class Furniture {
     }
     
     private boolean activityIsInSequence(Activity activity) {
-    	for(Activity[] sequence : sequences) {
+    	for(Activity[] sequence : this.sequences) {
     		for(Activity act : sequence) {
     			if(act.getId().equals(activity.getId())) {
         			return true;
@@ -52,8 +53,11 @@ public class Furniture {
     }
     
     public void createSequenceTasks(Model model) {
-    	for(Activity[] sequence : sequences) {
-    		tasks.add(model.taskVar(sequence[0].gettDebut(), null, sequence[sequence.length-1].gettFin()));
+    	for(Activity[] sequence : this.sequences) {
+    		System.out.println(sequence[0].gettDebut());
+    		System.out.println(sequence[0].toString());
+    		System.out.println(sequence[sequence.length - 1].toString());
+    		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, 24*60), sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
     			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
     		}

@@ -47,6 +47,8 @@ public class Workshop {
         this.furnitures = furnitures;
         this.tMax = this.getTMax();
         this.createVariables();
+        this.postConstraints(model);
+        solver.solve();
     }
     
     private void createVariables() {
@@ -87,13 +89,12 @@ public class Workshop {
     }
 
     public void postConstraints(Model model){
-        // Furniture cumulative constraint
-        for (Furniture furniture : this.getFurnitures()) {
-            Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
+        // Furniture cumulative constraint and precedence/sequence
         this.postCumulativeFurnitures(model);
+        // Worker cumulative constraint
         this.postCumulativeWorkers(model);
-        
-        
+        // Station cumulative constraint
+        this.postCumulativeStations(model);
     }
     
     public void postCumulativeFurnitures(Model model) {
@@ -121,6 +122,20 @@ public class Workshop {
     		for (int i = 0; i < activities.size(); i ++) {
     			tasks[i] = activities.get(i).getTask();
     			heights[i] = activities.get(i).getWorker(worker.getNumberId());
+    		}
+    		IntVar capacity = model.intVar(1);
+    		model.cumulative(tasks, heights, capacity).post();
+    	}
+    }
+    
+    public void postCumulativeStations(Model model) {
+    	for (Station station : this.getStations()) {
+    		LinkedList<Activity> activities = this.getActivitiesFromActivityTypes(station.getActivityTypes());
+    		Task[] tasks = new Task[activities.size()];
+    		IntVar[] heights = new IntVar[activities.size()];
+    		for (int i = 0; i < activities.size(); i ++) {
+    			tasks[i] = activities.get(i).getTask();
+    			heights[i] = activities.get(i).getStation(station.getNumberId());
     		}
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
@@ -193,6 +208,13 @@ public class Workshop {
     				activities.add(actf);
     	
     	return new LinkedList<Activity>(activities);
+    }
+    
+    public LinkedList<Activity> getActivitiesFromActivityTypes(ActivityType[] types) {
+    	LinkedList<ActivityType> typesList = new LinkedList<ActivityType>();
+    	for (ActivityType type : types)
+    		typesList.add(type);
+    	return this.getActivitiesFromActivityTypes(types);
     }
     
     public LinkedList<Activity> getActivitiesFromWorker(Worker worker){

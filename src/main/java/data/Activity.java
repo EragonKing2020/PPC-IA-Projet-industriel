@@ -21,9 +21,9 @@ public class Activity {
     private IntVar tDebut;
     private IntVar tFin;
     private IntVar durationVar;
-    private HashMap<Integer, Integer> iWorkers;
+    private HashMap<Integer, Integer> iWorkers = new HashMap<Integer, Integer>();
     private IntVar[] workers;
-    private HashMap<Integer, Integer> iStations;
+    private HashMap<Integer, Integer> iStations = new HashMap<Integer, Integer>();
     private IntVar[] stations;
     private Task task;
     
@@ -73,9 +73,19 @@ public class Activity {
     	LocalDateTime start = shifts[0].getStart();
     	LocalDateTime end = shifts[shifts.length-1].getEnd();
     	this.tDebut = model.intVar(0, (int)Duration.between(start, end).toMinutes());
+    	if (this.getId().equals("A66")) {
+    		System.out.println(this.getId());
+    		System.out.println(this.gettDebut());
+    		System.out.println(this);
+    	}
 		this.tFin = model.intVar(duration, (int)Duration.between(start, end).toMinutes());
 		this.durationVar = model.intVar(duration, (int)Duration.between(start, end).toMinutes());
 		this.task = model.taskVar(tDebut, durationVar, tFin);
+		if (this.getId().equals("A66")) {
+    		System.out.println(this.getId());
+    		System.out.println(this.gettDebut());
+    		System.out.println(this);
+    	}
     }
     
     
