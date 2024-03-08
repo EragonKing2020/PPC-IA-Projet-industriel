@@ -90,10 +90,18 @@ public class Workshop {
         // Furniture cumulative constraint
         for (Furniture furniture : this.getFurnitures()) {
             Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
+        this.postCumulativeFurnitures(model);
+        this.postCumulativeWorkers(model);
+        }
+    }
+    
+    public void postCumulativeFurnitures(Model model) {
+    	for (Furniture furniture : this.getFurnitures()) {
+            Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
             IntVar[] heights = new IntVar[furniture.getActivities().length];
             Arrays.fill(heights, model.intVar(1));
             IntVar capacity = model.intVar(1);
-            model.cumulative(tasks, heights, capacity);
+            model.cumulative(tasks, heights, capacity).post();
             
 	        // Precedence constraint
 	        for(Activity[] precedence : furniture.getPrecedence()) {
@@ -102,6 +110,20 @@ public class Workshop {
 	        	}
 	        }
         }
+    }
+    
+    public void postCumulativeWorkers(Model model) {
+    	for (Worker worker : this.getWorkers()) {
+    		LinkedList<Activity> activities = this.getActivitiesFromWorker(worker);
+    		Task[] tasks = new Task[activities.size()];
+    		IntVar[] heights = new IntVar[activities.size()];
+    		for (int i = 0; i < activities.size(); i ++) {
+    			tasks[i] = activities.get(i).getTask();
+    			heights[i] = activities.get(i).getWorker(worker.getNumberId());
+    		}
+    		IntVar capacity = model.intVar(1);
+    		model.cumulative(tasks, heights, capacity).post();
+    	}
     }
     
     public int getTMax() {
@@ -170,6 +192,10 @@ public class Workshop {
     				activities.add(actf);
     	
     	return new LinkedList<Activity>(activities);
+    }
+    
+    public LinkedList<Activity> getActivitiesFromWorker(Worker worker){
+    	return this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker));
     }
     
     public String getId() {
