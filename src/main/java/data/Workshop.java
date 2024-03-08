@@ -7,7 +7,7 @@ import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.Task;
 
-import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -26,11 +26,6 @@ public class Workshop {
     private Model model;
     
     private Solver solver;
-    
-    private int tMax;
-    
-    private LinkedList<Task> fictiousTasks;
-    private LinkedList<IntVar> fictiousDurations;
 
     @JsonCreator
     public Workshop(
@@ -45,10 +40,15 @@ public class Workshop {
         this.stations = stations;
         this.workers = workers;
         this.furnitures = furnitures;
-        this.tMax = this.getTMax();
         this.createVariables();
         this.postConstraints(model);
         solver.solve();
+        System.out.println(this);
+        for (Furniture furniture : this.furnitures) {
+        	//System.out.println(furniture.solToString());
+        	for (Activity activity : furniture.getActivities())
+        		System.out.println(activity.solToString());
+        }
     }
     
     private void createVariables() {
@@ -95,12 +95,17 @@ public class Workshop {
         this.postCumulativeWorkers(model);
         // Station cumulative constraint
         this.postCumulativeStations(model);
+        // constraint to have each activity linked to a worker and a station
+        this.postAttributionWorkerAndStation(model);
     }
     
     public void postCumulativeFurnitures(Model model) {
     	for (Furniture furniture : this.getFurnitures()) {
-            Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
-            IntVar[] heights = new IntVar[furniture.getActivities().length];
+    		LinkedList<Task> tasksList = furniture.getTasks(model);
+            Task[] tasks = new Task[tasksList.size()];
+            for (int i = 0; i < tasksList.size(); i ++)
+            	tasks[i] = tasksList.get(i);
+            IntVar[] heights = new IntVar[tasks.length];
             Arrays.fill(heights, model.intVar(1));
             IntVar capacity = model.intVar(1);
             model.cumulative(tasks, heights, capacity).post();
@@ -108,7 +113,7 @@ public class Workshop {
 	        // Precedence constraint
 	        for(Activity[] precedence : furniture.getPrecedence()) {
 	        	for(int i = 0;i<precedence.length-1;i++) {
-	        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut());
+	        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
 	        	}
 	        }
         }
@@ -117,15 +122,37 @@ public class Workshop {
     public void postCumulativeWorkers(Model model) {
     	for (Worker worker : this.getWorkers()) {
     		LinkedList<Activity> activities = this.getActivitiesFromWorker(worker);
-    		Task[] tasks = new Task[activities.size()];
-    		IntVar[] heights = new IntVar[activities.size()];
+    		Task[] tasks = new Task[activities.size() + 2];
+    		IntVar[] heights = new IntVar[activities.size() + 2];
     		for (int i = 0; i < activities.size(); i ++) {
     			tasks[i] = activities.get(i).getTask();
     			heights[i] = activities.get(i).getWorker(worker.getNumberId());
     		}
+    		int indexStart = (int)Duration.between(this.getShifts()[0].getStart() ,this.getShiftByString(worker.getShift()).getStart()).toMinutes();
+    		tasks[activities.size()] = model.taskVar(model.intVar(0), indexStart);
+    		int indexEnd = (int)Duration.between(this.getShifts()[0].getStart() ,this.getShiftByString(worker.getShift()).getEnd()).toMinutes();
+    		int indexEndAll = (int)Duration.between(this.getShifts()[0].getStart() ,this.getShifts()[this.getShifts().length - 1].getEnd()).toMinutes();
+    		tasks[activities.size() + 1] = model.taskVar(model.intVar(indexEnd), indexEndAll - indexEnd);
+    		heights[activities.size()] = model.intVar(1);
+    		heights[activities.size() + 1] = model.intVar(1);
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
     	}
+    }
+    
+    public void postAttributionWorkerAndStation(Model model) {
+    	for (Furniture furniture : this.getFurnitures())
+    		for (Activity activity : furniture.getActivities()) {
+    			model.sum(activity.getWorkers(), "=", 1).post();
+    			model.sum(activity.getStations(), "=", 1).post();
+    		}
+    }
+    
+    public Shift getShiftByString(String shiftString) {
+    	for (Shift shift : this.shifts)
+    		if (shift.getId().equals(shiftString))
+    			return shift;
+    	throw new Error("shift introuvable");
     }
     
     public void postCumulativeStations(Model model) {
@@ -140,14 +167,6 @@ public class Workshop {
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
     	}
-    }
-    
-    public int getTMax() {
-    	int tMax = 0;
-    	for (Furniture furniture : this.getFurnitures())
-    		for (Activity act : furniture.getActivities())
-    			tMax += act.getDuration();
-    	return tMax;
     }
     
     public LinkedList<Station> getStationsFromActivityType(ActivityType type) {
@@ -214,7 +233,7 @@ public class Workshop {
     	LinkedList<ActivityType> typesList = new LinkedList<ActivityType>();
     	for (ActivityType type : types)
     		typesList.add(type);
-    	return this.getActivitiesFromActivityTypes(types);
+    	return this.getActivitiesFromActivityTypes(typesList);
     }
     
     public LinkedList<Activity> getActivitiesFromWorker(Worker worker){
