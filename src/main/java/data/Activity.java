@@ -2,6 +2,7 @@ package data;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;
@@ -20,8 +21,10 @@ public class Activity {
     private IntVar tDebut;
     private IntVar tFin;
     private IntVar durationVar;
-    private IntVar worker;
-    private IntVar station;
+    private HashMap<Integer, Integer> iWorkers;
+    private IntVar[] workers;
+    private HashMap<Integer, Integer> iStations;
+    private IntVar[] stations;
     private Task task;
     
 
@@ -48,12 +51,12 @@ public class Activity {
 		return durationVar;
 	}
 
-	public IntVar getWorker() {
-		return worker;
+	public IntVar getWorker(int worker) {
+		return this.workers[this.iWorkers.get(worker)];
 	}
 
-	public IntVar getStation() {
-		return station;
+	public IntVar getStation(int station) {
+		return this.stations[this.iStations.get(station)];
 	}
 
 	public Task getTask() {
@@ -61,8 +64,12 @@ public class Activity {
 	}
 
 	public void setVariables(Model model, Shift[] shifts, int[] workers, int[] stations) {
-    	this.worker = model.intVar(workers);
-    	this.station = model.intVar(stations);
+		for (int i = 0; i < workers.length; i ++)
+			this.iWorkers.put(workers[i], i);
+		for (int i = 0; i < stations.length; i ++)
+			this.iStations.put(stations[i], i);
+    	this.workers = model.intVarArray(workers.length, 0, 1);
+    	this.stations = model.intVarArray(stations.length, 0, 1);
     	LocalDateTime start = shifts[0].getStart();
     	LocalDateTime end = shifts[shifts.length-1].getEnd();
     	this.tDebut = model.intVar(0, (int)Duration.between(start, end).toMinutes());
