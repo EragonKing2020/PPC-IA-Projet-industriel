@@ -7,6 +7,7 @@ import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.Task;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,9 +26,6 @@ public class Workshop {
     private Model model;
     
     private Solver solver;
-    
-    private LinkedList<Task> fictiousTasks;
-    private LinkedList<IntVar> fictiousDurations;
     
     private int tMax;
 
@@ -56,51 +54,44 @@ public class Workshop {
     		for (Activity act : furniture.getActivities()) {
     			ActivityType type = act.getType();
     			LinkedList<Station> activitiesStations = getStationsFromActivityType(type);
-    			HashSet<Worker> activitiesWorker = new HashSet<Worker>();
+    			LinkedList<Worker> activitiesWorker = new LinkedList<Worker>();
     			int[] stationsNumbers = new int[activitiesStations.size()];
     			for(int i = 0;i<activitiesStations.size();i++) {
     				stationsNumbers[i] = activitiesStations.get(i).getNumberId();
     				LinkedList<Worker> workers = getWorkersFromStation(activitiesStations.get(i));
+//    				System.out.println(workers);
     				for(Worker w : workers) {
+    					boolean t = true;
+    					for(Worker w2 : activitiesWorker) {
+    						if(w.getId().equals(w2.getId())) {
+    							t = false;
+    						}
+    					}
+    					if(t == true) {
     						activitiesWorker.add(w);
+    					}
     				}
     			}
-    			LinkedList<Worker> workers = new LinkedList<Worker>(activitiesWorker);
-    			int[] workersNumbers = new int[workers.size()];
-    			for(int i = 0;i<workers.size();i++) {
-    				workersNumbers[i] = workers.get(i).getNumberId();
+    			int[] workersNumbers = new int[activitiesWorker.size()];
+    			for(int i = 0;i<activitiesWorker.size();i++) {
+    				workersNumbers[i] = activitiesWorker.get(i).getNumberId();
     			}
     			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
     		}
     	}
+    	for (Worker worker : this.getWorkers())
+    		worker.setVariables(model, this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker)));
     }
 
     public void postConstraints(Model model){
+        // Furniture cumulative constraint
         for (Furniture furniture : this.getFurnitures()) {
-        	// Furniture cumulative constraint
             Task[] tasks = furniture.getTasks();
             IntVar[] heights = new IntVar[furniture.getActivities().length];
             Arrays.fill(heights, model.intVar(1));
             IntVar capacity = model.intVar(1);
-            model.cumulative(tasks, heights, capacity).post();
-            
-            // Precedence constraint
-            for(Activity[] precedence : furniture.getPrecedence()) {
-            	for(int i = 0;i<precedence.length-1;i++) {
-            		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut());
-            	}
-            }
-            //Sequence constraint
-            for(Activity[] sequence : furniture.getSequences()) {
-            	int currentIndex = this.fictiousTasks.size();
-            	for(int i = 0;i<sequence.length;i++) {
-            		
-            	}
-            }
+            model.cumulative(tasks, heights, capacity);
         }
-        
-        
-        
     }
     
     public int getTMax() {
@@ -135,28 +126,40 @@ public class Workshop {
     	return activitiesWorker;
     }
     
-    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type) {
-    	LinkedList<Activity> act = new LinkedList<Activity>();
-    	LinkedList<Activity> activities = new LinkedList<Activity>();
-    	for(Furniture f : this.furnitures) {
-    		for(Activity actf : f.getActivities())
-    			act.add(actf);
-    	}
-    	for(Activity a : act) {
-    		if(a.getType()==type)
-    			activities.add(a);
-    	}
-    	return activities;
-    }    
-    
-    public Worker getWorkerFromId(String id) {
-    	for(Worker worker : this.workers) {
-    		if(worker.getId().equals(id)) {
-    			return worker;
-    		}
-    	}
-    	throw new Error("id non valide.");
+    public LinkedList<ActivityType> getActivityTypesFromWorker(Worker worker){
+    	HashSet<ActivityType> activities = new HashSet<ActivityType>();
+    	for (String idStation : worker.getStations()) 
+    		for (ActivityType actT : this.getStationFromId(idStation).getActivityTypes())
+    			activities.add(actT);
     	
+    	return new LinkedList<ActivityType>(activities);
+    }
+    
+    public Station getStationFromId(String id) {
+    	for (Station station : this.getStations())
+    		if (station.getId().equals(id))
+    			return station;
+    	throw new Error("T'as mis n'imp comme id de station");
+    }
+    
+    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type) {
+    	HashSet<Activity> activities = new HashSet<Activity>();
+    	for(Furniture f : this.furnitures)
+    		for(Activity actf : f.getActivities())
+    			if (actf.getType() == type)
+    				activities.add(actf);
+    	
+    	return new LinkedList<Activity>(activities);
+    }
+    
+    public LinkedList<Activity> getActivitiesFromActivityTypes(LinkedList<ActivityType> types){
+    	LinkedList<Activity> activities = new LinkedList<Activity>();
+    	for(Furniture f : this.furnitures)
+    		for(Activity actf : f.getActivities())
+    			if (types.contains(actf.getType()))
+    				activities.add(actf);
+    	
+    	return new LinkedList<Activity>(activities);
     }
     
     public String getId() {
