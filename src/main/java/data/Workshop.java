@@ -93,12 +93,11 @@ public class Workshop {
         this.postCumulativeWorkers(model);
         // Station cumulative constraint
         this.postCumulativeStations(model);
-        
     }
     
     public void postCumulativeFurnitures(Model model) {
     	for (Furniture furniture : this.getFurnitures()) {
-            Task[] tasks = furniture.getTasks();
+            Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
             IntVar[] heights = new IntVar[furniture.getActivities().length];
             Arrays.fill(heights, model.intVar(1));
             IntVar capacity = model.intVar(1);
@@ -108,13 +107,6 @@ public class Workshop {
 	        for(Activity[] precedence : furniture.getPrecedence()) {
 	        	for(int i = 0;i<precedence.length-1;i++) {
 	        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut());
-	        	}
-	        }
-	        //Sequence constraint
-	        for(Activity[] sequence : furniture.getSequences()) {
-	        	int currentIndex = this.fictiousTasks.size();
-	        	for(int i = 0;i<sequence.length;i++) {
-	        		
 	        	}
 	        }
         }
