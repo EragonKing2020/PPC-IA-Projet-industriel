@@ -83,13 +83,30 @@ public class Activity {
 		this.task = model.taskVar(tDebut, durationVar, tFin);
 		if (this.getId().equals("A66")) {
     		System.out.println(this.getId());
-    		System.out.println(this.gettDebut());
-    		System.out.println(this);
+    		System.out.println("\t"+this.task.toString());
+    		System.out.println("\t"+this.gettDebut());
+    		System.out.println("\t"+this);
     	}
     }
     
     
-    public String getId() {
+    public void settDebut(IntVar tDebut) {
+		this.tDebut = tDebut;
+	}
+
+	public void settFin(IntVar tFin) {
+		this.tFin = tFin;
+	}
+
+	public void setDurationVar(IntVar durationVar) {
+		this.durationVar = durationVar;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
+
+	public String getId() {
         return id;
     }
 

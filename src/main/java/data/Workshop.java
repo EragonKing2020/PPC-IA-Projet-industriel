@@ -99,6 +99,8 @@ public class Workshop {
     
     public void postCumulativeFurnitures(Model model) {
     	for (Furniture furniture : this.getFurnitures()) {
+    		furniture.linkPrecedenceToActivities();
+    		furniture.linkSequenceToActivities();
             Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
             IntVar[] heights = new IntVar[furniture.getActivities().length];
             Arrays.fill(heights, model.intVar(1));
@@ -108,7 +110,7 @@ public class Workshop {
 	        // Precedence constraint
 	        for(Activity[] precedence : furniture.getPrecedence()) {
 	        	for(int i = 0;i<precedence.length-1;i++) {
-	        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut());
+	        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
 	        	}
 	        }
         }

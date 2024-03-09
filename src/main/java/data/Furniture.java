@@ -54,12 +54,43 @@ public class Furniture {
     
     public void createSequenceTasks(Model model) {
     	for(Activity[] sequence : this.sequences) {
-    		System.out.println(sequence[0].gettDebut());
+    		System.out.println(sequence[0].getTask());
+    		System.out.println("tDebut : "+sequence[0].gettDebut());
     		System.out.println(sequence[0].toString());
     		System.out.println(sequence[sequence.length - 1].toString());
     		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, 24*60), sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
     			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
+    		}
+    	}
+    }
+    
+    public void linkSequenceToActivities() {
+    	for(Activity[] sequence : this.sequences) {
+    		for(Activity activity : sequence) {
+    			for(Activity activity2 : this.activities) {
+    				if(activity.getId().equals(activity2.getId())) {
+    					activity.settDebut(activity2.gettDebut());
+    					activity.settFin(activity2.gettFin());
+    					activity.setDurationVar(activity2.getDurationVar());
+    					activity.setTask(activity2.getTask());
+    				}
+    			}
+    		}
+    	}
+    }
+    
+    public void linkPrecedenceToActivities() {
+    	for(Activity[] prec : this.precedence) {
+    		for(Activity activity : prec) {
+    			for(Activity activity2 : this.activities) {
+    				if(activity.getId().equals(activity2.getId())) {
+    					activity.settDebut(activity2.gettDebut());
+    					activity.settFin(activity2.gettFin());
+    					activity.setDurationVar(activity2.getDurationVar());
+    					activity.setTask(activity2.getTask());
+    				}
+    			}
     		}
     	}
     }
