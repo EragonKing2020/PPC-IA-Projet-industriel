@@ -103,8 +103,12 @@ public class Workshop {
     	for (Furniture furniture : this.getFurnitures()) {
     		furniture.linkPrecedenceToActivities();
     		furniture.linkSequenceToActivities();
-            Task[] tasks = (Task[]) furniture.getTasks(model).toArray();
-            IntVar[] heights = new IntVar[furniture.getActivities().length];
+    		LinkedList<Task> tasksList = furniture.getTasks(model);
+            Task[] tasks = new Task[tasksList.size()];
+            for(int i = 0;i<tasksList.size();i++) {
+            	tasks[i] = tasksList.get(i);
+            }
+            IntVar[] heights = new IntVar[tasks.length];
             Arrays.fill(heights, model.intVar(1));
             IntVar capacity = model.intVar(1);
             model.cumulative(tasks, heights, capacity).post();

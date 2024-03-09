@@ -71,10 +71,6 @@ public class Furniture {
     
     public void createSequenceTasks(Model model) {
     	for(Activity[] sequence : this.sequences) {
-    		System.out.println(sequence[0].getTask());
-    		System.out.println("tDebut : "+sequence[0].gettDebut());
-    		System.out.println(sequence[0].toString());
-    		System.out.println(sequence[sequence.length - 1].toString());
     		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, 24*60), sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
     			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
