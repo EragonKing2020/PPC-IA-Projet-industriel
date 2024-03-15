@@ -74,7 +74,9 @@ public class Furniture {
     		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, 24*60), sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
     			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
+//    			System.out.println("Activité dans une séquence : " + sequence[i]);
     		}
+//    		System.out.println("Activité dans une séquence : " + sequence[sequence.length-1]);
     	}
     }
     
@@ -117,8 +119,11 @@ public class Furniture {
     }
 
     public LinkedList<Task> getTasks(Model model) {
+//    	System.out.println("---- Liste d'activités ----");
         for(Activity activity : activities) {
-        	addTask(activity);
+        	if(!activityIsInSequence(activity))
+//        		System.out.println("Activité sans séquence : " + activity.toString());
+        		addTask(activity);
         }
         createSequenceTasks(model);
         return tasks;

@@ -7,10 +7,13 @@ import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.Task;
 
+import java.time.LocalDateTime;
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 public class Workshop {
     private final String id;
@@ -41,11 +44,11 @@ public class Workshop {
         this.workers = workers;
         this.furnitures = furnitures;
         this.createVariables();
-        this.postConstraints(model);
+        this.postConstraints();
         solver.solve();
         System.out.println(this);
         for (Furniture furniture : this.furnitures) {
-        	//System.out.println(furniture.solToString());
+        	System.out.println(furniture.solToString());
         	for (Activity activity : furniture.getActivities())
         		System.out.println(activity.solToString());
         }
@@ -64,7 +67,6 @@ public class Workshop {
     			for(int i = 0;i<activitiesStations.size();i++) {
     				stationsNumbers[i] = activitiesStations.get(i).getNumberId();
     				LinkedList<Worker> workers = getWorkersFromStation(activitiesStations.get(i));
-//    				System.out.println(workers);
     				for(Worker w : workers) {
     					boolean t = true;
     					for(Worker w2 : activitiesWorker) {
@@ -82,25 +84,39 @@ public class Workshop {
     				workersNumbers[i] = activitiesWorker.get(i).getNumberId();
     			}
     			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
+    			act.setWorkerIndex(model, workers.length-1);
+    			act.setWorkerHeights(model, workers.length);
+    			act.setStationIndex(model, workers.length-1);
+    			act.setStationHeights(model, workers.length);
     		}
     	}
     	for (Worker worker : this.getWorkers())
     		worker.setVariables(model, this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker)));
     }
 
-    public void postConstraints(Model model){
-        // Furniture cumulative constraint and precedence/sequence
-        this.postCumulativeFurnitures(model);
+    public void postConstraints(){
+    	for(Furniture furniture : this.furnitures) {
+            //sets the precedence between the types
+            this.postPrecedence(furniture);
+            // Sets the time limit of the activity according to its worker's shift and breaks
+            this.postTimeLimits(furniture);
+            // The activities of a given task must go in the following order Transformation->Painting->Sticker->Check
+            this.postOrderByType(furniture);
+            // Furniture cumulative constraint and precedence/sequence
+            this.postCumulativeFurniture(model, furniture);
+            // If the worker w (resp. station s) is chosen to do the activity, we make sure this task has a height for the worker (resp. station)
+            this.setHeights(furniture);
+    	}
         // Worker cumulative constraint
-        this.postCumulativeWorkers(model);
+        this.postCumulativeWorkers();
         // Station cumulative constraint
-        this.postCumulativeStations(model);
+//        this.postCumulativeStations();
         // constraint to have each activity linked to a worker and a station
-        this.postAttributionWorkerAndStation(model);
+//        this.postAttributionWorkerAndStation(model);
+        
     }
     
-    public void postCumulativeFurnitures(Model model) {
-    	for (Furniture furniture : this.getFurnitures()) {
+    private void postCumulativeFurniture(Model model,Furniture furniture) {
     		furniture.linkPrecedenceToActivities();
     		furniture.linkSequenceToActivities();
     		LinkedList<Task> tasksList = furniture.getTasks(model);
@@ -112,43 +128,116 @@ public class Workshop {
             Arrays.fill(heights, model.intVar(1));
             IntVar capacity = model.intVar(1);
             model.cumulative(tasks, heights, capacity).post();
-            
-	        // Precedence constraint
-	        for(Activity[] precedence : furniture.getPrecedence()) {
-	        	for(int i = 0;i<precedence.length-1;i++) {
-	        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
-	        	}
-	        }
+    }
+    
+    private void postPrecedence(Furniture furniture) {
+    	// Precedence constraint
+        for(Activity[] precedence : furniture.getPrecedence()) {
+        	for(int i = 0;i<precedence.length-1;i++) {
+        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
+        	}
         }
     }
     
-    public void postCumulativeWorkers(Model model) {
-    	for (Worker worker : this.getWorkers()) {
-    		LinkedList<Activity> activities = this.getActivitiesFromWorker(worker);
-    		Task[] tasks = new Task[activities.size() + 2];
-    		IntVar[] heights = new IntVar[activities.size() + 2];
-    		for (int i = 0; i < activities.size(); i ++) {
-    			tasks[i] = activities.get(i).getTask();
-    			heights[i] = activities.get(i).getWorker(worker.getNumberId());
+    private void postTimeLimits(Furniture furniture) {
+		for(Activity activity : furniture.getActivities()) {
+			for(int workerId : activity.getPossibleWorkers()) {
+				String shiftID = workers[workerId].getShift();
+    			LocalDateTime start_time = getShiftByString(shiftID).getStart();
+    			LocalDateTime end_time = getShiftByString(shiftID).getEnd();
+    			int startToMinutes = (int)Duration.between(shifts[0].getStart(), start_time).toMinutes();
+    			int endToMinutes = (int)Duration.between(shifts[0].getStart(), end_time).toMinutes();
+    			for(LocalDateTime[] breakStartEnd : workers[workerId].getBreaks()) {
+    				int breakStart = (int)Duration.between(shifts[0].getStart(), breakStartEnd[0]).toMinutes();
+    				int breakEnd = (int)Duration.between(shifts[0].getStart(), breakStartEnd[1]).toMinutes();
+    				model.ifThen(
+    						model.arithm(activity.getWorker(),"=",workerId),
+    						model.and(
+    								model.arithm(activity.gettDebut(),">=",startToMinutes),
+    			        			model.arithm(activity.gettFin(),"<=",endToMinutes)
+    								)
+        						);
+    				model.ifThen(
+    						model.and(
+								model.arithm(activity.getWorker(),"=",workerId),
+								model.arithm(activity.gettDebut(),"<",breakEnd),
+								model.arithm(activity.gettDebut() ,">", breakStart - activity.getDuration())
+    								),
+							model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes())
+    						);
+    			}
     		}
-    		int indexStart = (int)Duration.between(this.getShifts()[0].getStart() ,this.getShiftByString(worker.getShift()).getStart()).toMinutes();
-    		tasks[activities.size()] = model.taskVar(model.intVar(0), indexStart);
-    		int indexEnd = (int)Duration.between(this.getShifts()[0].getStart() ,this.getShiftByString(worker.getShift()).getEnd()).toMinutes();
-    		int indexEndAll = (int)Duration.between(this.getShifts()[0].getStart() ,this.getShifts()[this.getShifts().length - 1].getEnd()).toMinutes();
-    		tasks[activities.size() + 1] = model.taskVar(model.intVar(indexEnd), indexEndAll - indexEnd);
-    		heights[activities.size()] = model.intVar(1);
-    		heights[activities.size() + 1] = model.intVar(1);
+    	}
+    }
+    
+    private void postCumulativeWorkers() {
+    	LinkedList<Activity> activities = this.getActivities();
+    	for (Worker worker : this.getWorkers()) {
+    		IntVar[] heights = new IntVar[activities.size()];
+    		Task[] tasks = new Task[activities.size()];
+    		for(int i = 0;i<activities.size();i++) {
+    			heights[i] = activities.get(i).getWorkerHeights()[worker.getNumberId()];
+    			tasks[i] = activities.get(i).getTask();
+    		}
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
     	}
     }
     
-    public void postAttributionWorkerAndStation(Model model) {
-    	for (Furniture furniture : this.getFurnitures())
-    		for (Activity activity : furniture.getActivities()) {
-    			model.sum(activity.getWorkers(), "=", 1).post();
-    			model.sum(activity.getStations(), "=", 1).post();
+    private void postCumulativeStations() {
+    	LinkedList<Activity> activities = this.getActivities();
+    	for (Station station : this.getStations()) {
+    		IntVar[] heights = new IntVar[activities.size()];
+    		Task[] tasks = new Task[activities.size()];
+    		for(int i = 0;i<activities.size();i++) {
+    			heights[i] = activities.get(i).getStationHeights()[station.getNumberId()];
+    			tasks[i] = activities.get(i).getTask();
     		}
+    		IntVar capacity = model.intVar(1);
+    		model.cumulative(tasks, heights, capacity).post();
+    	}
+    }
+    
+//    public void postAttributionWorkerAndStation(Model model) {
+//    	for (Furniture furniture : this.getFurnitures())
+//    		for (Activity activity : furniture.getActivities()) {
+//    			model.sum(activity.getWorkers(), "=", 1).post();
+//    			model.sum(activity.getStations(), "=", 1).post();
+//    		}
+//    }
+    
+    public void postOrderByType(Furniture furniture) {
+		LinkedList<Activity> transformation = this.getActivitiesFromActivityType(ActivityType.TRANSFORMATION, furniture.getActivities());
+		LinkedList<Activity> painting = this.getActivitiesFromActivityType(ActivityType.PAINT, furniture.getActivities());
+		LinkedList<Activity> sticker = this.getActivitiesFromActivityType(ActivityType.STICKER, furniture.getActivities());
+		LinkedList<Activity> check = this.getActivitiesFromActivityType(ActivityType.CHECK, furniture.getActivities());
+		for(Activity t : transformation)
+			for(Activity p : painting)
+				for(Activity s : sticker)
+					for(Activity c : check) {
+						model.arithm(t.gettFin(), "<=", p.gettDebut()).post();
+						model.arithm(p.gettFin(), "<=", s.gettDebut()).post();
+						model.arithm(s.gettFin(), "<=", c.gettDebut()).post();
+					}
+    }
+    
+    private void setHeights(Furniture furniture) {
+    	for(int wIndex = 0;wIndex<this.workers.length;wIndex++) {
+			for(Activity activity : getActivitiesFromWorker(this.workers[wIndex])) {
+				model.ifOnlyIf(
+					model.arithm(activity.getWorker(), "=", wIndex), 
+					model.arithm(activity.getWorkerHeights()[wIndex], "=", 1)
+				);
+			}
+    	}
+//		for(int sIndex = 0 ; sIndex<this.stations.length ; sIndex++) {
+//			for(Activity activity : getActivitiesFromStation(this.stations[sIndex])) {
+//				model.ifOnlyIf(
+//						model.arithm(activity.getStation(), "=", sIndex), 
+//						model.arithm(activity.getStationHeights()[sIndex], "=", 1)
+//				);
+//			}
+//		}
     }
     
     public Shift getShiftByString(String shiftString) {
@@ -156,20 +245,6 @@ public class Workshop {
     		if (shift.getId().equals(shiftString))
     			return shift;
     	throw new Error("shift introuvable");
-    }
-    
-    public void postCumulativeStations(Model model) {
-    	for (Station station : this.getStations()) {
-    		LinkedList<Activity> activities = this.getActivitiesFromActivityTypes(station.getActivityTypes());
-    		Task[] tasks = new Task[activities.size()];
-    		IntVar[] heights = new IntVar[activities.size()];
-    		for (int i = 0; i < activities.size(); i ++) {
-    			tasks[i] = activities.get(i).getTask();
-    			heights[i] = activities.get(i).getStation(station.getNumberId());
-    		}
-    		IntVar capacity = model.intVar(1);
-    		model.cumulative(tasks, heights, capacity).post();
-    	}
     }
     
     public LinkedList<Station> getStationsFromActivityType(ActivityType type) {
@@ -212,13 +287,12 @@ public class Workshop {
     	throw new Error("T'as mis n'imp comme id de station");
     }
     
-    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type) {
+    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type, Activity[] a) {
     	HashSet<Activity> activities = new HashSet<Activity>();
-    	for(Furniture f : this.furnitures)
-    		for(Activity actf : f.getActivities())
-    			if (actf.getType() == type)
-    				activities.add(actf);
-    	
+    	for(Activity activity : a) {
+    		if (activity.getType() == type)
+				activities.add(activity);
+    	}
     	return new LinkedList<Activity>(activities);
     }
     
@@ -228,8 +302,7 @@ public class Workshop {
     		for(Activity actf : f.getActivities())
     			if (types.contains(actf.getType()))
     				activities.add(actf);
-    	
-    	return new LinkedList<Activity>(activities);
+    	return activities;
     }
     
     public LinkedList<Activity> getActivitiesFromActivityTypes(ActivityType[] types) {
@@ -241,6 +314,29 @@ public class Workshop {
     
     public LinkedList<Activity> getActivitiesFromWorker(Worker worker){
     	return this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker));
+    }
+    
+    public LinkedList<Activity> getActivitiesFromStation(Station station){
+    	LinkedList<Activity> stationActs = new LinkedList<Activity>();
+    	for(Activity activity : this.getActivities()) {
+    		for(ActivityType type : station.getActivityTypes()) {
+    			if(type.equals(activity.getType())) {
+    				stationActs.add(activity);
+    			}
+    		}
+    	}
+    	System.out.println(stationActs.size());
+    	return stationActs;
+    }
+    
+    public LinkedList<Activity> getActivities(){
+    	LinkedList<Activity> activities = new LinkedList<Activity>();
+    	for(Furniture furniture : this .getFurnitures()) {
+    		for(Activity activity : furniture.getActivities()) {
+    			activities.add(activity);
+    		}
+    	}
+    	return activities;
     }
     
     public String getId() {
