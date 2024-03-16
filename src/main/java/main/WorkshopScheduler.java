@@ -19,7 +19,7 @@ public class WorkshopScheduler {
      	           workersChart.setVisible(true);  
      	        });  
         SwingUtilities.invokeLater(() -> {  
-      	   GanttChart stationsChart = new GanttChart("Workers Schedule",workshop,"station");  
+      	   GanttChart stationsChart = new GanttChart("Stations Schedule",workshop,"station");  
       	           stationsChart.setSize(800, 400);  
       	           stationsChart.setLocationRelativeTo(null);  
       	           stationsChart.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  

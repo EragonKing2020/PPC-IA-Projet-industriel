@@ -101,9 +101,9 @@ public class GanttChart extends JFrame {
 		   }
 		}
 		TaskSeriesCollection dataset = new TaskSeriesCollection();  
-	     for(TaskSeries tasks : taskseries) {
-	    	 dataset.add(tasks);
-	     }
+	    for(TaskSeries tasks : taskseries) {
+	    	dataset.add(tasks);
+	    }
 		return dataset;
 	}
 	
@@ -115,12 +115,10 @@ public class GanttChart extends JFrame {
 		for(int i = 0;  i<workshop.getFurnitures().length;i++) {
 			for(Activity activity : workshop.getFurnitures()[i].getActivities()) {
 				if(activity.getStation().getValue()==station.getNumberId()) {
-					LocalDateTime startLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart());
-				    startLocalDate.plusMinutes((long)activity.gettDebut().getValue());
+					LocalDateTime startLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart().plusMinutes((long)activity.gettDebut().getValue()));
 				    Date startDate = Date.from(startLocalDate.atZone(ZoneId.systemDefault()).toInstant());
-				    LocalDateTime endLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart());
-				    endLocalDate.plusMinutes((long)activity.gettFin().getValue());
-				    Date endDate = Date.from(startLocalDate.atZone(ZoneId.systemDefault()).toInstant());
+				    LocalDateTime endLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart().plusMinutes((long)activity.gettFin().getValue()));
+				    Date endDate = Date.from(endLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 				    taskseries.get(i).add(new Task(
 						station.getId(),
 						startDate,
@@ -131,10 +129,10 @@ public class GanttChart extends JFrame {
 		   }
 	   }
 	   TaskSeriesCollection dataset = new TaskSeriesCollection();  
-	     for(TaskSeries tasks : taskseries) {
-	    	 dataset.add(tasks);
-	     }
-		return dataset;
+	   for(TaskSeries tasks : taskseries) {
+		   dataset.add(tasks);
+	   }
+	   return dataset;
 	}
 }
 

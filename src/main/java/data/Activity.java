@@ -118,6 +118,10 @@ public class Activity {
 	public int[] getPossibleWorkers() {
 		return possibleWorkers;
 	}
+	
+	public int[] getPossibleStations() {
+		return possibleStations;
+	}
 
 	public void settDebut(IntVar tDebut) {
 		this.tDebut = tDebut;
@@ -137,6 +141,10 @@ public class Activity {
 
 	public String getId() {
         return id;
+    }
+	
+	public int getNumberId() {
+    	return Integer.parseInt(id.substring(1, id.length())) ;
     }
 
     public ActivityType getType() {
