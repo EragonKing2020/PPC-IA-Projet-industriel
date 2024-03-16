@@ -152,14 +152,15 @@ public class Workshop {
 			        			model.arithm(activity.gettFin(),"<=",endToMinutes)
 								)
     						);
-//				model.ifThen(
-//						model.and(
-//							model.arithm(activity.getWorker(),"=",workerId),
-//							model.arithm(activity.gettDebut(),"<",breakEnd),
-//							model.arithm(activity.gettDebut() ,">", breakStart - activity.getDuration())
-//								),
-//						model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes())
-//						);
+				model.ifThenElse(
+						model.and(
+							model.arithm(activity.getWorker(),"=",workerId),
+							model.arithm(activity.gettDebut(),"<",breakEnd),
+							model.arithm(activity.gettDebut() ,">", breakStart - activity.getDuration())
+								),
+						model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes()),
+						model.arithm(activity.getDurationVar(), "=", activity.getDuration())
+						);
 			}
 		}
     }
