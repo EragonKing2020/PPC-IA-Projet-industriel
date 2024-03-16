@@ -90,7 +90,7 @@ public class Workshop {
         		this.setStationHeights(station,activity);
         	}
     		// Sets the time limit of the activity according to its worker's shift and breaks
-//            this.postTimeLimits(activity); 
+            this.postTimeLimits(activity); 
     	}
         
     	for(Furniture furniture : this.furnitures) {
@@ -152,14 +152,14 @@ public class Workshop {
 			        			model.arithm(activity.gettFin(),"<=",endToMinutes)
 								)
     						);
-				model.ifThen(
-						model.and(
-							model.arithm(activity.getWorker(),"=",workerId),
-							model.arithm(activity.gettDebut(),"<",breakEnd),
-							model.arithm(activity.gettDebut() ,">", breakStart - activity.getDuration())
-								),
-						model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes())
-						);
+//				model.ifThen(
+//						model.and(
+//							model.arithm(activity.getWorker(),"=",workerId),
+//							model.arithm(activity.gettDebut(),"<",breakEnd),
+//							model.arithm(activity.gettDebut() ,">", breakStart - activity.getDuration())
+//								),
+//						model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes())
+//						);
 			}
 		}
     }
