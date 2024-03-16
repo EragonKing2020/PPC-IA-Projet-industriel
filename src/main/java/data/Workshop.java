@@ -41,9 +41,13 @@ public class Workshop {
         this.stations = stations;
         this.workers = workers;
         this.furnitures = furnitures;
+        System.out.print("Yo");
         this.createVariables();
+        System.out.print("Yo 2");
         this.postConstraints();
+        System.out.print("Yo 3");
         solver.solve();
+        System.out.println("bqnbqlib");
         System.out.println(this);
         for (Furniture furniture : this.furnitures) {
         	System.out.println(furniture.solToString());
