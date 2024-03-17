@@ -91,12 +91,29 @@ public class GanttChart extends JFrame {
 				   Date startDate = Date.from(startLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 				   LocalDateTime endLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart()).plusMinutes((long)activity.gettFin().getValue());
 				   Date endDate = Date.from(endLocalDate.atZone(ZoneId.systemDefault()).toInstant());
-				   taskseries.get(i).add(new Task(
-						   worker.getId(),
-						   startDate,
-						   endDate
+				   if(taskseries.get(i).get(worker.getId())==null) {
+						taskseries.get(i).add(new Task(
+								worker.getId(),
+								Date.from(LocalDateTime.from(workshop.getShifts()[0].getStart()).atZone(ZoneId.systemDefault()).toInstant()),
+								Date.from(LocalDateTime.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd()).atZone(ZoneId.systemDefault()).toInstant())
 						   )
 						   );
+						taskseries.get(i).get(worker.getId()).addSubtask(new Task(
+								worker.getId(),
+								startDate,
+								endDate
+						   )
+						);
+						
+					}
+					else {
+						taskseries.get(i).get(worker.getId()).addSubtask(new Task(
+										worker.getId(),
+										startDate,
+										endDate
+								   )
+								);
+					}
 			   }
 		   }
 		}
@@ -119,12 +136,29 @@ public class GanttChart extends JFrame {
 				    Date startDate = Date.from(startLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 				    LocalDateTime endLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart().plusMinutes((long)activity.gettFin().getValue()));
 				    Date endDate = Date.from(endLocalDate.atZone(ZoneId.systemDefault()).toInstant());
-				    taskseries.get(i).add(new Task(
-						station.getId(),
-						startDate,
-						endDate
-				   )
-				   );
+					if(taskseries.get(i).get(station.getId())==null) {
+						taskseries.get(i).add(new Task(
+								station.getId(),
+								Date.from(LocalDateTime.from(workshop.getShifts()[0].getStart()).atZone(ZoneId.systemDefault()).toInstant()),
+								Date.from(LocalDateTime.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd()).atZone(ZoneId.systemDefault()).toInstant())
+						   )
+						   );
+						taskseries.get(i).get(station.getId()).addSubtask(new Task(
+								station.getId(),
+								startDate,
+								endDate
+						   )
+						);
+						
+					}
+					else {
+						taskseries.get(i).get(station.getId()).addSubtask(new Task(
+										station.getId(),
+										startDate,
+										endDate
+								   )
+								);
+					}
 			   }
 		   }
 	   }
