@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.GridLayout;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -11,8 +12,13 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;  
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.labels.CategoryItemLabelGenerator;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.GanttRenderer;
+import org.jfree.chart.ui.TextAnchor;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.IntervalCategoryDataset;  
 import org.jfree.data.gantt.Task;  
 import org.jfree.data.gantt.TaskSeries;  
@@ -68,14 +74,44 @@ public class GanttChart extends JFrame {
                 CategoryPlot plot = (CategoryPlot) chart.getPlot();
                 DateAxis rangeAxis = (DateAxis) plot.getRangeAxis();
                 // Ajustement de la largeur des barres des tâches
-                GanttRenderer renderer = (GanttRenderer) plot.getRenderer();
+                MyGanttRenderer renderer = new MyGanttRenderer(workshop,station,null);
+                plot.setRenderer(renderer);
                 // Définir les limites de l'axe des abscisses pour chaque diagramme de Gantt
                 rangeAxis.setMinimumDate(Date.from(workshop.getShifts()[0].getStart().atZone(ZoneId.systemDefault()).toInstant()));
                 rangeAxis.setMaximumDate(Date.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd().atZone(ZoneId.systemDefault()).toInstant()));
                 // Définir l'épaisseur des tâches
                 renderer.setItemMargin(-0.5);
+
+                renderer.setDefaultItemLabelGenerator(new CategoryItemLabelGenerator() {
+                	public String generateLabel(CategoryDataset dataSet, int series, int categories) {
+    					/* your code to get the label */
+                		Task task = ((TaskSeries) dataset.getRowKeys().get(series)).get(categories);
+                		for(int i = 0;i<task.getSubtaskCount();i++) {
+                			for(Activity activity : workshop.getActivities()) {
+                				int tDebut = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(i).getDuration().getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
+                				int tFin = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(i).getDuration().getEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
+                				if(task.getDescription().equals(station.getId())&&activity.gettDebut().getValue()==tDebut&&activity.gettFin().getValue()==tFin) {
+                					return activity.getId();
+                				}
+                			}
+                		}
+    					return "";
+    		        }
+
+    		        public String generateColumnLabel(CategoryDataset dataset, int categories) {
+    		            return dataset.getColumnKey(categories).toString();
+    		        }
+
+    		        public String generateRowLabel(CategoryDataset dataset, int series) {
+    		            return dataset.getRowKey(series).toString();
+    		        }
+
+                });
+
+                renderer.setDefaultItemLabelsVisible(true);
+                renderer.setDefaultPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE9, TextAnchor.CENTER_LEFT));
                 add(new ChartPanel(chart));
-      	  }
+    	  }
       }
    }
 
@@ -91,12 +127,29 @@ public class GanttChart extends JFrame {
 				   Date startDate = Date.from(startLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 				   LocalDateTime endLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart()).plusMinutes((long)activity.gettFin().getValue());
 				   Date endDate = Date.from(endLocalDate.atZone(ZoneId.systemDefault()).toInstant());
-				   taskseries.get(i).add(new Task(
-						   worker.getId(),
-						   startDate,
-						   endDate
+				   if(taskseries.get(i).get(worker.getId())==null) {
+						taskseries.get(i).add(new Task(
+								worker.getId(),
+								Date.from(LocalDateTime.from(workshop.getShifts()[0].getStart()).atZone(ZoneId.systemDefault()).toInstant()),
+								Date.from(LocalDateTime.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd()).atZone(ZoneId.systemDefault()).toInstant())
 						   )
 						   );
+						taskseries.get(i).get(worker.getId()).addSubtask(new Task(
+								worker.getId(),
+								startDate,
+								endDate
+						   )
+						);
+						
+					}
+					else {
+						taskseries.get(i).get(worker.getId()).addSubtask(new Task(
+										worker.getId(),
+										startDate,
+										endDate
+								   )
+								);
+					}
 			   }
 		   }
 		}
@@ -119,12 +172,29 @@ public class GanttChart extends JFrame {
 				    Date startDate = Date.from(startLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 				    LocalDateTime endLocalDate = LocalDateTime.from(workshop.getShifts()[0].getStart().plusMinutes((long)activity.gettFin().getValue()));
 				    Date endDate = Date.from(endLocalDate.atZone(ZoneId.systemDefault()).toInstant());
-				    taskseries.get(i).add(new Task(
-						station.getId(),
-						startDate,
-						endDate
-				   )
-				   );
+					if(taskseries.get(i).get(station.getId())==null) {
+						taskseries.get(i).add(new Task(
+								station.getId(),
+								Date.from(LocalDateTime.from(workshop.getShifts()[0].getStart()).atZone(ZoneId.systemDefault()).toInstant()),
+								Date.from(LocalDateTime.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd()).atZone(ZoneId.systemDefault()).toInstant())
+						   )
+						   );
+						taskseries.get(i).get(station.getId()).addSubtask(new Task(
+								station.getId(),
+								startDate,
+								endDate
+						   )
+						);
+						
+					}
+					else {
+						taskseries.get(i).get(station.getId()).addSubtask(new Task(
+										station.getId(),
+										startDate,
+										endDate
+								   )
+								);
+					}
 			   }
 		   }
 	   }
