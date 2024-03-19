@@ -152,7 +152,8 @@ public class MyGanttRenderer extends GanttRenderer {
 
 			int nbSubtasks = ((TaskSeries) dataset.getRowKeys().get(row)).get(column).getSubtaskCount();
 //			for(int index = 0; index<nbSubtasks;index++) {
-				MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(0,workshop,station,worker);
+				MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(
+						0,workshop,station,worker);
 				setDefaultItemLabelGenerator(generator,true); 
 				if (generator != null && isItemLabelVisible(row, column)) {
 					drawItemLabel(g2, dataset, row, column, plot, generator, bar, false);

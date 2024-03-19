@@ -168,9 +168,9 @@ public class Workshop {
     private void postCumulativeWorkers(Worker worker) {
     		IntVar[] heights = new IntVar[this.getActivities().size()];
     		Task[] tasks = new Task[this.getActivities().size()];
-    		for(Activity activity : this.getActivities()) {
-    			heights[activity.getNumberId()] = activity.getWorkerHeights()[worker.getNumberId()];
-    			tasks[activity.getNumberId()] = activity.getTask();
+    		for(int i = 0; i<this.getActivities().size() ; i++){
+    			heights[i] = this.getActivities().get(i).getWorkerHeights()[worker.getNumberId()];
+    			tasks[i] = this.getActivities().get(i).getTask();
     		}
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
@@ -179,9 +179,9 @@ public class Workshop {
     private void postCumulativeStations(Station station) {
     		IntVar[] heights = new IntVar[this.getActivities().size()];
     		Task[] tasks = new Task[this.getActivities().size()];
-    		for(Activity activity : this.getActivities()) {
-    			heights[activity.getNumberId()] = activity.getStationHeights()[station.getNumberId()];
-    			tasks[activity.getNumberId()] = activity.getTask();
+    		for(int i = 0; i<this.getActivities().size() ; i++){
+    			heights[i] = this.getActivities().get(i).getStationHeights()[station.getNumberId()];
+    			tasks[i] = this.getActivities().get(i).getTask();
     		}
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
