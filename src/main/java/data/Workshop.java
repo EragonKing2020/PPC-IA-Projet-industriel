@@ -41,9 +41,13 @@ public class Workshop {
         this.stations = stations;
         this.workers = workers;
         this.furnitures = furnitures;
+        System.out.print("Yo");
         this.createVariables();
+        System.out.print("Yo 2");
         this.postConstraints();
+        System.out.print("Yo 3");
         solver.solve();
+        System.out.println("bqnbqlib");
         System.out.println(this);
         for (Furniture furniture : this.furnitures) {
         	System.out.println(furniture.solToString());
@@ -136,22 +140,7 @@ public class Workshop {
     }
     
     private void postTimeLimits(Activity activity) {
-		for(int workerId : activity.getPossibleWorkers()) {
-			String shiftID = workers[workerId].getShift();
-			LocalDateTime start_time = getShiftByString(shiftID).getStart();
-			LocalDateTime end_time = getShiftByString(shiftID).getEnd();
-			int startToMinutes = (int)Duration.between(shifts[0].getStart(), start_time).toMinutes();
-			int endToMinutes = (int)Duration.between(shifts[0].getStart(), end_time).toMinutes();
-			for(LocalDateTime[] breakStartEnd : workers[workerId].getBreaks()) {
-				int breakStart = (int)Duration.between(shifts[0].getStart(), breakStartEnd[0]).toMinutes();
-				int breakEnd = (int)Duration.between(shifts[0].getStart(), breakStartEnd[1]).toMinutes();
-				model.ifThen(
-						model.arithm(activity.getWorker(),"=",workerId),
-						model.and(
-								model.arithm(activity.gettDebut(),">=",startToMinutes),
-			        			model.arithm(activity.gettFin(),"<=",endToMinutes)
-								)
-    						);
+//		for(int workerId : activity.getPossibleWorkers()) {
 //				model.ifThenElse(
 //						model.and(
 //							model.arithm(activity.getWorker(),"=",workerId),
@@ -161,16 +150,25 @@ public class Workshop {
 //						model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes()),
 //						model.arithm(activity.getDurationVar(), "=", activity.getDuration())
 //						);
-			}
-		}
+//			}
+//		}
     }
     
     private void postCumulativeWorkers(Worker worker) {
-    		IntVar[] heights = new IntVar[this.getActivities().size()];
-    		Task[] tasks = new Task[this.getActivities().size()];
-    		for(int i = 0; i<this.getActivities().size() ; i++){
-    			heights[i] = this.getActivities().get(i).getWorkerHeights()[worker.getNumberId()];
-    			tasks[i] = this.getActivities().get(i).getTask();
+    		IntVar[] heights = new IntVar[this.getActivities().size() + 2];
+    		Task[] tasks = new Task[this.getActivities().size() + 2];
+    		heights[0] = this.model.intVar(1);
+    		heights[1] = this.model.intVar(1);
+    		LocalDateTime startDay = shifts[0].getStart();
+        	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
+        	Shift shiftWorker = this.getShiftByString(worker.getShift());
+        	LocalDateTime startWorker = shiftWorker.getStart();
+        	LocalDateTime endWorker = shiftWorker.getEnd();
+        	tasks[0] = model.taskVar(model.intVar(0), (int)Duration.between(startDay, startWorker).toMinutes());
+    		tasks[1] = model.taskVar(model.intVar((int)Duration.between(startDay, endWorker).toMinutes()), (int)Duration.between(endWorker, endDay).toMinutes());
+        	for(int i = 0; i<this.getActivities().size() ; i++){
+    			heights[i+2] = this.getActivities().get(i).getWorkerHeights()[worker.getNumberId()];
+    			tasks[i+2] = this.getActivities().get(i).getTask();
     		}
     		IntVar capacity = model.intVar(1);
     		model.cumulative(tasks, heights, capacity).post();
