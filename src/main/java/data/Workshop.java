@@ -75,6 +75,9 @@ public class Workshop {
 			}
 			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
 		}
+		for (Worker worker : this.getWorkers()) {
+			worker.setVariables(model, this.getActivitiesFromWorker(worker));
+		}
     }
     
     public IntVar[] getDecisionVariables() {
@@ -111,6 +114,8 @@ public class Workshop {
     		// Station cumulative constraint
             this.postCumulativeStations(station);
     	}
+    	
+    	this.postPauses();
         
     }
     
@@ -134,6 +139,30 @@ public class Workshop {
             		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
             	}
             }
+    	}
+    }
+    
+    private void postPauses() {
+    	LocalDateTime startDay = this.getShifts()[0].getStart();
+    	for (Worker worker : this.getWorkers()) {
+    		for (Activity activity : this.getActivitiesFromWorker(worker)) {
+    			int i = 0;
+    			for (LocalDateTime[] pause : worker.getBreaks()) {
+    				model.ifOnlyIf(model.and(model.arithm(worker.getBoolPauseAct(i, activity), "=", 1),
+    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[0]).toMinutes()),
+    										model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
+    							model.arithm(worker.getBoolPauseAct(i, activity), "=", 1));
+    				
+    				i ++;
+    			}
+    		}
+    		for (int i = 0; i < worker.getBreaks().length; i ++) {
+    			IntVar[] boolPause = worker.getBoolPause(i);
+    			int[] scalars = new int[boolPause.length];
+    			for (int j = 0; j < scalars.length; j ++)
+    				scalars[j] = 1;
+    			model.scalar(boolPause, scalars, "<=", 1).post();
+    		}
     	}
     }
     
