@@ -172,6 +172,13 @@ public class Workshop {
     				i ++;
     			}
     		}
+    		for (int i = 0; i < worker.getBreaks().length; i ++) {
+    			IntVar[] boolPause = worker.getBoolPause(i);
+    			int[] scalars = new int[boolPause.length];
+    			for (int j = 0; j < scalars.length; j ++)
+    				scalars[j] = 1;
+    			model.scalar(boolPause, scalars, "<=", 1).post();
+    		}
     	}
     }
 	
