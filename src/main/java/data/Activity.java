@@ -2,7 +2,6 @@ package data;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.IntVar;

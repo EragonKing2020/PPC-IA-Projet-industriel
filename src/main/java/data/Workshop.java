@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.search.strategy.Search;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.Task;
 
@@ -43,6 +44,7 @@ public class Workshop {
         this.furnitures = furnitures;
         this.createVariables();
         this.postConstraints();
+        solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
         solver.solve();
         System.out.println(this);
         for (Furniture furniture : this.furnitures) {
@@ -74,6 +76,19 @@ public class Workshop {
 			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
 		}
     }
+    
+    public IntVar[] getDecisionVariables() {
+    	LinkedList<Activity> activities = this.getActivities();
+    	IntVar[] vars = new IntVar[3 * activities.size()];
+    	int i = 0;
+    	for (Activity activity : activities) {
+    		vars[i] = activity.gettDebut();
+    		vars[i + 1] = activity.getWorker();
+    		vars[i + 2] = activity.getStation();
+    		i += 3;
+    	}
+    	return vars;
+    }
 
     public void postConstraints(){
     	for(Activity activity : getActivities()) {
@@ -86,7 +101,7 @@ public class Workshop {
             // The activities of a given task must go in the following order Transformation->Painting->Sticker->Check
             this.postOrderByType(furniture);
             // Furniture cumulative constraint and precedence/sequence
-            this.postCumulativeFurniture(model, furniture);
+            this.postCumulativeFurniture(furniture);
     	}
     	for(Worker worker : this.getWorkers()) {
     		// Worker cumulative constraint
@@ -99,7 +114,7 @@ public class Workshop {
         
     }
     
-    private void postCumulativeFurniture(Model model,Furniture furniture) {
+    private void postCumulativeFurniture(Furniture furniture) {
     		LinkedList<Task> tasksList = furniture.getTasks(model);
             Task[] tasks = new Task[tasksList.size()];
             for(int i = 0;i<tasksList.size();i++) {
