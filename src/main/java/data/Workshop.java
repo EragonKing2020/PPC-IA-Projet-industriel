@@ -79,8 +79,8 @@ public class Workshop {
 			act.setWorkerHeights(model, this.workers.length);
 			act.setStationHeights(model, this.stations.length);
 		}
-//    	for (Worker worker : this.getWorkers())
-//    		worker.setVariables(model, this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker)));
+    	for (Worker worker : this.getWorkers())
+    		worker.setVariables(model, this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker)));
     }
 
     public void postConstraints(){
@@ -113,6 +113,10 @@ public class Workshop {
     		// Station cumulative constraint
             this.postCumulativeStations(station);
     	}
+		// Pauses constraint
+		this.postPauses();
+		// TFin constraint
+		this.postTFin();
         // constraint to have each activity linked to a worker and a station
 //        this.postAttributionWorkerAndStation(model);
         
@@ -154,24 +158,72 @@ public class Workshop {
 //		}
     }
     
-    private void postCumulativeWorkers(Worker worker) {
-    		IntVar[] heights = new IntVar[this.getActivities().size() + 2];
-    		Task[] tasks = new Task[this.getActivities().size() + 2];
-    		heights[0] = this.model.intVar(1);
-    		heights[1] = this.model.intVar(1);
-    		LocalDateTime startDay = shifts[0].getStart();
-        	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
-        	Shift shiftWorker = this.getShiftByString(worker.getShift());
-        	LocalDateTime startWorker = shiftWorker.getStart();
-        	LocalDateTime endWorker = shiftWorker.getEnd();
-        	tasks[0] = model.taskVar(model.intVar(0), (int)Duration.between(startDay, startWorker).toMinutes());
-    		tasks[1] = model.taskVar(model.intVar((int)Duration.between(startDay, endWorker).toMinutes()), (int)Duration.between(endWorker, endDay).toMinutes());
-        	for(Activity activity : this.getActivities()) {
-    			heights[activity.getNumberId() + 2] = activity.getWorkerHeights()[worker.getNumberId()];
-    			tasks[activity.getNumberId() + 2] = activity.getTask();
+    private void postPauses() {
+    	LocalDateTime startDay = this.getShifts()[0].getStart();
+    	for (Worker worker : this.getWorkers()) {
+    		for (Activity activity : this.getActivitiesFromWorker(worker)) {
+    			int i = 0;
+    			for (LocalDateTime[] pause : worker.getBreaks()) {
+    				model.ifOnlyIf(model.and(model.arithm(worker.getBoolPauseAct(i, activity), "=", 1),
+    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[0]).toMinutes()),
+    										model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
+    							model.arithm(worker.getBoolPauseAct(i, activity), "=", 1));
+    				
+    				i ++;
+    			}
     		}
-    		IntVar capacity = model.intVar(1);
-    		model.cumulative(tasks, heights, capacity).post();
+    	}
+    }
+    
+    private void postTFin() {
+    	for (Furniture furniture : this.getFurnitures()) {
+    		for (Activity activity : furniture.getActivities()) {
+    			LinkedList<Worker> workers = this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()));
+    			LinkedList<LocalDateTime[]> pauses = new LinkedList<LocalDateTime[]>();
+    			for (Worker worker : workers) {
+    				for (LocalDateTime[] pause : worker.getBreaks()) {
+    					pauses.add(pause);
+    				}
+    			}
+    			IntVar[] vars = new IntVar[pauses.size() + 3];
+    			int[] scalars = new int[pauses.size() + 3];
+    			vars[0] = activity.gettFin();
+    			scalars[0] = -1;
+    			vars[1] = activity.gettDebut();
+    			scalars[1] = 1;
+    			vars[2] = model.intVar(activity.getDuration());
+    			scalars[2] = 1;
+    			int i = 3;
+    			for (Worker worker : workers) {
+    				for (int j = 0; j < worker.getBreaks().length; j ++) {
+    					vars[i] = worker.getBoolPauseAct(j, activity);
+    					scalars[i] = worker.getDurationBreak(j);
+						i ++;
+    				}
+    			}
+    			model.scalar(vars, scalars, "<=", 0).post();
+    		}
+    	}
+    }
+    
+    private void postCumulativeWorkers(Worker worker) {
+		IntVar[] heights = new IntVar[this.getActivities().size() + 2];
+		Task[] tasks = new Task[this.getActivities().size() + 2];
+		heights[0] = this.model.intVar(1);
+		heights[1] = this.model.intVar(1);
+		LocalDateTime startDay = shifts[0].getStart();
+    	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
+    	Shift shiftWorker = this.getShiftByString(worker.getShift());
+    	LocalDateTime startWorker = shiftWorker.getStart();
+    	LocalDateTime endWorker = shiftWorker.getEnd();
+    	tasks[0] = model.taskVar(model.intVar(0), (int)Duration.between(startDay, startWorker).toMinutes());
+		tasks[1] = model.taskVar(model.intVar((int)Duration.between(startDay, endWorker).toMinutes()), (int)Duration.between(endWorker, endDay).toMinutes());
+    	for(Activity activity : this.getActivities()) {
+			heights[activity.getNumberId() + 2] = activity.getWorkerHeights()[worker.getNumberId()];
+			tasks[activity.getNumberId() + 2] = activity.getTask();
+		}
+		IntVar capacity = model.intVar(1);
+		model.cumulative(tasks, heights, capacity).post();
     }
     
     private void postCumulativeStations(Station station) {
@@ -269,6 +321,19 @@ public class Workshop {
     		}
     	}
     	return activitiesWorker;
+    }
+    
+    public LinkedList<Worker> getWorkersFromStations(LinkedList<Station> stations){
+    	HashSet<Worker> workers = new HashSet<Worker>();
+    	for(Worker worker : this.workers) {
+    		for(String stationName : worker.getStations()) {
+    			for (Station station : stations)
+					if(station.getId().equals(stationName)) {
+						workers.add(worker);
+					}
+    		}
+    	}
+    	return new LinkedList<Worker>(workers);
     }
     
     public LinkedList<ActivityType> getActivityTypesFromWorker(Worker worker){

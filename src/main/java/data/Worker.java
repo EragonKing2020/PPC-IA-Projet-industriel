@@ -3,6 +3,7 @@ package data;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -77,6 +78,10 @@ public class Worker {
     	for (int i = 0; i < this.boolPauseAct.length; i ++)
     		vars[i] = this.getBoolPauseAct(i, activity);
     	return vars;
+    }
+    
+    public int getDurationBreak(int pause) {
+    	return (int)Duration.between(this.breaks[pause][0], this.breaks[pause][1]).toMinutes();
     }
 
     @Override
