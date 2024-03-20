@@ -38,11 +38,13 @@ public class Furniture {
     }
     
     private void linkAct(Activity[][] preseq) {
-    	for (int i = 0; i < preseq.length; i ++) {
-        	for (int j = 0; j < preseq[i].length; j ++) {
-        		preseq[i][j] = this.getActivityByID(preseq[i][j].getId());
-        	}
-        }
+    	if(preseq!=null) {
+    		for (int i = 0; i < preseq.length; i ++) {
+            	for (int j = 0; j < preseq[i].length; j ++) {
+            		preseq[i][j] = this.getActivityByID(preseq[i][j].getId());
+            	}
+            }
+    	}
     }
     
     private Activity getActivityByID(String id) {

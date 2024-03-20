@@ -77,7 +77,7 @@ public class Workshop {
 
     public void postConstraints(){
     	for(Activity activity : getActivities()) {
-            this.postTimeLimits(activity); 
+//            this.postTimeLimits(activity); 
     	}
         
     	for(Furniture furniture : this.furnitures) {
@@ -113,11 +113,13 @@ public class Workshop {
     
     private void postPrecedence(Furniture furniture) {
     	// Precedence constraint
-        for(Activity[] precedence : furniture.getPrecedence()) {
-        	for(int i = 0;i<precedence.length-1;i++) {
-        		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
-        	}
-        }
+    	if(furniture.getPrecedence()!=null) {
+    		for(Activity[] precedence : furniture.getPrecedence()) {
+            	for(int i = 0;i<precedence.length-1;i++) {
+            		model.arithm(precedence[i].gettFin(),"<=", precedence[i+1].gettDebut()).post();
+            	}
+            }
+    	}
     }
     
     private void postTimeLimits(Activity activity) {
@@ -148,12 +150,15 @@ public class Workshop {
 //        	tasks[0] = model.taskVar(model.intVar(0), (int)Duration.between(startDay, startWorker).toMinutes());
 //    		tasks[1] = model.taskVar(model.intVar((int)Duration.between(startDay, endWorker).toMinutes()), (int)Duration.between(endWorker, endDay).toMinutes());
     		LinkedList<Activity> activities = this.getActivitiesFromWorker(worker);
+    		if(activities.size()==0) {
+    			return;
+    		}
     		Task[] tasks = new Task[activities.size()];
     		IntVar[] heights = model.intVarArray(activities.size(), 0, 1);
     		for(int i = 0;i<activities.size();i++) {
             	tasks[i] = activities.get(i).getTask();
             	model.ifOnlyIf(
-            			model.arithm(activities.get(i).getStation(),"=", worker.getNumberId()), 
+            			model.arithm(activities.get(i).getWorker(),"=", worker.getNumberId()), 
             			model.arithm(heights[i], "=", 1));
             }
             IntVar capacity = model.intVar(1);
