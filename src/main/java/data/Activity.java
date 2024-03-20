@@ -174,11 +174,6 @@ public class Activity {
     }
     
     public String solToString() {
-    	String stringWH = "[";
-    	for(IntVar height : this.getWorkerHeights()) {
-    		stringWH += " " + height.getValue() + " ";
-    	}
-    	stringWH += "]";
     	return "Activity{" +
                 "id='" + id + '\'' +
                 ", type=" + type +
@@ -188,8 +183,7 @@ public class Activity {
                 ", tFin=" + this.gettFin().getValue()+
                 "\r"+
                 "workerID = " + this.getWorker().getValue() + "\r"+
-                "stationID = " + this.getStation().getValue() +"\r"+
-                "workerHeights = " + stringWH +
+                "stationID = " + this.getStation().getValue() +
                 "\n";
     }
 }

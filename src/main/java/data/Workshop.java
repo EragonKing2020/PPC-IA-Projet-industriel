@@ -41,13 +41,9 @@ public class Workshop {
         this.stations = stations;
         this.workers = workers;
         this.furnitures = furnitures;
-        System.out.print("Yo");
         this.createVariables();
-        System.out.print("Yo 2");
         this.postConstraints();
-        System.out.print("Yo 3");
         solver.solve();
-        System.out.println("bqnbqlib");
         System.out.println(this);
         for (Furniture furniture : this.furnitures) {
         	System.out.println(furniture.solToString());
@@ -76,24 +72,11 @@ public class Workshop {
 				workersNumbers[i] = ((Worker)workers[i]).getNumberId();
 			}
 			act.setVariables(model, shifts, workersNumbers, stationsNumbers);
-			act.setWorkerHeights(model, this.workers.length);
-			act.setStationHeights(model, this.stations.length);
 		}
-//    	for (Worker worker : this.getWorkers())
-//    		worker.setVariables(model, this.getActivitiesFromActivityTypes(this.getActivityTypesFromWorker(worker)));
     }
 
     public void postConstraints(){
     	for(Activity activity : getActivities()) {
-    		for(Worker worker : this.getWorkers()) {
-    			// If the worker w is chosen to do the activity, we make sure this task has a height for the worker w
-                this.setWorkerHeights(worker,activity);
-    		}
-    		for(Station station : this.getStations()) {
-    			// If the station s is chosen to do the activity, we make sure this task has a height for the station s
-        		this.setStationHeights(station,activity);
-        	}
-    		// Sets the time limit of the activity according to its worker's shift and breaks
             this.postTimeLimits(activity); 
     	}
         
@@ -113,8 +96,6 @@ public class Workshop {
     		// Station cumulative constraint
             this.postCumulativeStations(station);
     	}
-        // constraint to have each activity linked to a worker and a station
-//        this.postAttributionWorkerAndStation(model);
         
     }
     
@@ -153,57 +134,45 @@ public class Workshop {
                             model.arithm(activity.gettFin(),"<=",endToMinutes)
                             )
                         );
-//				model.ifThenElse(
-//						model.and(
-//							model.arithm(activity.getWorker(),"=",workerId),
-//							model.arithm(activity.gettDebut(),"<",breakEnd),
-//							model.arithm(activity.gettDebut() ,">", breakStart - activity.getDuration())
-//								),
-//						model.arithm(activity.getDurationVar(), "=", activity.getDuration() + (int)Duration.between(breakStartEnd[0], breakStartEnd[1]).toMinutes()),
-//						model.arithm(activity.getDurationVar(), "=", activity.getDuration())
-//						);
-//			}
 		}
     }
     
     private void postCumulativeWorkers(Worker worker) {
-    		IntVar[] heights = new IntVar[this.getActivities().size()];
-    		Task[] tasks = new Task[this.getActivities().size()];
 //    		heights[0] = this.model.intVar(1);
 //    		heights[1] = this.model.intVar(1);
-    		LocalDateTime startDay = shifts[0].getStart();
-        	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
-        	Shift shiftWorker = this.getShiftByString(worker.getShift());
-        	LocalDateTime startWorker = shiftWorker.getStart();
-        	LocalDateTime endWorker = shiftWorker.getEnd();
+//    		LocalDateTime startDay = shifts[0].getStart();
+//        	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
+//        	Shift shiftWorker = this.getShiftByString(worker.getShift());
+//        	LocalDateTime startWorker = shiftWorker.getStart();
+//        	LocalDateTime endWorker = shiftWorker.getEnd();
 //        	tasks[0] = model.taskVar(model.intVar(0), (int)Duration.between(startDay, startWorker).toMinutes());
 //    		tasks[1] = model.taskVar(model.intVar((int)Duration.between(startDay, endWorker).toMinutes()), (int)Duration.between(endWorker, endDay).toMinutes());
-        	for(int i = 0; i<this.getActivities().size() ; i++){
-    			heights[i] = this.getActivities().get(i).getWorkerHeights()[worker.getNumberId()];
-    			tasks[i] = this.getActivities().get(i).getTask();
-    		}
-    		IntVar capacity = model.intVar(1);
-    		model.cumulative(tasks, heights, capacity).post();
+    		LinkedList<Activity> activities = this.getActivitiesFromWorker(worker);
+    		Task[] tasks = new Task[activities.size()];
+    		IntVar[] heights = model.intVarArray(activities.size(), 0, 1);
+    		for(int i = 0;i<activities.size();i++) {
+            	tasks[i] = activities.get(i).getTask();
+            	model.ifOnlyIf(
+            			model.arithm(activities.get(i).getStation(),"=", worker.getNumberId()), 
+            			model.arithm(heights[i], "=", 1));
+            }
+            IntVar capacity = model.intVar(1);
+            model.cumulative(tasks, heights, capacity).post();
     }
     
-    private void postCumulativeStations(Station station) {
-    		IntVar[] heights = new IntVar[this.getActivities().size()];
-    		Task[] tasks = new Task[this.getActivities().size()];
-    		for(int i = 0; i<this.getActivities().size() ; i++){
-    			heights[i] = this.getActivities().get(i).getStationHeights()[station.getNumberId()];
-    			tasks[i] = this.getActivities().get(i).getTask();
-    		}
-    		IntVar capacity = model.intVar(1);
-    		model.cumulative(tasks, heights, capacity).post();
+    private void postCumulativeStations(Station station) {    	
+		LinkedList<Activity> activities = this.getActivitiesFromStation(station);
+		Task[] tasks = new Task[activities.size()];
+		IntVar[] heights = model.intVarArray(activities.size(), 0, 1);
+		for(int i = 0;i<activities.size();i++) {
+        	tasks[i] = activities.get(i).getTask();
+        	model.ifOnlyIf(
+        			model.arithm(activities.get(i).getStation(),"=", station.getNumberId()), 
+        			model.arithm(heights[i], "=", 1));
+        }
+        IntVar capacity = model.intVar(1);
+        model.cumulative(tasks, heights, capacity).post();
     }
-    
-//    public void postAttributionWorkerAndStation(Model model) {
-//    	for (Furniture furniture : this.getFurnitures())
-//    		for (Activity activity : furniture.getActivities()) {
-//    			model.sum(activity.getWorkers(), "=", 1).post();
-//    			model.sum(activity.getStations(), "=", 1).post();
-//    		}
-//    }
     
     public void postOrderByType(Furniture furniture) {
 		LinkedList<Activity> transformation = this.getActivitiesFromActivityType(ActivityType.TRANSFORMATION, furniture.getActivities());
@@ -218,38 +187,6 @@ public class Workshop {
 						model.arithm(p.gettFin(), "<=", s.gettDebut()).post();
 						model.arithm(s.gettFin(), "<=", c.gettDebut()).post();
 					}
-    }
-    
-    private void setWorkerHeights(Worker worker,Activity activity) {
-    	boolean possible = false;
-    	for(int w : activity.getPossibleWorkers()) {
-    		if(worker.getNumberId()==w) {
-    			possible = true;
-    			model.ifOnlyIf(
-    					model.arithm(activity.getWorker(), "=", worker.getNumberId()), 
-    					model.arithm(activity.getWorkerHeights()[worker.getNumberId()], "=", 1)
-    				);
-    		}
-    	}
-    	if(!possible) {
-    		model.arithm(activity.getWorkerHeights()[worker.getNumberId()], "=", 0).post();
-    	}
-    }
-    
-    private void setStationHeights(Station station, Activity activity) {
-    	boolean possible = false;
-    	for(int s : activity.getPossibleStations()) {
-    		if(station.getNumberId()==s) {
-    			possible = true;
-    			model.ifOnlyIf(
-    					model.arithm(activity.getStation(), "=", station.getNumberId()), 
-    					model.arithm(activity.getStationHeights()[station.getNumberId()], "=", 1)
-    			);
-    		}
-    	}
-    	if(!possible) {
-    		model.arithm(activity.getStationHeights()[station.getNumberId()], "=", 0).post();
-    	}
     }
     
     public Shift getShiftByString(String shiftString) {
@@ -337,7 +274,6 @@ public class Workshop {
     			}
     		}
     	}
-    	System.out.println(stationActs.size());
     	return stationActs;
     }
     
