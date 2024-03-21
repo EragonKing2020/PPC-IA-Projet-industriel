@@ -21,8 +21,11 @@ public class Activity {
     private IntVar tFin;
     private IntVar durationVar;
     private IntVar worker;
-    private int[] possibleWorkers;
+    private IntVar[] workersHeights;
+	private int[] possibleWorkers;
     private IntVar station;
+    private IntVar[] stationsHeights;
+    private IntVar[][] breaks;
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
@@ -62,6 +65,14 @@ public class Activity {
 	public Task getTask() {
 		return task;
 	}
+	
+	 public IntVar[] getWorkersHeights() {
+			return workersHeights;
+		}
+
+		public IntVar[] getStationsHeights() {
+			return stationsHeights;
+		}
 
 	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations) {
 		this.furniture = furniture;
@@ -78,6 +89,22 @@ public class Activity {
 		this.durationVar = model.intVar(duration, tMaxFin - tMinDebut);
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
+	
+	public void createWorkersHeights(Model model, int length) {
+		this.workersHeights = model.intVarArray(length, 0, 1);
+	}
+	
+	public void createStationsHeights(Model model, int length) {
+		this.stationsHeights = model.intVarArray(length, 0, 1);
+	}
+	
+	public void createBreaks(Model model, int length, int nb_breaks, int ub) {
+		this.breaks = model.intVarMatrix(length, nb_breaks, 0, ub);
+	}
+	
+	public IntVar[][] getBreaks() {
+		return breaks;
+	}
 
 	public int[] getPossibleWorkers() {
 		return possibleWorkers;
@@ -131,7 +158,9 @@ public class Activity {
                 ", tFin=" + this.gettFin().getValue()+
                 "\r"+
                 "workerID = " + this.getWorker().getValue() + "\r"+
-                "stationID = " + this.getStation().getValue() +
+                "stationID = " + this.getStation().getValue() + "\r"+
+                "worker heights = " + this.getWorkersHeights()+ "\r"+
+                "station heights = " + this.getStationsHeights()+ "\r"+
                 "\n";
     }
 }
