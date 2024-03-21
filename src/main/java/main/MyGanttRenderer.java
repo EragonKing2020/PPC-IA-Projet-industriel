@@ -15,8 +15,10 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRendererState;
 import org.jfree.chart.renderer.category.GanttRenderer;
 import org.jfree.chart.ui.RectangleEdge;
+import org.jfree.data.category.IntervalCategoryDataset;
 import org.jfree.data.gantt.GanttCategoryDataset;
 import org.jfree.data.gantt.TaskSeries;
+import org.jfree.data.gantt.TaskSeriesCollection;
 
 import data.Station;
 import data.Worker;
@@ -31,8 +33,9 @@ public class MyGanttRenderer extends GanttRenderer {
 	private Workshop workshop;
 	private Station station;
 	private Worker worker;
+	private TaskSeriesCollection tasksDataset;
 
-	public MyGanttRenderer(Workshop workshop, Station station, Worker worker) {
+	public MyGanttRenderer(Workshop workshop, Station station, Worker worker, TaskSeriesCollection tasksDataset) {
 		super();
 		setIncludeBaseInRange(false);
 		this.completePaint = Color.green;
@@ -42,6 +45,7 @@ public class MyGanttRenderer extends GanttRenderer {
 		this.workshop = workshop;
 		this.station = station;
 		this.worker = worker;
+		this.tasksDataset = tasksDataset;
 	}
 
 	protected void drawTasks(Graphics2D g2,
@@ -53,8 +57,9 @@ public class MyGanttRenderer extends GanttRenderer {
 			GanttCategoryDataset dataset,
 			int row,
 			int column) {
-
+		
 		int count = dataset.getSubIntervalCount(row, column);
+		// System.out.println("count : "+count);
 		if (count == 0) {
 			drawTask(g2, state, dataArea, plot, domainAxis, rangeAxis, 
 					dataset, row, column);
@@ -150,36 +155,47 @@ public class MyGanttRenderer extends GanttRenderer {
 				g2.draw(bar);
 			}
 
-			int nbSubtasks = ((TaskSeries) dataset.getRowKeys().get(row)).get(column).getSubtaskCount();
-//			for(int index = 0; index<nbSubtasks;index++) {
-				MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(
-						0,workshop,station,worker);
+			// String label = String.valueOf(this.tasksDataset);
+			System.out.println("taskDataset:" + this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription());
+			// System.out.println(subinterval);
+			String label = this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription();
+			MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(label,workshop,station,worker);
+			if (generator != null && isItemLabelVisible(row, column)) {
 				setDefaultItemLabelGenerator(generator,true); 
-				if (generator != null && isItemLabelVisible(row, column)) {
-					drawItemLabel(g2, dataset, row, column, plot, generator, bar, false);
-//				}
-	
-				// collect entity and tool tip information...
-				if (state.getInfo() != null) {
-					EntityCollection entities = state.getEntityCollection();
-					if (entities != null) {
-						String tip = null;
-						if (getToolTipGenerator(row, column) != null) {
-							tip = getToolTipGenerator(row, column).generateToolTip(
-									dataset, row, column);
-						}
-						String url = null;
-						if (getItemURLGenerator(row, column) != null) {
-							url = getItemURLGenerator(row, column).generateURL(
-									dataset, row, column);
-						}
-						CategoryItemEntity entity = new CategoryItemEntity(
-								bar, tip, url, dataset, dataset.getRowKey(row), 
-								dataset.getColumnKey(column));
-						entities.add(entity);
+				drawItemLabel(g2, dataset, row, column, plot, generator, bar, false);
+			}
+
+			// collect entity and tool tip information...
+			if (state.getInfo() != null) {
+				EntityCollection entities = state.getEntityCollection();
+				if (entities != null) {
+					String tip = null;
+					if (getToolTipGenerator(row, column) != null) {
+						tip = getToolTipGenerator(row, column).generateToolTip(
+								dataset, row, column);
 					}
+					String url = null;
+					if (getItemURLGenerator(row, column) != null) {
+						url = getItemURLGenerator(row, column).generateURL(
+								dataset, row, column);
+					}
+					CategoryItemEntity entity = new CategoryItemEntity(
+							bar, tip, url, dataset, dataset.getRowKey(row), 
+							dataset.getColumnKey(column));
+					entities.add(entity);
 				}
 			}
+			// int nbSubtasks = ((TaskSeries) dataset.getRowKeys().get(row)).get(column).getSubtaskCount();
+			// for(int index = 0; index<nbSubtasks;index++) {
+			// 	MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(
+			// 			index,workshop,station,worker);
+			// 	setDefaultItemLabelGenerator(generator,true); 
+			// 	if (generator != null && isItemLabelVisible(row, column)) {
+			// 		drawItemLabel(g2, dataset, row, column, plot, generator, bar, false);
+			// 	}
+	
+				
+			// }
 		}
 	}
 }

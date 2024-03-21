@@ -10,20 +10,20 @@ public class WorkshopScheduler {
         long time = System.currentTimeMillis();
         Workshop workshop = Utils.fromFile("data/workshop_1.json", Workshop.class);
         assert workshop != null;
-        System.out.println(workshop);
+        // System.out.println(workshop);
         SwingUtilities.invokeLater(() -> {  
-     	   GanttChart workersChart = new GanttChart("Workers Schedule",workshop,"worker");  
-     	           workersChart.setSize(800, 400);  
-     	           workersChart.setLocationRelativeTo(null);  
-     	           workersChart.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
-     	           workersChart.setVisible(true);  
-     	        });  
+     	   	GanttChart workersChart = new GanttChart("Workers Schedule",workshop,"worker");  
+			workersChart.setSize(800, 400);  
+			workersChart.setLocationRelativeTo(null);  
+			workersChart.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
+			workersChart.setVisible(true);  
+		});  
         SwingUtilities.invokeLater(() -> {  
-      	   GanttChart stationsChart = new GanttChart("Stations Schedule",workshop,"station");  
-      	           stationsChart.setSize(800, 400);  
-      	           stationsChart.setLocationRelativeTo(null);  
-      	           stationsChart.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
-      	           stationsChart.setVisible(true);  
-      	        }); 
+      	   	GanttChart stationsChart = new GanttChart("Stations Schedule",workshop,"station");  
+			stationsChart.setSize(800, 400);  
+			stationsChart.setLocationRelativeTo(null);  
+			stationsChart.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
+			stationsChart.setVisible(true);  
+		}); 
     }
 }

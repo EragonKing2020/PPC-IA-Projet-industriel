@@ -47,14 +47,14 @@ public class Workshop {
         this.postConstraints();
         solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
-        System.out.println("Initialisation done");
+        // System.out.println("Initialisation done");
         solver.solve();
-        System.out.println(this);
-        for (Furniture furniture : this.furnitures) {
-        	System.out.println(furniture.solToString());
-        	for (Activity activity : furniture.getActivities())
-        		System.out.println(activity.solToString());
-        }
+        // System.out.println(this);
+        // for (Furniture furniture : this.furnitures) {
+        // 	System.out.println(furniture.solToString());
+        // 	for (Activity activity : furniture.getActivities())
+        // 		System.out.println(activity.solToString());
+        // }
     }
     
     private void createVariables() {
