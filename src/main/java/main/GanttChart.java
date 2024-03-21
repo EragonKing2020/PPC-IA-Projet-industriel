@@ -74,8 +74,7 @@ public class GanttChart extends JFrame {
                 CategoryPlot plot = (CategoryPlot) chart.getPlot();
                 DateAxis rangeAxis = (DateAxis) plot.getRangeAxis();
                 // Ajustement de la largeur des barres des tâches
-                MyGanttRenderer renderer = new MyGanttRenderer(workshop,station,null, dataset);
-                plot.setRenderer(renderer);
+                GanttRenderer renderer = (GanttRenderer) plot.getRenderer();
                 // Définir les limites de l'axe des abscisses pour chaque diagramme de Gantt
                 rangeAxis.setMinimumDate(Date.from(workshop.getShifts()[0].getStart().atZone(ZoneId.systemDefault()).toInstant()));
                 rangeAxis.setMaximumDate(Date.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd().atZone(ZoneId.systemDefault()).toInstant()));

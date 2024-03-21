@@ -156,8 +156,7 @@ public class MyGanttRenderer extends GanttRenderer {
 			}
 
 			// String label = String.valueOf(this.tasksDataset);
-			System.out.println("taskDataset:" + this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription());
-			// System.out.println(subinterval);
+//			System.out.println("taskDataset:" + this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription());
 			String label = this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription();
 			MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(label,workshop,station,worker);
 			if (generator != null && isItemLabelVisible(row, column)) {
