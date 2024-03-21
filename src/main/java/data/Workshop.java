@@ -172,6 +172,9 @@ public class Workshop {
     	}
     }
     
+    
+    
+    
     private void postDefTFin() {
     	for (Furniture furniture : this.getFurnitures()) {
     		for (Activity activity : furniture.getActivities()) {
@@ -264,6 +267,19 @@ public class Workshop {
     		}
     	}
     	return activitiesWorker;
+    }
+    
+    public LinkedList<Worker> getWorkersFromStations(LinkedList<Station> stations){
+    	HashSet<Worker> workers = new HashSet<Worker>();
+    	for(Worker worker : this.workers) {
+    		for(String stationName : worker.getStations()) {
+    			for (Station station : stations)
+					if(station.getId().equals(stationName)) {
+						workers.add(worker);
+					}
+    		}
+    	}
+    	return new LinkedList<Worker>(workers);
     }
     
     public LinkedList<ActivityType> getActivityTypesFromWorker(Worker worker){
