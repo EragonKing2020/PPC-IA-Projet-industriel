@@ -46,6 +46,7 @@ public class Workshop {
         this.postConstraints();
         solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
+        //solver.setSearch(Search.domOverWDegRefSearch(getDecisionVariables()));
         System.out.println("Initialisation done");
         solver.solve();
         System.out.println(this);
