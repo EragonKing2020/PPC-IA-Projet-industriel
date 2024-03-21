@@ -42,22 +42,25 @@ public class GanttChart extends JFrame {
     	  setLayout(new GridLayout(workshop.getWorkers().length, 1));
     	  for(Worker worker : workshop.getWorkers()) {
     		// Create dataset  
-              IntervalCategoryDataset dataset = getWorkerDataset(worker);  
-        	  // Create chart  
-              JFreeChart chart = ChartFactory.createGanttChart(  
-                    "", // Chart title 
-                    "", // X-Axis Label  
-                    "Timeline", // Y-Axis Label  
-                    dataset);
-              CategoryPlot plot = (CategoryPlot) chart.getPlot();
-              DateAxis rangeAxis = (DateAxis) plot.getRangeAxis();
-              GanttRenderer renderer = (GanttRenderer) plot.getRenderer();
-              // Définir les limites de l'axe des abscisses pour chaque diagramme de Gantt
-              rangeAxis.setMinimumDate(Date.from(workshop.getShifts()[0].getStart().atZone(ZoneId.systemDefault()).toInstant()));
-              rangeAxis.setMaximumDate(Date.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd().atZone(ZoneId.systemDefault()).toInstant()));
-              // Définir l'épaisseur des tâches
-              renderer.setItemMargin(-0.5);
-              add(new ChartPanel(chart));
+			TaskSeriesCollection dataset = getWorkerDataset(worker);  
+			// Create chart  
+			JFreeChart chart = ChartFactory.createGanttChart(  
+				"", // Chart title 
+				"", // X-Axis Label  
+				"Timeline", // Y-Axis Label  
+				dataset);
+			CategoryPlot plot = (CategoryPlot) chart.getPlot();
+			DateAxis rangeAxis = (DateAxis) plot.getRangeAxis();
+			MyGanttRenderer renderer = new MyGanttRenderer(workshop,null,worker, dataset);
+			plot.setRenderer(renderer);
+			// Définir les limites de l'axe des abscisses pour chaque diagramme de Gantt
+			rangeAxis.setMinimumDate(Date.from(workshop.getShifts()[0].getStart().atZone(ZoneId.systemDefault()).toInstant()));
+			rangeAxis.setMaximumDate(Date.from(workshop.getShifts()[workshop.getShifts().length-1].getEnd().atZone(ZoneId.systemDefault()).toInstant()));
+			// Définir l'épaisseur des tâches
+			renderer.setItemMargin(-0.5);
+			renderer.setDefaultItemLabelsVisible(true);
+			renderer.setDefaultPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE9, TextAnchor.CENTER_LEFT));
+			add(new ChartPanel(chart));
     	  }
       }
       if(scheduleType.equals("station")) {
@@ -123,7 +126,7 @@ public class GanttChart extends JFrame {
       }
    }
 
-	private IntervalCategoryDataset getWorkerDataset(Worker worker) {
+	private TaskSeriesCollection getWorkerDataset(Worker worker) {
 		LinkedList<TaskSeries> taskseries = new LinkedList<TaskSeries>();
 		for(Furniture furniture : workshop.getFurnitures()) {
 			   taskseries.add(new TaskSeries(furniture.getId()));
@@ -143,7 +146,7 @@ public class GanttChart extends JFrame {
 						   )
 						   );
 						taskseries.get(i).get(worker.getId()).addSubtask(new Task(
-								worker.getId(),
+								activity.getId(),
 								startDate,
 								endDate
 						   )
@@ -152,7 +155,7 @@ public class GanttChart extends JFrame {
 					}
 					else {
 						taskseries.get(i).get(worker.getId()).addSubtask(new Task(
-										worker.getId(),
+										activity.getId(),
 										startDate,
 										endDate
 								   )

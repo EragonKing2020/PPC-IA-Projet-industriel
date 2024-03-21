@@ -49,12 +49,12 @@ public class Workshop {
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
         // System.out.println("Initialisation done");
         solver.solve();
-        // System.out.println(this);
-        // for (Furniture furniture : this.furnitures) {
-        // 	System.out.println(furniture.solToString());
-        // 	for (Activity activity : furniture.getActivities())
-        // 		System.out.println(activity.solToString());
-        // }
+        System.out.println(this);
+        for (Furniture furniture : this.furnitures) {
+        	System.out.println(furniture.solToString());
+        	for (Activity activity : furniture.getActivities())
+        		System.out.println(activity.solToString());
+        }
     }
     
     private void createVariables() {
@@ -120,11 +120,11 @@ public class Workshop {
             this.postCumulativeStations(station);
     	}
     	
-    	this.postPauses();
+    	// this.postPauses();
     	
-    	this.postDefTFin();
+    	// this.postDefTFin();
         
-    	this.postTDebutNotInBreak();
+    	// this.postTDebutNotInBreak();
     }
     
     private void postCumulativeFurniture(Furniture furniture) {

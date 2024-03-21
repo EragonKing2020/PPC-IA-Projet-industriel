@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
+import java.util.LinkedList;
 
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.ValueAxis;
@@ -20,9 +21,11 @@ import org.jfree.data.gantt.GanttCategoryDataset;
 import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
 
+import data.Furniture;
 import data.Station;
 import data.Worker;
 import data.Workshop;
+import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
 
 public class MyGanttRenderer extends GanttRenderer {
 	private static final long serialVersionUID = 1L;
@@ -139,7 +142,7 @@ public class MyGanttRenderer extends GanttRenderer {
 			Paint seriesPaint = getItemPaint(row, column);
 			g2.setPaint(seriesPaint);
 			g2.fill(bar);
-
+			
 			if (completeBar != null) {
 				g2.setPaint(getCompletePaint());
 				g2.fill(completeBar);
@@ -149,16 +152,16 @@ public class MyGanttRenderer extends GanttRenderer {
 				g2.fill(incompleteBar);
 			}
 			if (isDrawBarOutline() 
-					&& state.getBarWidth() > BAR_OUTLINE_WIDTH_THRESHOLD) {
+			&& state.getBarWidth() > BAR_OUTLINE_WIDTH_THRESHOLD) {
 				g2.setStroke(getItemStroke(row, column));
 				g2.setPaint(getItemOutlinePaint(row, column));
 				g2.draw(bar);
 			}
-
-			// String label = String.valueOf(this.tasksDataset);
-			System.out.println("taskDataset:" + this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription());
-			// System.out.println(subinterval);
-			String label = this.tasksDataset.getSeries(0).get(station.getId()).getSubtask(subinterval).getDescription();
+			
+			String label = "";
+			if (this.station != null) label = this.tasksDataset.getSeries(row).get(station.getId()).getSubtask(subinterval).getDescription();
+			else if (this.worker!= null) label = this.tasksDataset.getSeries(row).get(worker.getId()).getSubtask(subinterval).getDescription();			
+			
 			MyCategoryItemLabelGenerator generator = new MyCategoryItemLabelGenerator(label,workshop,station,worker);
 			if (generator != null && isItemLabelVisible(row, column)) {
 				setDefaultItemLabelGenerator(generator,true); 
