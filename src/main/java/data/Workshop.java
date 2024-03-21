@@ -76,7 +76,8 @@ public class Workshop {
 				for(int i = 0;i<activitiesWorkers.size();i++) {
 					workersNumbers[i] = ((Worker)workers[i]).getNumberId();
 				}
-				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers);
+				int[] durations = getAllDurations(workersNumbers);
+				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers, durations);
 			}
     	}
 		for (Worker worker : this.getWorkers()) {
@@ -91,8 +92,8 @@ public class Workshop {
     	for (Activity activity : activities) {
     		vars[i] = activity.getWorker();
     		vars[i + 1] = activity.getStation();
-    		vars[i + 2] = activity.gettDebut();
-    		i += 3;
+    		vars[2*activities.size()+i/2] = activity.gettDebut();
+    		i += 2;
     	}
     	return vars;
     }
@@ -111,17 +112,19 @@ public class Workshop {
             this.postCumulativeFurniture(furniture);
     	}
     	for(Worker worker : this.getWorkers()) {
+    		this.checkSum(worker);
     		// Worker cumulative constraint
     		this.postCumulativeWorkers(worker);
     	}
     	for(Station station : this.getStations()) {
     		// Station cumulative constraint
+    		this.checkSum(station);
             this.postCumulativeStations(station);
     	}
     	
     	this.postPauses();
     	
-    	this.postDefTFin();
+//    	this.postDefTFin();
         
     }
     
@@ -154,23 +157,25 @@ public class Workshop {
     		for (Activity activity : this.getActivitiesFromWorker(worker)) {
     			int i = 0;
     			for (LocalDateTime[] pause : worker.getBreaks()) {
-    				model.ifOnlyIf(model.and(model.arithm(activity.getWorker(), "=", worker.getNumberId()),
-    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[1]).toMinutes()),
-    										model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
-    							model.arithm(worker.getBoolPauseAct(i, activity), "=", 1));
+    				model.ifOnlyIf(
+    						model.and(
+    								model.arithm(activity.getWorker(), "=", worker.getNumberId()),
+									model.arithm(activity.gettDebut(), "<", (int)Duration.between(startDay, pause[1]).toMinutes()),
+									model.arithm(activity.gettDebut(),">", ((int)Duration.between(startDay, pause[0]).toMinutes())-activity.getDuration())),
+							model.arithm(activity.getDurationVar(), "=", activity.getDuration()+((int)Duration.between(pause[0], pause[1]).toMinutes())));
     				
     				i ++;
     			}
     		}
-    		for (int i = 0; i < worker.getBreaks().length; i ++) {
-    			IntVar[] boolPause = worker.getBoolPause(i);
-    			if (boolPause.length >0) {
-	    			int[] scalars = new int[boolPause.length];
-	    			for (int j = 0; j < scalars.length; j ++)
-	    				scalars[j] = 1;
-	    			model.scalar(boolPause, scalars, "<=", 1).post();
-    			}
-    		}
+//    		for (int i = 0; i < worker.getBreaks().length; i ++) {
+//    			IntVar[] boolPause = worker.getBoolPause(i);
+//    			if (boolPause.length >0) {
+//	    			int[] scalars = new int[boolPause.length];
+//	    			for (int j = 0; j < scalars.length; j ++)
+//	    				scalars[j] = 1;
+//	    			model.scalar(boolPause, scalars, "<=", 1).post();
+//    			}
+//    		}
     	}
     }
     
@@ -230,6 +235,39 @@ public class Workshop {
             }
             IntVar capacity = model.intVar(1);
             model.cumulative(tasks, heights, capacity).post();
+    }
+    
+    private void checkSum(Worker worker) {
+    	LinkedList<Activity> activities = this.getActivities();
+    	LocalDateTime startDay = shifts[0].getStart();
+    	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
+    	IntVar[] durations = model.intVarArray(activities.size(), 0,(int)Duration.between(startDay, endDay).toMinutes());
+    	for(int i = 0;i<activities.size();i++) {
+    		model.ifThenElse(
+    				model.arithm(activities.get(i).getWorker(),"=",worker.getNumberId()),
+    				model.arithm(durations[i], "=", activities.get(i).getDurationVar()),
+    				model.arithm(durations[i], "=", 0)
+    				);
+    	}
+    	Shift shiftWorker = this.getShiftByString(worker.getShift());
+    	LocalDateTime startWorker = shiftWorker.getStart();
+    	LocalDateTime endWorker = shiftWorker.getEnd();
+    	model.sum(durations, "<=", (int)Duration.between(startWorker, endWorker).toMinutes()).post();
+    }
+    
+    private void checkSum(Station station) {
+    	LinkedList<Activity> activities = this.getActivities();
+    	LocalDateTime startDay = shifts[0].getStart();
+    	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
+    	IntVar[] durations =  model.intVarArray(activities.size(), 0,(int)Duration.between(startDay, endDay).toMinutes());
+    	for(int i = 0;i<activities.size();i++) {
+    		model.ifThenElse(
+    				model.arithm(activities.get(i).getStation(),"=",station.getNumberId()),
+    				model.arithm(durations[i], "=", activities.get(i).getDurationVar()),
+    				model.arithm(durations[i], "=", 0)
+    				);
+    	}
+    	model.sum(durations, "<=", (int)Duration.between(startDay, endDay).toMinutes()).post();
     }
     
     private void postCumulativeStations(Station station) {    	
@@ -320,6 +358,13 @@ public class Workshop {
     	throw new Error("T'as mis n'imp comme id de station");
     }
     
+    public Worker getWorkerFromId(String id) {
+    	for (Worker worker : this.getWorkers())
+    		if (worker.getId().equals(id))
+    			return worker;
+    	throw new Error("T'as mis n'imp comme id de worker");
+    }
+    
     public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type, Activity[] a) {
     	HashSet<Activity> activities = new HashSet<Activity>();
     	for(Activity activity : a) {
@@ -360,7 +405,31 @@ public class Workshop {
     	}
     	return stationActs;
     }
+    public int[] getAllDurations(int[] workers) {
+    	LinkedList<Integer> durations = new LinkedList<Integer>(); 
+    	for(int w : workers) {
+    		Worker worker = getWorkerFromId("W"+w);
+    		for(LocalDateTime[] pause : worker.getBreaks()) {
+    			durations.add((int)Duration.between(pause[0], pause[1]).toMinutes());
+    		}
+    	}
+    	int[] durationsArray = new int[durations.size()];
+    	for(int i = 0;i<durations.size();i++) {
+    		durationsArray[i] = durations.get(i);
+    	}
+    	return durationsArray;
+    }
     
+    public int getPrecedenceTime(Activity activity) {
+    	for(Furniture furniture : this.getFurnitures()) {
+    		for(Activity[] precedence : furniture.getPrecedence()) {
+    			if(precedence[1].getId().equals(activity.getId())) {
+    				return precedence[0].getDuration()+getPrecedenceTime(precedence[0]);
+    			}
+    		}
+    	}
+    	return 0;
+    }
     public LinkedList<Activity> getActivities(){
     	LinkedList<Activity> activities = new LinkedList<Activity>();
     	for(Furniture furniture : this .getFurnitures()) {
