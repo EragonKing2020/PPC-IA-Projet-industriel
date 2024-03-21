@@ -42,6 +42,7 @@ public class Workshop {
         this.stations = stations;
         this.workers = workers;
         this.furnitures = furnitures;
+        System.out.println("Shifts equal : " + shiftsEqual());
         this.createVariables();
         this.postConstraints();
         solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
@@ -123,6 +124,7 @@ public class Workshop {
     	
     	this.postDefTFin();
         
+    	this.postTDebutNotInBreak();
     }
     
     private void postCumulativeFurniture(Furniture furniture) {
@@ -200,7 +202,22 @@ public class Workshop {
 						i ++;
     				}
     			}
-    			model.scalar(vars, scalars, "<=", 0).post();
+    			model.scalar(vars, scalars, "=", 0).post();
+    		}
+    	}
+    }
+    
+    private void postTDebutNotInBreak() {
+    	LocalDateTime start = this.getShifts()[0].getStart();
+    	for (Furniture furniture : this.getFurnitures()) {
+    		for (Activity activity : furniture.getActivities()) {
+    			for (Worker worker : this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()))) {
+    				for (int i = 0; i < worker.getBreaks().length; i ++) {
+    					model.ifThen(model.arithm(activity.gettDebut(), "=", worker.getNumberId()),
+    								model.or(model.arithm(activity.gettDebut(), "<", (int)Duration.between(start, worker.getBreaks()[i][0]).toMinutes()),
+    										 model.arithm(activity.gettDebut(), ">=", (int)Duration.between(start, worker.getBreaks()[i][1]).toMinutes())));
+    				}
+    			}
     		}
     	}
     }
@@ -259,6 +276,8 @@ public class Workshop {
 					for (Activity actAfter : activitiesSorted[j])
 						model.arithm(actBefore.gettFin(), "<=", actAfter.gettDebut()).post();
     }
+ 
+    
     
     public Shift getShiftByString(String shiftString) {
     	for (Shift shift : this.shifts)
@@ -320,15 +339,6 @@ public class Workshop {
     	throw new Error("T'as mis n'imp comme id de station");
     }
     
-    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type, Activity[] a) {
-    	HashSet<Activity> activities = new HashSet<Activity>();
-    	for(Activity activity : a) {
-    		if (activity.getType() == type)
-				activities.add(activity);
-    	}
-    	return new LinkedList<Activity>(activities);
-    }
-    
     public LinkedList<Activity> getActivitiesFromActivityTypes(LinkedList<ActivityType> types){
     	LinkedList<Activity> activities = new LinkedList<Activity>();
     	for(Furniture f : this.furnitures)
@@ -336,13 +346,6 @@ public class Workshop {
     			if (types.contains(actf.getType()))
     				activities.add(actf);
     	return activities;
-    }
-    
-    public LinkedList<Activity> getActivitiesFromActivityTypes(ActivityType[] types) {
-    	LinkedList<ActivityType> typesList = new LinkedList<ActivityType>();
-    	for (ActivityType type : types)
-    		typesList.add(type);
-    	return this.getActivitiesFromActivityTypes(typesList);
     }
     
     public LinkedList<Activity> getActivitiesFromWorker(Worker worker){
@@ -362,6 +365,7 @@ public class Workshop {
     }
     
     public LinkedList<Activity> getActivities(){
+
     	LinkedList<Activity> activities = new LinkedList<Activity>();
     	for(Furniture furniture : this .getFurnitures()) {
     		for(Activity activity : furniture.getActivities()) {
@@ -369,6 +373,43 @@ public class Workshop {
     		}
     	}
     	return activities;
+    }
+    
+    public int minimumInterval() {
+    	LocalDateTime startDay = shifts[0].getStart();
+    	LocalDateTime endDay = shifts[shifts.length-1].getEnd();
+    	int min = (int)Duration.between(startDay, endDay).toMinutes();
+    	for(Worker worker : this.getWorkers()) {
+    		for(int i = 0;i<worker.getBreaks().length-1;i++) {
+    			int candidat = (int)Duration.between(worker.getBreaks()[i][1], worker.getBreaks()[i+1][0]).toMinutes();
+    			if(candidat<min) {
+    				min = candidat;
+    			}
+    		}
+    	}
+    	return min;
+    }
+    
+    public boolean equals(LocalDateTime[] break1, LocalDateTime[] break2) {
+    	if(((int)Duration.between(break1[0] , break2[0]).toMinutes() == 0) && ((int)Duration.between(break1[1] , break2[1]).toMinutes() == 0))
+    		return true;
+    	return false;
+    }
+    
+    public boolean shiftsEqual() {
+    	for(int i = 0;i<this.getWorkers().length;i++) {
+    		for(int j = i+1;j<this.getWorkers().length;j++) {
+    			if(this.getWorkers()[i].getShift().equals(this.getWorkers()[j].getShift())) {
+    				if(this.getWorkers()[i].getBreaks().length!=this.getWorkers()[j].getBreaks().length)
+    					return false;
+    				for(int k = 0;k<this.getWorkers()[i].getBreaks().length;k++) {
+    					if(!equals(this.getWorkers()[i].getBreaks()[k],this.getWorkers()[j].getBreaks()[k]))
+    						return false;
+    				}
+    			}
+    		}
+    	}
+    	return true;
     }
     
     public String getId() {
