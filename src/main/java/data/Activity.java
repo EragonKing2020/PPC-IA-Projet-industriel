@@ -21,11 +21,9 @@ public class Activity {
     private IntVar tFin;
     private IntVar durationVar;
     private IntVar worker;
-    private IntVar workerIndex;
     private IntVar[] workerHeights;
     private int[] possibleWorkers;
     private IntVar station;
-    private IntVar stationIndex;
     private IntVar[] stationHeights;
     private int[] possibleStations;
     private Task task;
@@ -82,23 +80,6 @@ public class Activity {
 		this.durationVar = model.intVar(duration, tMaxFin - tMinDebut);
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
-    
-    
-    public IntVar getWorkerIndex() {
-		return workerIndex;
-	}
-
-	public void setWorkerIndex(Model model, int upperBound) {
-		this.workerIndex = model.intVar(0, upperBound);
-	}
-
-	public IntVar getStationIndex() {
-		return stationIndex;
-	}
-
-	public void setStationIndex(Model model, int upperBound) {
-		this.stationIndex = model.intVar(0, upperBound);
-	}
 
 	public IntVar[] getWorkerHeights() {
 		return workerHeights;
