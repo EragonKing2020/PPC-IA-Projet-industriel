@@ -21,10 +21,10 @@ public class Activity {
     private IntVar tFin;
     private IntVar durationVar;
     private IntVar worker;
-    private IntVar[] workerHeights;
     private int[] possibleWorkers;
     private IntVar station;
-    private IntVar[] stationHeights;
+    private int[] possibleWorkers;
+    private IntVar station;
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
@@ -81,46 +81,12 @@ public class Activity {
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
 
-	public IntVar[] getWorkerHeights() {
-		return workerHeights;
-	}
-
-	public void setWorkerHeights(Model model, int length) {
-		this.workerHeights = model.intVarArray(length, 0, 1);
-		model.sum(this.workerHeights,"=" ,1).post();
-	}
-
-	public IntVar[] getStationHeights() {
-		return stationHeights;
-	}
-
-	public void setStationHeights(Model model, int length) {
-		this.stationHeights = model.intVarArray(length, 0, 1);
-		model.sum(this.stationHeights,"=", 1).post();
-	}
-
 	public int[] getPossibleWorkers() {
 		return possibleWorkers;
 	}
 	
 	public int[] getPossibleStations() {
 		return possibleStations;
-	}
-
-	public void settDebut(IntVar tDebut) {
-		this.tDebut = tDebut;
-	}
-
-	public void settFin(IntVar tFin) {
-		this.tFin = tFin;
-	}
-
-	public void setDurationVar(IntVar durationVar) {
-		this.durationVar = durationVar;
-	}
-
-	public void setTask(Task task) {
-		this.task = task;
 	}
 
 	public String getId() {
