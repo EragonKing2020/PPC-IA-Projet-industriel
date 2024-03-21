@@ -64,7 +64,7 @@ public class GanttChart extends JFrame {
     	  setLayout(new GridLayout(workshop.getStations().length, 1));
     	  for(Station station : workshop.getStations()) {
       		// Create dataset  
-                IntervalCategoryDataset dataset = getStationDataset(station);  
+			  TaskSeriesCollection dataset = getStationDataset(station);  
           	  // Create chart  
                 JFreeChart chart = ChartFactory.createGanttChart(  
                       "", // Chart title 
@@ -74,7 +74,7 @@ public class GanttChart extends JFrame {
                 CategoryPlot plot = (CategoryPlot) chart.getPlot();
                 DateAxis rangeAxis = (DateAxis) plot.getRangeAxis();
                 // Ajustement de la largeur des barres des tâches
-                MyGanttRenderer renderer = new MyGanttRenderer(workshop,station,null);
+                MyGanttRenderer renderer = new MyGanttRenderer(workshop,station,null, dataset);
                 plot.setRenderer(renderer);
                 // Définir les limites de l'axe des abscisses pour chaque diagramme de Gantt
                 rangeAxis.setMinimumDate(Date.from(workshop.getShifts()[0].getStart().atZone(ZoneId.systemDefault()).toInstant()));
@@ -82,31 +82,39 @@ public class GanttChart extends JFrame {
                 // Définir l'épaisseur des tâches
                 renderer.setItemMargin(-0.5);
 
-                renderer.setDefaultItemLabelGenerator(new CategoryItemLabelGenerator() {
-                	public String generateLabel(CategoryDataset dataSet, int series, int categories) {
-    					/* your code to get the label */
-                		Task task = ((TaskSeries) dataset.getRowKeys().get(series)).get(categories);
-                		for(int i = 0;i<task.getSubtaskCount();i++) {
-                			for(Activity activity : workshop.getActivities()) {
-                				int tDebut = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(i).getDuration().getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
-                				int tFin = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(i).getDuration().getEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
-                				if(task.getDescription().equals(station.getId())&&activity.gettDebut().getValue()==tDebut&&activity.gettFin().getValue()==tFin) {
-                					return activity.getId();
-                				}
-                			}
-                		}
-    					return "";
-    		        }
+				// renderer.setDefaultItemLabelGenerator(new MyCategoryItemLabelGenerator(ABORT, workshop, station, null));
+                // renderer.setDefaultItemLabelGenerator(new CategoryItemLabelGenerator() {
+                // 	public String generateLabel(CategoryDataset dataSet, int series, int categories) {
+    			// 		/* your code to get the label */
+                // 		Task task = ((TaskSeries) dataset.getRowKeys().get(series)).get(categories);
+				// 		System.out.println("\n==============================\n");
+				// 		System.out.println(task.getSubtaskCount());
+				// 		System.out.println("\n==============================\n");
+                // 		for(int i = 0;i<task.getSubtaskCount();i++) {
+                // 			for(Activity activity : workshop.getActivities()) {
+                // 				int tDebut = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(i).getDuration().getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
+                // 				int tFin = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(i).getDuration().getEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
+                // 				if(task.getDescription().equals(station.getId())&&activity.gettDebut().getValue()==tDebut&&activity.gettFin().getValue()==tFin) {
+                // 					System.out.println("\n-----------------------\n");
+                // 					System.out.println("activity.getId() : "+activity.getId()+"\n");
+                // 					System.out.println("-----------------------\n");
 
-    		        public String generateColumnLabel(CategoryDataset dataset, int categories) {
-    		            return dataset.getColumnKey(categories).toString();
-    		        }
+				// 					return activity.getId();
+                // 				}
+                // 			}
+                // 		}
+    			// 		return "";
+    		    //     }
 
-    		        public String generateRowLabel(CategoryDataset dataset, int series) {
-    		            return dataset.getRowKey(series).toString();
-    		        }
+    		    //     public String generateColumnLabel(CategoryDataset dataset, int categories) {
+    		    //         return dataset.getColumnKey(categories).toString();
+    		    //     }
 
-                });
+    		    //     public String generateRowLabel(CategoryDataset dataset, int series) {
+    		    //         return dataset.getRowKey(series).toString();
+    		    //     }
+
+                // });
 
                 renderer.setDefaultItemLabelsVisible(true);
                 renderer.setDefaultPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE9, TextAnchor.CENTER_LEFT));
@@ -160,7 +168,7 @@ public class GanttChart extends JFrame {
 		return dataset;
 	}
 	
-	private IntervalCategoryDataset getStationDataset(Station station) {
+	private TaskSeriesCollection getStationDataset(Station station) {
 		LinkedList<TaskSeries> taskseries = new LinkedList<TaskSeries>();
 		for(Furniture furniture : workshop.getFurnitures()) {
 			   taskseries.add(new TaskSeries(furniture.getId()));
@@ -180,7 +188,7 @@ public class GanttChart extends JFrame {
 						   )
 						   );
 						taskseries.get(i).get(station.getId()).addSubtask(new Task(
-								station.getId(),
+								activity.getId(),
 								startDate,
 								endDate
 						   )
@@ -189,7 +197,7 @@ public class GanttChart extends JFrame {
 					}
 					else {
 						taskseries.get(i).get(station.getId()).addSubtask(new Task(
-										station.getId(),
+										activity.getId(),
 										startDate,
 										endDate
 								   )
@@ -200,6 +208,7 @@ public class GanttChart extends JFrame {
 	   }
 	   TaskSeriesCollection dataset = new TaskSeriesCollection();  
 	   for(TaskSeries tasks : taskseries) {
+			// System.out.println(tasks.get(station.getId()).getSubtaskCount());
 		   dataset.add(tasks);
 	   }
 	   return dataset;

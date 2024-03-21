@@ -18,10 +18,12 @@ public class MyCategoryItemLabelGenerator implements CategoryItemLabelGenerator{
 	private Workshop workshop;
 	private Station station;
 	private Worker worker;
-	
-	public MyCategoryItemLabelGenerator(int index, Workshop workshop, Station station, Worker worker) {
+	private String label;
+
+	public MyCategoryItemLabelGenerator(String label, Workshop workshop, Station station, Worker worker) {
 		super();
-		this.index = index;
+		this.label = label;
+		// this.index = index;
 		this.workshop = workshop;
 		this.station = station;
 		this.worker = worker;
@@ -31,16 +33,18 @@ public class MyCategoryItemLabelGenerator implements CategoryItemLabelGenerator{
 	
 	@Override
 	public String generateLabel(CategoryDataset dataSet, int series, int categories) {
-		Task task = ((TaskSeries) dataSet.getRowKeys().get(series)).get(categories);
-		for(Activity activity : workshop.getActivities()) {
-			int tDebut = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(index).getDuration().getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
-			int tFin = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(index).getDuration().getEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
-			if(task.getDescription().equals(station.getId())&&activity.gettDebut().getValue()==tDebut&&activity.gettFin().getValue()==tFin) {
-				return activity.getId();
-			}
-		}
+		return this.label;
+		// Task task = ((TaskSeries) dataSet.getRowKeys().get(series)).get(categories);
+		// System.out.println("Task : "+task.getSubtaskCount());
+		// for(Activity activity : workshop.getActivities()) {
+		// 	int tDebut = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(index).getDuration().getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
+		// 	int tFin = (int)Duration.between(workshop.getShifts()[0].getStart(), task.getSubtask(index).getDuration().getEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()).toMinutes();
+		// 	if(task.getDescription().equals(station.getId())&&activity.gettDebut().getValue()==tDebut&&activity.gettFin().getValue()==tFin) {
+		// 		return activity.getId();
+		// 	}
+		// }
 		
-	return "";
+	// return "";
 	}
 	
 	@Override
