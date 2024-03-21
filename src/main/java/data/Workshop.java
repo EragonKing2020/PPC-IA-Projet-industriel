@@ -47,19 +47,20 @@ public class Workshop {
         this.postConstraints();
         solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
-        // System.out.println("Initialisation done");
+        System.out.println("Initialisation done");
         solver.solve();
-        // System.out.println(this);
-        // for (Furniture furniture : this.furnitures) {
-        // 	System.out.println(furniture.solToString());
-        // 	for (Activity activity : furniture.getActivities())
-        // 		System.out.println(activity.solToString());
-        // }
+        System.out.println(this);
+        for (Furniture furniture : this.furnitures) {
+        	System.out.println(furniture.solToString());
+        	for (Activity activity : furniture.getActivities())
+        		System.out.println(activity.solToString());
+        }
     }
     
     private void createVariables() {
     	this.model = new Model();
 		this.solver = this.model.getSolver();
+		int durMinBetwBreaks = this.minimumInterval();
 		for (Furniture furniture : this.getFurnitures()) {
 			for (Activity act : furniture.getActivities()) {
 				LinkedList<Station> activitiesStations = getStationsFromActivityType(act.getType());
@@ -77,7 +78,7 @@ public class Workshop {
 				for(int i = 0;i<activitiesWorkers.size();i++) {
 					workersNumbers[i] = ((Worker)workers[i]).getNumberId();
 				}
-				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers);
+				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers, durMinBetwBreaks);
 			}
     	}
 		for (Worker worker : this.getWorkers()) {
@@ -124,7 +125,7 @@ public class Workshop {
     	
     	this.postDefTFin();
         
-    	this.postTDebutNotInBreak();
+    	//this.postTDebutNotInBreak();
     }
     
     private void postCumulativeFurniture(Furniture furniture) {
@@ -156,11 +157,18 @@ public class Workshop {
     		for (Activity activity : this.getActivitiesFromWorker(worker)) {
     			int i = 0;
     			for (LocalDateTime[] pause : worker.getBreaks()) {
-    				model.ifOnlyIf(model.and(model.arithm(activity.getWorker(), "=", worker.getNumberId()),
-    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[1]).toMinutes()),
-    										model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
-    							model.arithm(worker.getBoolPauseAct(i, activity), "=", 1));
-    				
+    				if (activity.maxOneBreak()) {
+    					model.ifThen(model.and(model.arithm(activity.getWorker(), "=", worker.getNumberId()),
+								model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[1]).toMinutes()),
+								model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
+    							model.arithm(activity.getDurationVar(), "=", activity.getDuration() + worker.getDurationBreak(i)));
+    				}
+    				else {
+	    				model.ifOnlyIf(model.and(model.arithm(activity.getWorker(), "=", worker.getNumberId()),
+	    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[1]).toMinutes()),
+	    										model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
+	    							model.arithm(worker.getBoolPauseAct(i, activity), "=", 1));
+    				}
     				i ++;
     			}
     		}
@@ -179,30 +187,32 @@ public class Workshop {
     private void postDefTFin() {
     	for (Furniture furniture : this.getFurnitures()) {
     		for (Activity activity : furniture.getActivities()) {
-    			LinkedList<Worker> workers = this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()));
-    			LinkedList<LocalDateTime[]> pauses = new LinkedList<LocalDateTime[]>();
-    			for (Worker worker : workers) {
-    				for (LocalDateTime[] pause : worker.getBreaks()) {
-    					pauses.add(pause);
-    				}
+    			if (!activity.maxOneBreak()) {
+	    			LinkedList<Worker> workers = this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()));
+	    			LinkedList<LocalDateTime[]> pauses = new LinkedList<LocalDateTime[]>();
+	    			for (Worker worker : workers) {
+	    				for (LocalDateTime[] pause : worker.getBreaks()) {
+	    					pauses.add(pause);
+	    				}
+	    			}
+	    			IntVar[] vars = new IntVar[pauses.size() + 3];
+	    			int[] scalars = new int[pauses.size() + 3];
+	    			vars[0] = activity.gettFin();
+	    			scalars[0] = -1;
+	    			vars[1] = activity.gettDebut();
+	    			scalars[1] = 1;
+	    			vars[2] = model.intVar(activity.getDuration());
+	    			scalars[2] = 1;
+	    			int i = 3;
+	    			for (Worker worker : workers) {
+	    				for (int j = 0; j < worker.getBreaks().length; j ++) {
+	    					vars[i] = worker.getBoolPauseAct(j, activity);
+	    					scalars[i] = worker.getDurationBreak(j);
+							i ++;
+	    				}
+	    			}
+	    			model.scalar(vars, scalars, "=", 0).post();
     			}
-    			IntVar[] vars = new IntVar[pauses.size() + 3];
-    			int[] scalars = new int[pauses.size() + 3];
-    			vars[0] = activity.gettFin();
-    			scalars[0] = -1;
-    			vars[1] = activity.gettDebut();
-    			scalars[1] = 1;
-    			vars[2] = model.intVar(activity.getDuration());
-    			scalars[2] = 1;
-    			int i = 3;
-    			for (Worker worker : workers) {
-    				for (int j = 0; j < worker.getBreaks().length; j ++) {
-    					vars[i] = worker.getBoolPauseAct(j, activity);
-    					scalars[i] = worker.getDurationBreak(j);
-						i ++;
-    				}
-    			}
-    			model.scalar(vars, scalars, "=", 0).post();
     		}
     	}
     }

@@ -56,9 +56,18 @@ public class Worker {
     }
     
     public void setVariables(Model model, LinkedList<Activity> activities) {
-    	this.boolPauseAct = model.intVarMatrix(this.getBreaks().length, activities.size(), 0, 1);
-    	for (int i = 0; i < activities.size(); i ++)
-    		this.indiceActBoolPauseAct.put(activities.get(i), i);
+    	int[] valsPauseAct = new int[activities.size() + 1];
+    	valsPauseAct[0] = -1;
+    	LinkedList<Activity> actsMoreThanOneBreak = new LinkedList<Activity>();
+    	for (int i = 0; i < activities.size(); i ++) {
+    		valsPauseAct[i + 1] = activities.get(i).getNumberId();
+    		if (!activities.get(i).maxOneBreak()) {
+    			actsMoreThanOneBreak.add(activities.get(i));
+    		}
+    	}
+    	this.boolPauseAct = model.intVarMatrix(this.getBreaks().length, actsMoreThanOneBreak.size(), 0, 1);
+    	for (int i = 0; i < actsMoreThanOneBreak.size(); i ++)
+    		this.indiceActBoolPauseAct.put(actsMoreThanOneBreak.get(i), i);
     }
     
     private IntVar getBoolPauseActInt(int pause, int activity) {

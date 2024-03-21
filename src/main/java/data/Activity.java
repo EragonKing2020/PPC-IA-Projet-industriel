@@ -26,6 +26,7 @@ public class Activity {
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
+    private boolean maxOneBreak;
     
 
     @JsonCreator
@@ -63,10 +64,11 @@ public class Activity {
 		return task;
 	}
 
-	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations) {
+	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int durMinBetwBreaks) {
 		this.furniture = furniture;
 		this.possibleWorkers = workers;
 		this.possibleStations = stations;
+		this.maxOneBreak = this.duration <= durMinBetwBreaks;
     	this.worker = model.intVar(workers);
     	this.station = model.intVar(stations);
     	LocalDateTime start = shifts[0].getStart();
@@ -103,6 +105,9 @@ public class Activity {
         return duration;
     }
     
+    public boolean maxOneBreak() {
+    	return this.maxOneBreak;
+    }
 
     @Override
     public boolean equals(Object o) {
