@@ -21,8 +21,12 @@ public class Activity {
     private IntVar tFin;
     private IntVar durationVar;
     private IntVar worker;
+    private IntVar workerIndex;
+    private IntVar[] workerHeights;
     private int[] possibleWorkers;
     private IntVar station;
+    private IntVar stationIndex;
+    private IntVar[] stationHeights;
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
@@ -63,7 +67,7 @@ public class Activity {
 		return task;
 	}
 
-	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int[] durations) {
+	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations) {
 		this.furniture = furniture;
 		this.possibleWorkers = workers;
 		this.possibleStations = stations;
@@ -73,15 +77,46 @@ public class Activity {
     	LocalDateTime end = shifts[shifts.length-1].getEnd();
     	int tMinDebut = this.furniture.getTimeMinBefore(this);
     	int tMaxFin = (int)Duration.between(start, end).toMinutes() - this.furniture.getTimeMinAfter(this);
-    	this.tDebut = model.intVar(tMinDebut, tMaxFin - duration);
-		this.tFin = model.intVar(tMinDebut+duration, tMaxFin);
-		int[] allDurations = new int[durations.length+1];
-		allDurations[0] = duration;
-		for(int i = 1;i<allDurations.length;i++)
-			allDurations[i] = duration+durations[i-1];
-		this.durationVar = model.intVar(allDurations);
+    	this.tDebut = model.intVar(0, tMaxFin - duration);
+		this.tFin = model.intVar(duration, tMaxFin);
+		this.durationVar = model.intVar(duration, tMaxFin - tMinDebut);
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
+    
+    
+    public IntVar getWorkerIndex() {
+		return workerIndex;
+	}
+
+	public void setWorkerIndex(Model model, int upperBound) {
+		this.workerIndex = model.intVar(0, upperBound);
+	}
+
+	public IntVar getStationIndex() {
+		return stationIndex;
+	}
+
+	public void setStationIndex(Model model, int upperBound) {
+		this.stationIndex = model.intVar(0, upperBound);
+	}
+
+	public IntVar[] getWorkerHeights() {
+		return workerHeights;
+	}
+
+	public void setWorkerHeights(Model model, int length) {
+		this.workerHeights = model.intVarArray(length, 0, 1);
+		model.sum(this.workerHeights,"=" ,1).post();
+	}
+
+	public IntVar[] getStationHeights() {
+		return stationHeights;
+	}
+
+	public void setStationHeights(Model model, int length) {
+		this.stationHeights = model.intVarArray(length, 0, 1);
+		model.sum(this.stationHeights,"=", 1).post();
+	}
 
 	public int[] getPossibleWorkers() {
 		return possibleWorkers;
