@@ -29,6 +29,7 @@ public class Activity {
     private IntVar[] stationHeights;
     private int[] possibleStations;
     private Task task;
+    private Furniture furniture;
     
 
     @JsonCreator
@@ -66,16 +67,19 @@ public class Activity {
 		return task;
 	}
 
-	public void setVariables(Model model, Shift[] shifts, int[] workers, int[] stations) {
+	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations) {
+		this.furniture = furniture;
 		this.possibleWorkers = workers;
 		this.possibleStations = stations;
     	this.worker = model.intVar(workers);
     	this.station = model.intVar(stations);
     	LocalDateTime start = shifts[0].getStart();
     	LocalDateTime end = shifts[shifts.length-1].getEnd();
-    	this.tDebut = model.intVar(0, (int)Duration.between(start, end).toMinutes() - duration);
-		this.tFin = model.intVar(duration, (int)Duration.between(start, end).toMinutes());
-		this.durationVar = model.intVar(duration, (int)Duration.between(start, end).toMinutes());
+    	int tMinDebut = this.furniture.getTimeMinBefore(this);
+    	int tMaxFin = (int)Duration.between(start, end).toMinutes() - this.furniture.getTimeMinAfter(this);
+    	this.tDebut = model.intVar(0, tMaxFin - duration);
+		this.tFin = model.intVar(duration, tMaxFin);
+		this.durationVar = model.intVar(duration, tMaxFin - tMinDebut);
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
     

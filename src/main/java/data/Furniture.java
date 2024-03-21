@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import org.chocosolver.solver.Model;
@@ -82,36 +83,6 @@ public class Furniture {
     	}
     }
     
-    public void linkSequenceToActivities() {
-    	for(Activity[] sequence : this.sequences) {
-    		for(Activity activity : sequence) {
-    			for(Activity activity2 : this.activities) {
-    				if(activity.getId().equals(activity2.getId())) {
-    					activity.settDebut(activity2.gettDebut());
-    					activity.settFin(activity2.gettFin());
-    					activity.setDurationVar(activity2.getDurationVar());
-    					activity.setTask(activity2.getTask());
-    				}
-    			}
-    		}
-    	}
-    }
-    
-    public void linkPrecedenceToActivities() {
-    	for(Activity[] prec : this.precedence) {
-    		for(Activity activity : prec) {
-    			for(Activity activity2 : this.activities) {
-    				if(activity.getId().equals(activity2.getId())) {
-    					activity.settDebut(activity2.gettDebut());
-    					activity.settFin(activity2.gettFin());
-    					activity.setDurationVar(activity2.getDurationVar());
-    					activity.setTask(activity2.getTask());
-    				}
-    			}
-    		}
-    	}
-    }
-    
     public String getId() {
         return id;
     }
@@ -131,14 +102,14 @@ public class Furniture {
         return tasks;
     }
     
-    public Activity[] getActivitiesType(ActivityType type) {
+    public LinkedList<Activity> getActivitiesFromType(ActivityType type){
     	LinkedList<Activity> activities = new LinkedList<Activity>();
     	for (Activity activity : this.getActivities()) {
     		if (activity.getType() == type) {
     			activities.add(activity);
     		}
     	}
-    	return (Activity[]) activities.toArray();
+    	return activities;
     }
 
     public Activity[][] getPrecedence() {
@@ -152,6 +123,60 @@ public class Furniture {
     @JsonIgnore
     public int getTotalDuration() {
         return Arrays.stream(activities).mapToInt(Activity::getDuration).sum();
+    }
+    
+    public int getTimeMinBefore(Activity activity) {
+    	int duration = 0;
+    	for (Activity act : this.activities) {
+    		if (act.getType().compareTo(activity.getType()) < 0)
+    			duration += act.getDuration();
+    	}
+		LinkedList<Activity> alreadyCounted = new LinkedList<Activity>();
+    	for (Activity[][] seqPre : new Activity[][][] {this.sequences, this.precedence}) {
+	    	for (Activity[] sP : seqPre) {
+	    		int i = 0;
+	    		int durSP = 0;
+	    		while (i < sP.length && sP[i].getType().compareTo(activity.getType()) < 0)
+	    			i ++;
+	    		while (i < sP.length && sP[i].getType().equals(activity.getType()) && !sP[i].equals(activity)) {
+	    			if (!alreadyCounted.contains(sP[i])) {
+	    				alreadyCounted.add(sP[i]);
+	    				durSP += sP[i].getDuration();
+	    			}
+	    			i ++;
+	    		}
+	    		if (i < sP.length && sP[i].equals(activity))
+	    			duration += durSP;
+	    	}
+    	}
+    	return duration;
+    }
+    
+    public int getTimeMinAfter(Activity activity) {
+    	int duration = 0;
+    	for (Activity act : this.activities) {
+    		if (act.getType().compareTo(activity.getType()) > 0)
+    			duration += act.getDuration();
+    	}
+		LinkedList<Activity> alreadyCounted = new LinkedList<Activity>();
+    	for (Activity[][] seqPre : new Activity[][][] {this.sequences, this.precedence}) {
+	    	for (Activity[] sP : seqPre) {
+	    		int i = sP.length - 1;
+	    		int durSP = 0;
+	    		while (i >= 0 && sP[i].getType().compareTo(activity.getType()) > 0)
+	    			i --;
+	    		while (i >= 0 && sP[i].getType().equals(activity.getType()) && !sP[i].equals(activity)) {
+	    			if (!alreadyCounted.contains(sP[i])) {
+	    				alreadyCounted.add(sP[i]);
+	    				durSP += sP[i].getDuration();
+	    			}
+	    			i --;
+	    		}
+	    		if (i >= 0 && sP[i].equals(activity))
+	    			duration += durSP;
+	    	}
+    	}
+    	return duration;
     }
 
     @Override
