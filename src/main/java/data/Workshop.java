@@ -124,6 +124,7 @@ public class Workshop {
     	
     	this.postDefTFin();
         
+    	this.postTDebutNotInBreak();
     }
     
     private void postCumulativeFurniture(Furniture furniture) {
@@ -201,7 +202,22 @@ public class Workshop {
 						i ++;
     				}
     			}
-    			model.scalar(vars, scalars, "<=", 0).post();
+    			model.scalar(vars, scalars, "=", 0).post();
+    		}
+    	}
+    }
+    
+    private void postTDebutNotInBreak() {
+    	LocalDateTime start = this.getShifts()[0].getStart();
+    	for (Furniture furniture : this.getFurnitures()) {
+    		for (Activity activity : furniture.getActivities()) {
+    			for (Worker worker : this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()))) {
+    				for (int i = 0; i < worker.getBreaks().length; i ++) {
+    					model.ifThen(model.arithm(activity.gettDebut(), "=", worker.getNumberId()),
+    								model.or(model.arithm(activity.gettDebut(), "<", (int)Duration.between(start, worker.getBreaks()[i][0]).toMinutes()),
+    										 model.arithm(activity.gettDebut(), ">=", (int)Duration.between(start, worker.getBreaks()[i][1]).toMinutes())));
+    				}
+    			}
     		}
     	}
     }
@@ -321,15 +337,6 @@ public class Workshop {
     	throw new Error("T'as mis n'imp comme id de station");
     }
     
-    public LinkedList<Activity> getActivitiesFromActivityType(ActivityType type, Activity[] a) {
-    	HashSet<Activity> activities = new HashSet<Activity>();
-    	for(Activity activity : a) {
-    		if (activity.getType() == type)
-				activities.add(activity);
-    	}
-    	return new LinkedList<Activity>(activities);
-    }
-    
     public LinkedList<Activity> getActivitiesFromActivityTypes(LinkedList<ActivityType> types){
     	LinkedList<Activity> activities = new LinkedList<Activity>();
     	for(Furniture f : this.furnitures)
@@ -337,13 +344,6 @@ public class Workshop {
     			if (types.contains(actf.getType()))
     				activities.add(actf);
     	return activities;
-    }
-    
-    public LinkedList<Activity> getActivitiesFromActivityTypes(ActivityType[] types) {
-    	LinkedList<ActivityType> typesList = new LinkedList<ActivityType>();
-    	for (ActivityType type : types)
-    		typesList.add(type);
-    	return this.getActivitiesFromActivityTypes(typesList);
     }
     
     public LinkedList<Activity> getActivitiesFromWorker(Worker worker){
