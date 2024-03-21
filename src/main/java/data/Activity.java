@@ -23,8 +23,6 @@ public class Activity {
     private IntVar worker;
     private int[] possibleWorkers;
     private IntVar station;
-    private int[] possibleWorkers;
-    private IntVar station;
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
