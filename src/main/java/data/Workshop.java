@@ -46,6 +46,7 @@ public class Workshop {
         this.postConstraints();
         solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
+        System.out.println("Initialisation done");
         solver.solve();
         System.out.println(this);
         for (Furniture furniture : this.furnitures) {
@@ -119,6 +120,8 @@ public class Workshop {
     	}
     	
     	this.postPauses();
+    	
+    	this.postDefTFin();
         
     }
     
@@ -151,13 +154,12 @@ public class Workshop {
     		for (Activity activity : this.getActivitiesFromWorker(worker)) {
     			int i = 0;
     			for (LocalDateTime[] pause : worker.getBreaks()) {
-    				model.ifOnlyIf(model.and(model.arithm(worker.getBoolPauseAct(i, activity), "=", 1),
-    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[0]).toMinutes()),
+    				model.ifOnlyIf(model.and(model.arithm(activity.getWorker(), "=", worker.getNumberId()),
+    										model.arithm(activity.gettDebut(), "<=", (int)Duration.between(startDay, pause[1]).toMinutes()),
     										model.arithm(activity.gettFin(),">", (int)Duration.between(startDay, pause[0]).toMinutes())),
     							model.arithm(worker.getBoolPauseAct(i, activity), "=", 1));
     				
     				i ++;
-    				System.out.println("break" + (int)Duration.between(startDay, pause[0]).toMinutes());
     			}
     		}
     		for (int i = 0; i < worker.getBreaks().length; i ++) {
@@ -172,13 +174,33 @@ public class Workshop {
     	}
     }
     
-    
-    
-    
     private void postDefTFin() {
     	for (Furniture furniture : this.getFurnitures()) {
     		for (Activity activity : furniture.getActivities()) {
-    			//TODO
+    			LinkedList<Worker> workers = this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()));
+    			LinkedList<LocalDateTime[]> pauses = new LinkedList<LocalDateTime[]>();
+    			for (Worker worker : workers) {
+    				for (LocalDateTime[] pause : worker.getBreaks()) {
+    					pauses.add(pause);
+    				}
+    			}
+    			IntVar[] vars = new IntVar[pauses.size() + 3];
+    			int[] scalars = new int[pauses.size() + 3];
+    			vars[0] = activity.gettFin();
+    			scalars[0] = -1;
+    			vars[1] = activity.gettDebut();
+    			scalars[1] = 1;
+    			vars[2] = model.intVar(activity.getDuration());
+    			scalars[2] = 1;
+    			int i = 3;
+    			for (Worker worker : workers) {
+    				for (int j = 0; j < worker.getBreaks().length; j ++) {
+    					vars[i] = worker.getBoolPauseAct(j, activity);
+    					scalars[i] = worker.getDurationBreak(j);
+						i ++;
+    				}
+    			}
+    			model.scalar(vars, scalars, "<=", 0).post();
     		}
     	}
     }
