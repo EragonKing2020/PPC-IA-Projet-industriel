@@ -66,16 +66,18 @@ public class Workshop {
 				int[] stationsNumbers = getStationsNumbers(act);
 				int[] workersNumbers = getWorkersNumbers(act);
 				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers, getPossibleDurations());
-				act.createStationsHeights(model, this.getStations().length);
-				act.createWorkersHeights(model, this.getWorkers().length);
-				Shift shift = getShiftByString(this.getWorkers()[0].getShift());
-				int ub = getDuration(shift.getStart(), shift.getEnd());
+//				act.createStationsHeights(model, this.getStations().length);
+//				act.createWorkersHeights(model, this.getWorkers().length);
 				act.createBreaks(model, this.getBreaksDurations());
 			}
     	}
-//		for (Worker worker : this.getWorkers()) {
+		for (Worker worker : this.getWorkers()) {
 //			worker.setVariables(model, this.getActivitiesFromWorker(worker));
-//		}
+			worker.createVariables(model, this.getActivities().size());
+		}
+		for (Station station : this.getStations()) {
+			station.createVariables(model, this.getActivities().size());
+		}
     }
     
     public IntVar[] getDecisionVariables() {
@@ -93,12 +95,13 @@ public class Workshop {
 
     /*------------------------------------------------ Contraintes -----------------------------------------------------------*/
     public void postConstraints(){
+//    	this.postNbMaxActivities();
     	for(Activity activity : getActivities()) {
 //            this.postTimeLimits(activity); 
-    		this.postOneHeightPerActivity(activity);
-    		this.postLinkHeightToStationAndWorker(activity);
+//    		this.postOneHeightPerActivity(activity);
+//    		this.postLinkHeightToStationAndWorker(activity);
     		this.postPauses(activity);
-    		this.postSetDuration(activity);
+//    		this.postSetDuration(activity);
     	}
         
     	for(Furniture furniture : this.furnitures) {
@@ -110,17 +113,72 @@ public class Workshop {
             this.postCumulativeFurniture(furniture);
     	}
     	for(Worker worker : this.getWorkers()) {
+    		this.postSetWorkerHeights(worker);
+    		this.postNbMaxWorkerActivities(worker);
     		// Worker cumulative constraint
     		this.postCumulativeWorkers(worker);
     	}
     	for(Station station : this.getStations()) {
+    		this.postSetStationHeights(station);
+    		this.postNbMaxStationActivities(station);
     		// Station cumulative constraint
             this.postCumulativeStations(station);
     	}
 
 //    	this.postDefTFin();
-//    	this.postTDebutNotInBreak();
+    	this.postTDebutNotInBreak();
     }
+    
+    private void postNbMaxActivities() {
+    	IntVar[] stations = new IntVar[this.getStations().length];
+    	IntVar[] workers = new IntVar[this.getWorkers().length];
+    	for(int i = 0;i<stations.length;i++) {
+    		stations[i] = this.getStations()[i].getNbActivities();
+    	}
+    	for(int i = 0;i<workers.length;i++) {
+    		workers[i] = this.getWorkers()[i].getNbActivities();
+    	}
+    	model.sum(stations,"=" ,this.getActivities().size()).post();
+    	model.sum(workers,"=" ,this.getActivities().size()).post();
+    }
+    
+    private void postNbMaxStationActivities(Station station) {
+    	LinkedList<Worker> workers = getWorkersFromStation(station);
+    	IntVar[] nbActWorkers = new IntVar[workers.size()];
+    	for(int i = 0;i<workers.size();i++) {
+    		nbActWorkers[i] = workers.get(i).getNbActivities();
+    	}
+    	model.sum(nbActWorkers, ">=", station.getNbActivities()).post();
+    }
+    
+    private void postNbMaxWorkerActivities(Worker worker) {
+    	LinkedList<Station> stations = new LinkedList<Station>();
+    	for(String id : worker.getStations()) {
+    		stations.add(getStationFromId(id));
+    	}
+    	IntVar[] nbActStations = new IntVar[stations.size()];
+    	for(int i = 0;i<stations.size();i++) {
+    		nbActStations[i] = stations.get(i).getNbActivities();
+    	}
+    	model.sum(nbActStations, ">=", worker.getNbActivities()).post();
+    }
+    
+    private void postSetStationHeights(Station station) {
+    	for(Activity activity : this.getActivities()) {
+    		model.ifOnlyIf(
+    				model.arithm(activity.getStation(),"=",station.getNumberId()),
+    				model.arithm(station.getActivitiesHeights()[activity.getNumberId()], "=", 1));
+    	}
+    }
+    
+    private void postSetWorkerHeights(Worker worker) {
+    	for(Activity activity : this.getActivities()) {
+    		model.ifOnlyIf(
+    				model.arithm(activity.getWorker(),"=",worker.getNumberId()),
+    				model.arithm(worker.getActivitiesHeights()[activity.getNumberId()], "=", 1));
+    	}
+    }
+    
     /**
      * An activity can be done by only on worker and one station
      * @param activity
@@ -290,7 +348,7 @@ public class Workshop {
     		
     		for(int i = 0;i<activities.size();i++) {
             	tasks[i + 2] = activities.get(i).getTask();
-            	heights[i+2] = activities.get(i).getWorkersHeights()[worker.getNumberId()];
+            	heights[i+2] = worker.getActivitiesHeights()[activities.get(i).getNumberId()];
             }
             IntVar capacity = model.intVar(1);
             model.cumulative(tasks, heights, capacity).post();
@@ -302,7 +360,7 @@ public class Workshop {
 		IntVar[] heights = model.intVarArray(activities.size(), 0, 1);
 		for(int i = 0;i<activities.size();i++) {
         	tasks[i] = activities.get(i).getTask();
-        	heights[i] = activities.get(i).getStationsHeights()[station.getNumberId()];
+        	heights[i] = station.getActivitiesHeights()[activities.get(i).getNumberId()];
         }
         IntVar capacity = model.intVar(1);
         model.cumulative(tasks, heights, capacity).post();

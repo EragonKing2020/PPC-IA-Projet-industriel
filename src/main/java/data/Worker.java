@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.chocosolver.solver.Model;
+import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
 
 public class Worker {
@@ -22,6 +23,10 @@ public class Worker {
     private final String[] stationsNames;
     
     private IntVar[][] boolPauseAct;
+    
+    private BoolVar[] activitiesHeights;
+    private IntVar nbActivities;
+    
     private HashMap<Activity, Integer> indiceActBoolPauseAct = new HashMap<Activity, Integer>();
 
     @JsonCreator
@@ -55,10 +60,25 @@ public class Worker {
         return stationsNames;
     }
     
-    public void setVariables(Model model, LinkedList<Activity> activities) {
+    
+    
+    public BoolVar[] getActivitiesHeights() {
+		return activitiesHeights;
+	}
+
+	public IntVar getNbActivities() {
+		return nbActivities;
+	}
+
+	public void setVariables(Model model, LinkedList<Activity> activities) {
     	this.boolPauseAct = model.intVarMatrix(this.getBreaks().length, activities.size(), 0, 1);
     	for (int i = 0; i < activities.size(); i ++)
     		this.indiceActBoolPauseAct.put(activities.get(i), i);
+    }
+    
+    public void createVariables(Model model, int length) {
+    	this.activitiesHeights = model.boolVarArray(length);
+    	this.nbActivities = model.count("nb_activities("+id+")", 1, activitiesHeights);
     }
     
     private IntVar getBoolPauseActInt(int pause, int activity) {

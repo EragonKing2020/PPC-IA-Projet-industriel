@@ -5,9 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 
+import org.chocosolver.solver.Model;
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+
 public class Station {
     private final String id;
     private final ActivityType[] activityTypes;
+    
+    private BoolVar[] activitiesHeights;
+    private IntVar nbActivities;
 
     @JsonCreator
     public Station(
@@ -16,6 +23,19 @@ public class Station {
     ) {
         this.id = id;
         this.activityTypes = activityTypes;
+    }
+    
+    public BoolVar[] getActivitiesHeights() {
+		return activitiesHeights;
+	}
+
+	public IntVar getNbActivities() {
+		return nbActivities;
+	}
+
+	public void createVariables(Model model, int length) {
+    	this.activitiesHeights = model.boolVarArray(length);
+    	this.nbActivities = model.count("nb_activities("+id+")", 1, activitiesHeights);
     }
     
     public int getNumberId() {

@@ -91,7 +91,7 @@ public class Activity {
 		for(int i  = 1; i<possibleDurations.length;i++)
 			possibleDurations[i]=duration+durations[i-1];
 		this.durationVar = model.intVar(possibleDurations);
-		this.task = model.taskVar(tDebut, durationVar, tFin);
+		this.task = model.taskVar(tDebut, durationVar, tFin); 
     }
 	
 	public void createWorkersHeights(Model model, int length) {
