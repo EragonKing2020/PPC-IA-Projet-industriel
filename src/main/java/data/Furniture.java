@@ -21,8 +21,6 @@ public class Furniture {
 
     private final Activity[][] sequences;
     
-    private LinkedList<Task> tasks = new LinkedList<Task>();
-    
     @JsonCreator
     public Furniture(
             @JsonProperty("id") String id,
@@ -66,15 +64,9 @@ public class Furniture {
     	return false;
     }
     
-    public void addTask(Activity activity) {
-    	if(!activityIsInSequence(activity)) {
-    		tasks.add(activity.getTask());
-    	}
-    }
-    
-    public void createSequenceTasks(Model model) {
+    public void createSequenceTasks(Model model,int ub, LinkedList<Task> tasks) {
     	for(Activity[] sequence : this.sequences) {
-    		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, 24*60), sequence[sequence.length-1].gettFin()));
+    		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, ub), sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
     			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
 //    			System.out.println("Activité dans une séquence : " + sequence[i]);
@@ -91,15 +83,20 @@ public class Furniture {
         return activities;
     }
 
-    public LinkedList<Task> getTasks(Model model) {
+    public Task[] getTasks(Model model, int ub) {
+    	LinkedList<Task> tasks = new LinkedList<Task>();
 //    	System.out.println("---- Liste d'activités ----");
         for(Activity activity : activities) {
         	if(!activityIsInSequence(activity))
 //        		System.out.println("Activité sans séquence : " + activity.toString());
-        		addTask(activity);
+        		tasks.add(activity.getTask());
         }
-        createSequenceTasks(model);
-        return tasks;
+        createSequenceTasks(model,ub,tasks);
+        Task[] tasksArray = new Task[tasks.size()];
+        for(int i = 0;i<tasksArray.length;i++) {
+        	tasksArray[i] = tasks.get(i);
+        }
+        return tasksArray;
     }
     
     public LinkedList<Activity> getActivitiesFromType(ActivityType type){

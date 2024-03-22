@@ -74,7 +74,7 @@ public class Activity {
 			return stationsHeights;
 		}
 
-	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations) {
+	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int[] durations) {
 		this.furniture = furniture;
 		this.possibleWorkers = workers;
 		this.possibleStations = stations;
@@ -84,9 +84,13 @@ public class Activity {
     	LocalDateTime end = shifts[shifts.length-1].getEnd();
     	int tMinDebut = this.furniture.getTimeMinBefore(this);
     	int tMaxFin = (int)Duration.between(start, end).toMinutes() - this.furniture.getTimeMinAfter(this);
-    	this.tDebut = model.intVar(0, tMaxFin - duration);
-		this.tFin = model.intVar(duration, tMaxFin);
-		this.durationVar = model.intVar(duration, tMaxFin - tMinDebut);
+    	this.tDebut = model.intVar(tMinDebut, tMaxFin - duration);
+		this.tFin = model.intVar(tMinDebut+duration, tMaxFin);
+		int[] possibleDurations = new int[durations.length+1];
+		possibleDurations[0] = duration;
+		for(int i  = 1; i<possibleDurations.length;i++)
+			possibleDurations[i]=duration+durations[i-1];
+		this.durationVar = model.intVar(possibleDurations);
 		this.task = model.taskVar(tDebut, durationVar, tFin);
     }
 	
@@ -98,8 +102,15 @@ public class Activity {
 		this.stationsHeights = model.intVarArray(length, 0, 1);
 	}
 	
-	public void createBreaks(Model model, int length, int nb_breaks, int ub) {
-		this.breaks = model.intVarMatrix(length, nb_breaks, 0, ub);
+	public void createBreaks(Model model, int[][] breaksDurations) {
+		this.breaks = new IntVar[breaksDurations.length][breaksDurations[0].length+1];
+		for(int i = 0;i<breaks.length;i++) {
+			for(int j = 0;j<breaks[0].length-1;j++) {
+				breaks[i][j] = model.intVar(new int[] {0,breaksDurations[i][j]});
+			}
+			breaks[i][breaks[i].length-1] = model.intVar(getDuration());
+		}
+		// model.intVarMatrix(length, nb_breaks, 0, ub);
 	}
 	
 	public IntVar[][] getBreaks() {
