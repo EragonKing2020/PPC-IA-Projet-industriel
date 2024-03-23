@@ -149,6 +149,7 @@ public class Workshop {
     		nbActWorkers[i] = workers.get(i).getNbActivities();
     	}
     	model.sum(nbActWorkers, ">=", station.getNbActivities()).post();
+    	model.arithm(station.getNbActivities(), "<=", getActivitiesFromStation(station).size()).post();
     }
     
     private void postNbMaxWorkerActivities(Worker worker) {
@@ -161,13 +162,14 @@ public class Workshop {
     		nbActStations[i] = stations.get(i).getNbActivities();
     	}
     	model.sum(nbActStations, ">=", worker.getNbActivities()).post();
+    	model.arithm(worker.getNbActivities(), "<=", getActivitiesFromWorker(worker).size()).post();
     }
     
     private void postSetStationHeights(Station station) {
     	for(Activity activity : this.getActivities()) {
     		model.ifOnlyIf(
     				model.arithm(activity.getStation(),"=",station.getNumberId()),
-    				model.arithm(station.getActivitiesHeights()[activity.getNumberId()], "=", 1));
+    				model.arithm(station.getActivitiesHeights()[activity.getNumberId()-this.getActivities().get(0).getNumberId()], "=", 1));
     	}
     }
     
@@ -175,7 +177,7 @@ public class Workshop {
     	for(Activity activity : this.getActivities()) {
     		model.ifOnlyIf(
     				model.arithm(activity.getWorker(),"=",worker.getNumberId()),
-    				model.arithm(worker.getActivitiesHeights()[activity.getNumberId()], "=", 1));
+    				model.arithm(worker.getActivitiesHeights()[activity.getNumberId()-this.getActivities().get(0).getNumberId()], "=", 1));
     	}
     }
     
@@ -348,7 +350,7 @@ public class Workshop {
     		
     		for(int i = 0;i<activities.size();i++) {
             	tasks[i + 2] = activities.get(i).getTask();
-            	heights[i+2] = worker.getActivitiesHeights()[activities.get(i).getNumberId()];
+            	heights[i+2] = worker.getActivitiesHeights()[activities.get(i).getNumberId()-this.getActivities().get(0).getNumberId()];
             }
             IntVar capacity = model.intVar(1);
             model.cumulative(tasks, heights, capacity).post();
@@ -360,7 +362,7 @@ public class Workshop {
 		IntVar[] heights = model.intVarArray(activities.size(), 0, 1);
 		for(int i = 0;i<activities.size();i++) {
         	tasks[i] = activities.get(i).getTask();
-        	heights[i] = station.getActivitiesHeights()[activities.get(i).getNumberId()];
+        	heights[i] = station.getActivitiesHeights()[activities.get(i).getNumberId()-this.getActivities().get(0).getNumberId()];
         }
         IntVar capacity = model.intVar(1);
         model.cumulative(tasks, heights, capacity).post();
