@@ -43,6 +43,7 @@ public class Workshop {
         this.workers = workers;
         this.furnitures = furnitures;
         System.out.println("Shifts equal : " + shiftsEqual());
+        System.out.println("Bonjour !");
         this.createVariables();
         this.postConstraints();
         solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
