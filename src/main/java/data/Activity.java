@@ -26,6 +26,7 @@ public class Activity {
     private IntVar station;
     private IntVar[] stationsHeights;
     private IntVar[][] breaks;
+    private IntVar[] durations;
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
@@ -70,9 +71,13 @@ public class Activity {
 			return workersHeights;
 		}
 
-		public IntVar[] getStationsHeights() {
-			return stationsHeights;
-		}
+	public IntVar[] getStationsHeights() {
+		return stationsHeights;
+	}
+
+	public IntVar[] getDurations() {
+		return durations;
+	}
 
 	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int[] durations) {
 		this.furniture = furniture;
@@ -110,7 +115,10 @@ public class Activity {
 			}
 			breaks[i][breaks[i].length-1] = model.intVar(getDuration());
 		}
-		// model.intVarMatrix(length, nb_breaks, 0, ub);
+		this.durations = new IntVar[breaks.length];
+		for(int i = 0;i<durations.length;i++) {
+			durations[i] = model.sum( id + "duration_"+i, breaks[i]);
+		}
 	}
 	
 	public IntVar[][] getBreaks() {

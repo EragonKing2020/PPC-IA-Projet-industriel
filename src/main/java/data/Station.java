@@ -13,7 +13,6 @@ public class Station {
     private final String id;
     private final ActivityType[] activityTypes;
     
-    private BoolVar[] activitiesHeights;
     private IntVar nbActivities;
 
     @JsonCreator
@@ -24,21 +23,16 @@ public class Station {
         this.id = id;
         this.activityTypes = activityTypes;
     }
-    
-    public BoolVar[] getActivitiesHeights() {
-		return activitiesHeights;
-	}
 
-	public IntVar getNbActivities() {
+	public void createVariables(Model model, int length) {
+    	this.nbActivities = model.intVar(0,length);
+    }
+    
+    public IntVar getNbActivities() {
 		return nbActivities;
 	}
 
-	public void createVariables(Model model, int length) {
-    	this.activitiesHeights = model.boolVarArray(length);
-    	this.nbActivities = model.count("nb_activities("+id+")", 1, activitiesHeights);
-    }
-    
-    public int getNumberId() {
+	public int getNumberId() {
     	return Integer.parseInt(id.substring(1, id.length())) ;
     }
     

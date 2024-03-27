@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.SetVar;
 
 public class Worker {
     private final String id;
@@ -22,9 +23,9 @@ public class Worker {
 
     private final String[] stationsNames;
     
+    
     private IntVar[][] boolPauseAct;
     
-    private BoolVar[] activitiesHeights;
     private IntVar nbActivities;
     
     private HashMap<Activity, Integer> indiceActBoolPauseAct = new HashMap<Activity, Integer>();
@@ -59,12 +60,6 @@ public class Worker {
     public String[] getStations() {
         return stationsNames;
     }
-    
-    
-    
-    public BoolVar[] getActivitiesHeights() {
-		return activitiesHeights;
-	}
 
 	public IntVar getNbActivities() {
 		return nbActivities;
@@ -77,8 +72,7 @@ public class Worker {
     }
     
     public void createVariables(Model model, int length) {
-    	this.activitiesHeights = model.boolVarArray(length);
-    	this.nbActivities = model.count("nb_activities("+id+")", 1, activitiesHeights);
+    	this.nbActivities = model.intVar(0,length);
     }
     
     private IntVar getBoolPauseActInt(int pause, int activity) {
