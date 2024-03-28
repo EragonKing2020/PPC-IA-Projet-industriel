@@ -43,20 +43,18 @@ public class Workshop {
         this.workers = workers;
         this.furnitures = furnitures;
         System.out.println("Shifts equal : " + shiftsEqual());
-        System.out.println("Bonjour !");
         this.createVariables();
         this.postConstraints();
-        solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
+        solver.setSearch(Search.inputOrderLBSearch(this.getDecisionVariables()));
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
         // System.out.println("Initialisation done");
         System.out.println(solver.solve());
-        solver.solve();
-         System.out.println(this);
-         for (Furniture furniture : this.furnitures) {
-         	System.out.println(furniture.solToString());
-         	for (Activity activity : furniture.getActivities())
-         		System.out.println(activity.solToString());
-         }
+	    System.out.println(this);
+	    for (Furniture furniture : this.furnitures) {
+	     	System.out.println(furniture.solToString());
+	     	for (Activity activity : furniture.getActivities())
+	     		System.out.println(activity.solToString());
+	     }
     }
     
     private void createVariables() {
@@ -66,29 +64,36 @@ public class Workshop {
 			for (Activity act : furniture.getActivities()) {
 				int[] stationsNumbers = getStationsNumbers(act);
 				int[] workersNumbers = getWorkersNumbers(act);
-				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers, getPossibleDurations());
+				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers);
 				act.createStationsHeights(model, this.getStations().length);
 				act.createWorkersHeights(model, this.getWorkers().length);
 				act.createBreaks(model, this.getBreaksDurations());
 			}
     	}
-		for (Worker worker : this.getWorkers()) {
-//			worker.setVariables(model, this.getActivitiesFromWorker(worker));
-			worker.createVariables(model, this.getActivitiesFromWorker(worker).size());
-		}
-		for (Station station : this.getStations()) {
-			station.createVariables(model, this.getActivitiesFromStation(station).size());
-		}
+//		for (Worker worker : this.getWorkers()) {
+////			worker.setVariables(model, this.getActivitiesFromWorker(worker));
+//			worker.createVariables(model, this.getActivitiesFromWorker(worker).size());
+//		}
+//		for (Station station : this.getStations()) {
+//			station.createVariables(model, this.getActivitiesFromStation(station).size());
+//		}
     }
     
     public IntVar[] getDecisionVariables() {
     	LinkedList<IntVar> variables = new LinkedList<IntVar>();
+//    	for (Activity activity : this.getActivities()) {
+//			variables.add(activity.gettDebut());
+//    	}
     	for (Activity activity : this.getActivities()) {
     		for(int w : activity.getPossibleWorkers()) {
     			for(IntVar pause : activity.getBreaks()[w]) {
     				variables.add(pause);
     			}
-    		}
+    		}    		
+    	}
+    	for (Activity activity : this.getActivities()) {
+    		variables.add(activity.getWorker());
+    		variables.add(activity.getStation());
     	}
     	IntVar[] vars = new IntVar[variables.size()];
     	for(int i = 0;i<variables.size();i++) {
@@ -130,7 +135,7 @@ public class Workshop {
     	}
 
 //    	this.postDefTFin();
-    	this.postTDebutNotInBreak();
+//    	this.postTDebutNotInBreak();
     }
     
     private void postNbMaxActivities(Station station) {
@@ -189,14 +194,18 @@ public class Workshop {
      * @param activity
      */
     private void postOneHeightPerActivity(Activity activity) {
-    	model.sum(activity.getStationsHeights(), "=",1).post();
-    	model.sum(activity.getWorkersHeights(), "=",1).post();
+    	System.out.println(activity.getStationsHeights());
+    	model.count(1, activity.getStationsHeights(), model.intVar(1)).post();
+    	model.count(1, activity.getWorkersHeights(), model.intVar(1)).post();
+//    	model.sum(activity.getStationsHeights(), ">",1).post();
+//    	model.sum(activity.getWorkersHeights(), ">",1).post();
     }
     /**
      * Makes sure the station and worker numbers are linked to the heights of the activity
      * @param activity
      */
     private void postLinkHeightToStationAndWorker(Activity activity) {
+    	System.out.println(activity.getStationsHeights());
     	model.element(model.intVar(1), activity.getStationsHeights(), activity.getStation(),0).post();
     	model.element(model.intVar(1), activity.getWorkersHeights(), activity.getWorker(),0).post();
     }
@@ -232,26 +241,15 @@ public class Workshop {
     private void postPauses(Activity activity) {
     	LocalDateTime startDay = this.getShifts()[0].getStart();
     	for(Worker worker : this.getWorkers()) {
-    		boolean possible = false;
-    		for(int w : activity.getPossibleWorkers()) {
-				if(worker.getNumberId()==w) {
-					possible = true;
-				}
-			}
-    		if(possible) {
     			for(int i = 0; i<worker.getBreaks().length;i++) {
-    				model.ifThenElse(
+    				model.ifOnlyIf(
     	    				model.and(
     	    					model.arithm(activity.gettDebut(), "<=", getDuration(startDay, worker.getBreaks()[i][1])),
     	    					model.arithm(activity.gettFin(), ">", getDuration(startDay, worker.getBreaks()[i][0]))
     	    					), 
-    	    				model.arithm(activity.getBreaks()[worker.getNumberId()][i], "=", getDuration(worker.getBreaks()[i][0],worker.getBreaks()[i][1])), 
-    	    				model.arithm(activity.getBreaks()[worker.getNumberId()][i], "=", 0));
+    	    				model.arithm(activity.getBreaks()[worker.getNumberId()][i], "=", getDuration(worker.getBreaks()[i][0],worker.getBreaks()[i][1])) 
+    	    				);
     			}
-    		}
-    		else {
-    				model.sum(activity.getBreaks()[worker.getNumberId()], "=", activity.getDuration()).post();
-    		}
     	}
 //    	private void postPauses() {
 //        	LocalDateTime startDay = this.getShifts()[0].getStart();
@@ -347,8 +345,8 @@ public class Workshop {
         	Shift shiftWorker = this.getShiftByString(worker.getShift());
         	LocalDateTime startWorker = shiftWorker.getStart();
         	LocalDateTime endWorker = shiftWorker.getEnd();
-        	tasks[0] = model.taskVar(model.intVar(0), (int)Duration.between(startDay, startWorker).toMinutes());
-    		tasks[1] = model.taskVar(model.intVar((int)Duration.between(startDay, endWorker).toMinutes()), (int)Duration.between(endWorker, endDay).toMinutes());
+        	tasks[0] = model.taskVar(model.intVar(0), getDuration(startDay, startWorker));
+    		tasks[1] = model.taskVar(model.intVar(getDuration(startDay, endWorker)), getDuration(endWorker, endDay));
     		
     		for(int i = 0;i<activities.size();i++) {
             	tasks[i + 2] = activities.get(i).getTask();
@@ -412,7 +410,7 @@ public class Workshop {
     			possibleDurations.add(sum);
         		for(int j = i+1;j<worker.length-1;j++) {
         			sum += worker[j];
-        			possibleDurations.add(j);
+        			possibleDurations.add(sum);
         		}
     		}
     	}
@@ -522,10 +520,9 @@ public class Workshop {
     
     public LinkedList<Activity> getActivitiesFromActivityTypes(LinkedList<ActivityType> types){
     	LinkedList<Activity> activities = new LinkedList<Activity>();
-    	for(Furniture f : this.furnitures)
-    		for(Activity actf : f.getActivities())
-    			if (types.contains(actf.getType()))
-    				activities.add(actf);
+		for(Activity activity : this.getActivities())
+			if (types.contains(activity.getType()))
+				activities.add(activity);
     	return activities;
     }
     
@@ -534,7 +531,7 @@ public class Workshop {
     }
     
     public LinkedList<Activity> getActivitiesFromStation(Station station){
-    	LinkedList<Activity> stationActs = new LinkedList<Activity>();
+    	HashSet<Activity> stationActs = new HashSet<Activity>();
     	for(Activity activity : this.getActivities()) {
     		for(ActivityType type : station.getActivityTypes()) {
     			if(type.equals(activity.getType())) {
@@ -542,11 +539,10 @@ public class Workshop {
     			}
     		}
     	}
-    	return stationActs;
+    	return new LinkedList<Activity>(stationActs);
     }
     
     public LinkedList<Activity> getActivities(){
-
     	LinkedList<Activity> activities = new LinkedList<Activity>();
     	for(Furniture furniture : this .getFurnitures()) {
     		for(Activity activity : furniture.getActivities()) {
