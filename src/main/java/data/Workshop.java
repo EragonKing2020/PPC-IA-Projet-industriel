@@ -82,14 +82,17 @@ public class Workshop {
     }
     
     public IntVar[] getDecisionVariables() {
-    	LinkedList<Activity> activities = this.getActivities();
-    	IntVar[] vars = new IntVar[3 * activities.size()];
-    	int i = 0;
-    	for (Activity activity : activities) {
-    		vars[i] = activity.getWorker();
-    		vars[i + 1] = activity.getStation();
-    		vars[i + 2] = activity.gettDebut();
-    		i += 3;
+    	LinkedList<IntVar> variables = new LinkedList<IntVar>();
+    	for (Activity activity : this.getActivities()) {
+    		for(int w : activity.getPossibleWorkers()) {
+    			for(IntVar pause : activity.getBreaks()[w]) {
+    				variables.add(pause);
+    			}
+    		}
+    	}
+    	IntVar[] vars = new IntVar[variables.size()];
+    	for(int i = 0;i<variables.size();i++) {
+    		vars[i] = variables.get(i);
     	}
     	return vars;
     }
@@ -102,7 +105,7 @@ public class Workshop {
     		this.postOneHeightPerActivity(activity);
     		this.postLinkHeightToStationAndWorker(activity);
     		this.postPauses(activity);
-//    		this.postSetDuration(activity);
+    		this.postSetDuration(activity);
     	}
         
     	for(Furniture furniture : this.furnitures) {
@@ -115,13 +118,13 @@ public class Workshop {
     	}
     	for(Worker worker : this.getWorkers()) {
 //    		this.postSetWorkerHeights(worker);
-    		this.postNbMaxActivities(worker);
+//    		this.postNbMaxActivities(worker);
     		// Worker cumulative constraint
     		this.postCumulativeWorkers(worker);
     	}
     	for(Station station : this.getStations()) {
 //    		this.postSetStationHeights(station);
-    		this.postNbMaxActivities(station);
+//    		this.postNbMaxActivities(station);
     		// Station cumulative constraint
             this.postCumulativeStations(station);
     	}
@@ -277,7 +280,13 @@ public class Workshop {
   	}
     
     private void postSetDuration(Activity activity) {
-    	model.element(activity.getDurationVar(), activity.getDurations(), activity.getWorker(),0).post();
+    	for(int w : activity.getPossibleWorkers()) {
+    		model.ifThen(
+    				model.arithm(activity.getWorker(),"=",this.getWorkers()[w].getNumberId()), 
+    				model.sum(activity.getBreaks()[w], "=", activity.getDurationVar()));
+    	}
+    	
+//    	model.element(activity.getDurationVar(), activity.getDurations(), activity.getWorker(),0).post();
     }
     
     private void postDefTFin() {
