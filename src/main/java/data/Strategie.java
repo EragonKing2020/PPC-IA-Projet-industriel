@@ -12,7 +12,7 @@ import org.chocosolver.util.PoolManager;
 class Strategie extends AbstractStrategy<IntVar>{
 	private PoolManager<IntDecision> pool = new PoolManager();
 	private int appels = 0;
-	private IntVar prevDecision = null;
+	private LinkedList<IntVar> prevDecision = new LinkedList<IntVar>();
 	private Workshop workshop;
 	
 	
@@ -70,53 +70,48 @@ class Strategie extends AbstractStrategy<IntVar>{
 		return null;
 	}
 	
-	private IntVar getWorkerAct(String act) {
-		for (IntVar var : vars) {
-			String name = var.getName();
-			if (name.substring(0, 6).equals("Worker") && name.substring(name.length() - act.length()).equals(act))
-				return var;
-		}
-		return null;
-	}
-	
 	@Override
 	public Decision getDecision() {
 		IntDecision d = this.pool.getE();
 		if(d==null) d = new IntDecision(this.pool);
 		IntVar next = null;
-		
-		
 		int valNext = 0;
-		if (prevDecision == null || prevDecision.getName().substring(0, 7).equals("Station")) {
-			prevDecision = this.getUninstanciatedWithSmallestLB();
-			if (prevDecision == null) {
+		
+		int i;
+		for (i = prevDecision.size() - 1; i >= 0 && !prevDecision.getLast().isInstantiated(); i --);
+		
+		
+		if (prevDecision.isEmpty() || prevDecision.getLast().getName().substring(0, 7).equals("Station")) {
+			next = this.getUninstanciatedWithSmallestLB();
+			if (next == null) {
 				System.out.println(appels);
 				return null;
 			}
-			next = prevDecision;
-			valNext = prevDecision.getLB();
+			prevDecision.add(next);
+			valNext = next.getLB();
 		}
-		else if (prevDecision.getName().substring(0, 6).equals("Worker")) {
-			prevDecision = this.getStationAct(prevDecision.getName().substring(7));
-			next = prevDecision;			
-			valNext = prevDecision.getLB();
-		}
-		else {
-			int idNumAct = Integer.parseInt(prevDecision.getName().substring(8));
+		else if (prevDecision.getLast().getName().substring(0, 6).equals("Worker")) {
+			int idNumAct = Integer.parseInt(prevDecision.getLast().getName().substring(8));
 			Activity activity = workshop.getActivityFromIdNum(idNumAct);
-//			for (int w : activity.getPossibleWorkers())
-//				for (IntVar varBreak : activity.getBreaksWorker(w))
-			
 			if (!activity.getDurationVar().isInstantiated()) {
 				next = activity.getDurationVar();
 				valNext = next.getLB();
-				d.setRefutable(false);
+				d.setRefutable(false); //Instancie avec la durée la plus courte, car on ne gagnera rien à prendre une durée plus longue
+								//sur la tâche (plusieurs valeurs possibles de la durée quand la tâche se fini juste avant une pause,
+								//et que le temps de la tâche plus la durée de la pause tombe dans la pause.
 			}
 			else {
-				prevDecision = activity.getWorker();
-				next = prevDecision;
+				next = this.getStationAct(prevDecision.getLast().getName().substring(7));
+				prevDecision.add(next);			
 				valNext = next.getLB();
 			}
+		}
+		else {
+			int idNumAct = Integer.parseInt(prevDecision.getLast().getName().substring(8));
+			Activity activity = workshop.getActivityFromIdNum(idNumAct);
+			next = activity.getWorker();
+			prevDecision.add(next);
+			valNext = next.getLB();
 		}
 		if (appels % 10000 == 0) System.out.println(appels);
 		appels ++;
