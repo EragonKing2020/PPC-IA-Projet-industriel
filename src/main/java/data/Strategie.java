@@ -104,13 +104,13 @@ class Strategie extends AbstractStrategy<IntVar>{
 		else {
 			int idNumAct = Integer.parseInt(prevDecision.getName().substring(8));
 			Activity activity = workshop.getActivityFromIdNum(idNumAct);
-			for (int w : activity.getPossibleWorkers())
-				for (IntVar varBreak : activity.getBreaksWorker(w))
-					if (!varBreak.isInstantiated()) {
-						next = varBreak;
-						valNext = varBreak.getLB();
-					}
-			if (next == null) {
+//			for (int w : activity.getPossibleWorkers())
+//				for (IntVar varBreak : activity.getBreaksWorker(w))
+			next = activity.getDurationVar();
+			while (valNext<=activity.getDurationVar().getUB()) {
+				valNext = activity.getDurationVar().nextValue(valNext);
+			}
+			if (next == null||valNext==Integer.MAX_VALUE) {
 				prevDecision = this.getWorkerAct(prevDecision.getName().substring(7));
 				next = prevDecision;
 				valNext = prevDecision.getLB();

@@ -52,9 +52,9 @@ public class Workshop {
         System.out.println("Shifts equal : " + shiftsEqual());
         this.createVariables();
         this.postConstraints();
-        solver.setSearch(Search.domOverWDegSearch(this.getDecisionVariables()));
+//        solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
         //solver.setSearch(this.strat(this.getDecisionVariables()));
-//        solver.setSearch(new Strategie(this.getDecisionVariables(), this));
+        solver.setSearch(new Strategie(this.getDecisionVariables(), this));
         // System.out.println("Initialisation done");
         System.out.println(solver.solve());
 	    System.out.println(this);
@@ -84,7 +84,7 @@ public class Workshop {
 			for (Activity act : furniture.getActivities()) {
 				int[] stationsNumbers = getStationsNumbers(act);
 				int[] workersNumbers = getWorkersNumbers(act);
-				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers);
+				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers, this.getPossibleDurations());
 //				act.createBreaks(model, this.getBreaksDurations());
 			}
     	}
@@ -105,8 +105,8 @@ public class Workshop {
     	for (Activity activity : this.getActivities()) {
     		variables.add(activity.getStation());
     		variables.add(activity.getWorker());
-    		variables.add(activity.getDurationVar());
-//    		variables.add(activity.gettDebut());
+//    		variables.add(activity.getDurationVar());
+    		variables.add(activity.gettDebut());
 //    		for(int w = 0; w < activity.getPossibleWorkers().length; w ++) {
 //    			for(IntVar pause : activity.getBreaks()[w]) {
 //    				variables.add(pause);
@@ -411,7 +411,7 @@ public class Workshop {
             	heights[i+2] = activities.get(i).getWorkerHeight(worker);
             }
             IntVar capacity = model.intVar(1);
-            System.out.println("bbbb");
+//            System.out.println("bbbb");
             model.cumulative(tasks, heights, capacity).post();
     }
     
