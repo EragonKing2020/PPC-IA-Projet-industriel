@@ -45,7 +45,8 @@ public class Workshop {
         System.out.println("Shifts equal : " + shiftsEqual());
         this.createVariables();
         this.postConstraints();
-        solver.setSearch(Search.inputOrderLBSearch(this.getDecisionVariables()));
+        
+        solver.setSearch(Search.failureLengthBasedSearch(getDecisionVariables()));
         //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
         // System.out.println("Initialisation done");
         System.out.println(solver.solve());
@@ -85,15 +86,18 @@ public class Workshop {
 //			variables.add(activity.gettDebut());
 //    	}
     	for (Activity activity : this.getActivities()) {
-    		for(int w : activity.getPossibleWorkers()) {
-    			for(IntVar pause : activity.getBreaks()[w]) {
-    				variables.add(pause);
-    			}
-    		}    		
+//    		variables.add(activity.getWorker());
+//    		variables.add(activity.getStation());
+    		variables.add(activity.gettDebut());
+    		variables.add(activity.gettFin());
+//    		for(int w : activity.getPossibleWorkers()) {
+//    			for(IntVar pause : activity.getBreaks()[w]) {
+//    				variables.add(pause);
+//    			}
+//    		}    		
     	}
     	for (Activity activity : this.getActivities()) {
-    		variables.add(activity.getWorker());
-    		variables.add(activity.getStation());
+    		
     	}
     	IntVar[] vars = new IntVar[variables.size()];
     	for(int i = 0;i<variables.size();i++) {
@@ -194,18 +198,14 @@ public class Workshop {
      * @param activity
      */
     private void postOneHeightPerActivity(Activity activity) {
-    	System.out.println(activity.getStationsHeights());
-    	model.count(1, activity.getStationsHeights(), model.intVar(1)).post();
-    	model.count(1, activity.getWorkersHeights(), model.intVar(1)).post();
-//    	model.sum(activity.getStationsHeights(), ">",1).post();
-//    	model.sum(activity.getWorkersHeights(), ">",1).post();
+    	model.sum(activity.getStationsHeights(), ">",1).post();
+    	model.sum(activity.getWorkersHeights(), ">",1).post();
     }
     /**
      * Makes sure the station and worker numbers are linked to the heights of the activity
      * @param activity
      */
     private void postLinkHeightToStationAndWorker(Activity activity) {
-    	System.out.println(activity.getStationsHeights());
     	model.element(model.intVar(1), activity.getStationsHeights(), activity.getStation(),0).post();
     	model.element(model.intVar(1), activity.getWorkersHeights(), activity.getWorker(),0).post();
     }
