@@ -35,6 +35,8 @@ public class Workshop {
     private Model model;
     
     private Solver solver;
+    
+    private IntVar[] breaks;
 
     @JsonCreator
     public Workshop(
@@ -52,9 +54,10 @@ public class Workshop {
         System.out.println("Shifts equal : " + shiftsEqual());
         this.createVariables();
         this.postConstraints();
-//        solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
+        solver.setSearch(new Strategie(this.getDecisionVariables("sw"),this));
+//        solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables("sw")));
         //solver.setSearch(this.strat(this.getDecisionVariables()));
-        solver.setSearch(new Strategie(this.getDecisionVariables(), this));
+//        solver.setSearch(new Strategie(this.getDecisionVariables(), this));
         // System.out.println("Initialisation done");
         System.out.println(solver.solve());
 	    System.out.println(this);
@@ -97,23 +100,29 @@ public class Workshop {
 //		}
     }
     
-    public IntVar[] getDecisionVariables() {
+    public IntVar[] getDecisionVariables(String type) {
     	LinkedList<IntVar> variables = new LinkedList<IntVar>();
 //    	for (Activity activity : this.getActivities()) {
 //			variables.add(activity.gettDebut());
 //    	}
-    	for (Activity activity : this.getActivities()) {
-    		variables.add(activity.getStation());
-    		variables.add(activity.getWorker());
-//    		variables.add(activity.getDurationVar());
-    		variables.add(activity.gettDebut());
-//    		for(int w = 0; w < activity.getPossibleWorkers().length; w ++) {
-//    			for(IntVar pause : activity.getBreaks()[w]) {
-//    				variables.add(pause);
-//    			}
-//    		}
+    	if(type.equals("sw")) {
+    		for (Activity activity : this.getActivities()) {
+        		variables.add(activity.getStation());
+        		variables.add(activity.getWorker());
+        		variables.add(activity.gettDebut());
+        	}
     	}
-    	
+    	else if(type.equals("tD")) {
+    		for (Activity activity : this.getActivities()) {
+//        		variables.add(activity.getDurationVar());
+        		variables.add(activity.gettDebut());
+//        		for(int w = 0; w < activity.getPossibleWorkers().length; w ++) {
+//        			for(IntVar pause : activity.getBreaks()[w]) {
+//        				variables.add(pause);
+//        			}
+//        		}
+    		}
+    	}
     	IntVar[] vars = new IntVar[variables.size()];
     	for(int i = 0;i<variables.size();i++) {
     		vars[i] = variables.get(i);
@@ -329,7 +338,7 @@ public class Workshop {
      */
     private void postPauses(Activity activity) {
     	int[][] distinctBreaks = this.getDistinctBreaks();
-    	IntVar[] breaks = model.intVarArray(distinctBreaks.length+1, 0, getDuration(this.getShifts()[0].getStart(),this.getShifts()[this.getShifts().length-1].getEnd()));
+    	this.breaks = model.intVarArray(distinctBreaks.length+1, 0, getDuration(this.getShifts()[0].getStart(),this.getShifts()[this.getShifts().length-1].getEnd()));
     	model.arithm(breaks[breaks.length-1], "=", activity.getDuration()).post();
     	for(int i = 0; i<distinctBreaks.length;i++) {
     		model.ifThenElse(
@@ -445,11 +454,17 @@ public class Workshop {
     
     /*----------------------------------------------------------------------------------------------------------------------*/
 
+    
+    
     public int getDuration(LocalDateTime t1, LocalDateTime t2) {
     	return (int)Duration.between(t1, t2).toMinutes();
     }
     
-    public int[][] getBreaksDurations(){
+    public IntVar[] getBreaks() {
+		return breaks;
+	}
+
+	public int[][] getBreaksDurations(){
     	int[][] breaksDurations = new int[this.getWorkers().length][this.getWorkers()[0].getBreaks().length];
     	for(int i = 0; i<this.getWorkers().length;i++) {
     		for(int j = 0;j<this.getWorkers()[0].getBreaks().length;j++) {
