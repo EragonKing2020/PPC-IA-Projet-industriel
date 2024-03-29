@@ -25,7 +25,6 @@ import data.Furniture;
 import data.Station;
 import data.Worker;
 import data.Workshop;
-import net.bytebuddy.dynamic.scaffold.MethodGraph.Linked;
 
 public class MyGanttRenderer extends GanttRenderer {
 	private static final long serialVersionUID = 1L;

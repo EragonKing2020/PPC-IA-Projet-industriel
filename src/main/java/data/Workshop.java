@@ -5,8 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.search.strategy.Search;
+import org.chocosolver.solver.search.strategy.assignments.DecisionOperatorFactory;
+import org.chocosolver.solver.search.strategy.decision.Decision;
+import org.chocosolver.solver.search.strategy.decision.IntDecision;
+import org.chocosolver.solver.search.strategy.strategy.AbstractStrategy;
 import org.chocosolver.solver.variables.IntVar;
 import org.chocosolver.solver.variables.Task;
+import org.chocosolver.util.PoolManager;
 
 import java.time.LocalDateTime;
 import java.time.Duration;
@@ -45,9 +50,9 @@ public class Workshop {
         System.out.println("Shifts equal : " + shiftsEqual());
         this.createVariables();
         this.postConstraints();
-        
-        solver.setSearch(Search.failureLengthBasedSearch(getDecisionVariables()));
-        //solver.setSearch(Search.conflictHistorySearch(this.getDecisionVariables()));
+        //solver.setSearch(Search.activityBasedSearch(this.getDecisionVariables()));
+        //solver.setSearch(this.strat(this.getDecisionVariables()));
+        solver.setSearch(new Strategie(this.getDecisionVariables(), this));
         // System.out.println("Initialisation done");
         System.out.println(solver.solve());
 	    System.out.println(this);
@@ -56,6 +61,18 @@ public class Workshop {
 	     	for (Activity activity : furniture.getActivities())
 	     		System.out.println(activity.solToString());
 	     }
+	    System.out.println(this);
+	    for (Furniture furniture : this.furnitures) {
+	    	System.out.println(furniture.solToString());
+	    	for (Activity activity : furniture.getActivities()) {
+	    		System.out.println(activity.solToString());
+	    		for (int w : activity.getPossibleWorkers()) {
+	    			System.out.print(w + " : " + activity.getWorkerHeight(w).getValue() + ",");
+	    		}
+	    		System.out.println(activity.getPossibleWorkers().length == activity.getWorkersHeights().length);
+	    		System.out.println(activity.getWorker());
+	    	}
+	    }
     }
     
     private void createVariables() {
@@ -66,8 +83,6 @@ public class Workshop {
 				int[] stationsNumbers = getStationsNumbers(act);
 				int[] workersNumbers = getWorkersNumbers(act);
 				act.setVariables(model, shifts, furniture, workersNumbers, stationsNumbers);
-				act.createStationsHeights(model, this.getStations().length);
-				act.createWorkersHeights(model, this.getWorkers().length);
 				act.createBreaks(model, this.getBreaksDurations());
 			}
     	}
@@ -86,32 +101,114 @@ public class Workshop {
 //			variables.add(activity.gettDebut());
 //    	}
     	for (Activity activity : this.getActivities()) {
-//    		variables.add(activity.getWorker());
-//    		variables.add(activity.getStation());
+    		variables.add(activity.getStation());
+    		variables.add(activity.getWorker());
     		variables.add(activity.gettDebut());
-    		variables.add(activity.gettFin());
-//    		for(int w : activity.getPossibleWorkers()) {
-//    			for(IntVar pause : activity.getBreaks()[w]) {
-//    				variables.add(pause);
-//    			}
-//    		}    		
+    		for(int w = 0; w < activity.getPossibleWorkers().length; w ++) {
+    			for(IntVar pause : activity.getBreaks()[w]) {
+    				variables.add(pause);
+    			}
+    		}
     	}
-    	for (Activity activity : this.getActivities()) {
-    		
-    	}
+    	
     	IntVar[] vars = new IntVar[variables.size()];
     	for(int i = 0;i<variables.size();i++) {
     		vars[i] = variables.get(i);
     	}
     	return vars;
     }
+    
+    public AbstractStrategy<IntVar> strat(IntVar[] vars) {
+		return new AbstractStrategy<IntVar>(vars) {
+			// enables to recycle decision objects (good practice)
+			private PoolManager<IntDecision> pool = new PoolManager();
+			private int appels = 0;
+			private IntVar prevDecision = null;
+			
+			private IntVar getUninstanciatedWithSmallestLB() {
+				LinkedList<IntVar> varsSmallestLB = new LinkedList<IntVar>();
+				int smallestLB = -1000;
+				System.out.println("len vars " + vars.length);
+				for (int i = 0; i < vars.length; i ++) {
+					if (vars[i].getName().substring(0, 6).equals("tDebut") && !vars[i].isInstantiated()) {
+						if (smallestLB < 0 || vars[i].getLB() < smallestLB) {
+							varsSmallestLB.clear();
+							varsSmallestLB.add(vars[i]);
+							smallestLB = vars[i].getLB();
+						}
+						else if (vars[i].getLB() == smallestLB) {
+							varsSmallestLB.add(vars[i]);
+						}
+					}
+				}
+				if (varsSmallestLB.isEmpty())
+					return null;
+				return varsSmallestLB.get(0);
+			}
+			
+			private IntVar getStationAct(String act) {
+				for (IntVar var : vars) {
+					String name = var.getName();
+					if (name.substring(0, 7).equals("Station") && name.substring(name.length() - act.length()).equals(act))
+						return var;
+				}
+				return null;
+			}
+			
+			private IntVar getWorkerAct(String act) {
+				for (IntVar var : vars) {
+					String name = var.getName();
+					if (name.substring(0, 6).equals("Worker") && name.substring(name.length() - act.length()).equals(act))
+						return var;
+				}
+				return null;
+			}
+
+			public void test() {
+				System.out.println("test");
+			}
+			
+			@Override
+			public Decision getDecision() {
+				IntDecision d = this.pool.getE();
+				if(d==null) d = new IntDecision(this.pool);
+				
+				int valNext = 0;
+				System.out.println(prevDecision);
+				if (prevDecision == null || prevDecision.getName().substring(0, 7).equals("Station")) {
+					System.out.println("top");
+					prevDecision = this.getUninstanciatedWithSmallestLB();
+					if (prevDecision == null) {
+						System.out.println(appels);
+						return null;
+					}
+					valNext = prevDecision.getLB();
+				}
+				else if (prevDecision.getName().substring(0, 6).equals("Worker")) {
+					System.out.println("top2");
+					prevDecision = this.getStationAct(prevDecision.getName().substring(7));
+					valNext = prevDecision.getLB();
+				}
+				else {
+					System.out.println("top3");
+					prevDecision = this.getWorkerAct(prevDecision.getName().substring(7));
+					valNext = prevDecision.getLB();
+				}
+				System.out.println(appels);
+				appels ++;
+				d.set(prevDecision,valNext, DecisionOperatorFactory.makeIntEq());
+			    return d;
+		    }
+		    
+		};
+	}
 
     /*------------------------------------------------ Contraintes -----------------------------------------------------------*/
     public void postConstraints(){
 //    	this.postNbMaxActivities();
     	for(Activity activity : getActivities()) {
 //            this.postTimeLimits(activity); 
-    		this.postOneHeightPerActivity(activity);
+    		//this.postOneHeightPerActivity(activity);
     		this.postLinkHeightToStationAndWorker(activity);
     		this.postPauses(activity);
     		this.postSetDuration(activity);
@@ -194,20 +291,27 @@ public class Workshop {
     }
     
     /**
-     * An activity can be done by only on worker and one station
+     * An activity can be done by only one worker and one station
      * @param activity
      */
     private void postOneHeightPerActivity(Activity activity) {
-    	model.sum(activity.getStationsHeights(), ">",1).post();
-    	model.sum(activity.getWorkersHeights(), ">",1).post();
+    	model.sum(activity.getStationsHeights(), "=",1).post();
+    	model.sum(activity.getWorkersHeights(), "=",1).post();
     }
     /**
      * Makes sure the station and worker numbers are linked to the heights of the activity
      * @param activity
      */
     private void postLinkHeightToStationAndWorker(Activity activity) {
-    	model.element(model.intVar(1), activity.getStationsHeights(), activity.getStation(),0).post();
-    	model.element(model.intVar(1), activity.getWorkersHeights(), activity.getWorker(),0).post();
+    	for (int w : activity.getPossibleWorkers())
+    		model.ifOnlyIf(model.arithm(activity.getWorker(), "=",w), model.arithm(activity.getWorkerHeight(w), "=", 1));
+    	System.out.println(activity.getNumberId() + " : " + activity.getWorker().getId());
+    	
+    	for (int s : activity.getPossibleStations())
+    		model.ifOnlyIf(model.arithm(activity.getStation(), "=", s), model.arithm(activity.getStationHeight(s), "=", 1));
+    	
+    	//model.element(model.intVar(1), activity.getStationsHeights(), activity.getStation(), 0).post();
+    	//model.element(model.intVar(1), activity.getWorkersHeights(), activity.getWorker(), 0).post();
     }
     
     private void postCumulativeFurniture(Furniture furniture) {
@@ -240,14 +344,14 @@ public class Workshop {
      */
     private void postPauses(Activity activity) {
     	LocalDateTime startDay = this.getShifts()[0].getStart();
-    	for(Worker worker : this.getWorkers()) {
+    	for(Worker worker : this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()))) {
     			for(int i = 0; i<worker.getBreaks().length;i++) {
     				model.ifOnlyIf(
     	    				model.and(
-    	    					model.arithm(activity.gettDebut(), "<=", getDuration(startDay, worker.getBreaks()[i][1])),
+    	    					model.arithm(activity.gettDebut(), "<", getDuration(startDay, worker.getBreaks()[i][1])),
     	    					model.arithm(activity.gettFin(), ">", getDuration(startDay, worker.getBreaks()[i][0]))
     	    					), 
-    	    				model.arithm(activity.getBreaks()[worker.getNumberId()][i], "=", getDuration(worker.getBreaks()[i][0],worker.getBreaks()[i][1])) 
+    	    				model.arithm(activity.getBreak(worker, i), "=", getDuration(worker.getBreaks()[i][0],worker.getBreaks()[i][1])) 
     	    				);
     			}
     	}
@@ -278,43 +382,10 @@ public class Workshop {
   	}
     
     private void postSetDuration(Activity activity) {
-    	for(int w : activity.getPossibleWorkers()) {
+    	for(Worker worker : this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()))) {
     		model.ifThen(
-    				model.arithm(activity.getWorker(),"=",this.getWorkers()[w].getNumberId()), 
-    				model.sum(activity.getBreaks()[w], "=", activity.getDurationVar()));
-    	}
-    	
-//    	model.element(activity.getDurationVar(), activity.getDurations(), activity.getWorker(),0).post();
-    }
-    
-    private void postDefTFin() {
-    	for (Furniture furniture : this.getFurnitures()) {
-    		for (Activity activity : furniture.getActivities()) {
-    			LinkedList<Worker> workers = this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()));
-    			LinkedList<LocalDateTime[]> pauses = new LinkedList<LocalDateTime[]>();
-    			for (Worker worker : workers) {
-    				for (LocalDateTime[] pause : worker.getBreaks()) {
-    					pauses.add(pause);
-    				}
-    			}
-    			IntVar[] vars = new IntVar[pauses.size() + 3];
-    			int[] scalars = new int[pauses.size() + 3];
-    			vars[0] = activity.gettFin();
-    			scalars[0] = -1;
-    			vars[1] = activity.gettDebut();
-    			scalars[1] = 1;
-    			vars[2] = model.intVar(activity.getDuration());
-    			scalars[2] = 1;
-    			int i = 3;
-    			for (Worker worker : workers) {
-    				for (int j = 0; j < worker.getBreaks().length; j ++) {
-    					vars[i] = worker.getBoolPauseAct(j, activity);
-    					scalars[i] = worker.getDurationBreak(j);
-						i ++;
-    				}
-    			}
-    			model.scalar(vars, scalars, "=", 0).post();
-    		}
+    				model.arithm(activity.getWorker(),"=",worker.getNumberId()), 
+    				model.sum(activity.getBreaksWorker(worker), "=", activity.getDurationVar()));
     	}
     }
     
@@ -323,9 +394,9 @@ public class Workshop {
     		for (Activity activity : this.getActivities()) {
     			for (Worker worker : this.getWorkersFromStations(this.getStationsFromActivityType(activity.getType()))) {
     				for (int i = 0; i < worker.getBreaks().length; i ++) {
-    					model.ifThen(model.arithm(activity.getBreaks()[worker.getNumberId()][i], ">", 0),
-    								model.or(model.arithm(activity.gettDebut(), "<=", (int)Duration.between(start, worker.getBreaks()[i][0]).toMinutes()),
-    										 model.arithm(activity.gettDebut(), ">=", (int)Duration.between(start, worker.getBreaks()[i][1]).toMinutes())));
+    					model.ifThen(model.arithm(activity.getBreak(worker, i), ">", 0),
+    								model.arithm(activity.gettDebut(), "<=", (int)Duration.between(start, worker.getBreaks()[i][0]).toMinutes()));
+    					
     				}
     			}
     		}
@@ -350,9 +421,10 @@ public class Workshop {
     		
     		for(int i = 0;i<activities.size();i++) {
             	tasks[i + 2] = activities.get(i).getTask();
-            	heights[i+2] = activities.get(i).getWorkersHeights()[worker.getNumberId()];
+            	heights[i+2] = activities.get(i).getWorkerHeight(worker);
             }
             IntVar capacity = model.intVar(1);
+            System.out.println("bbbb");
             model.cumulative(tasks, heights, capacity).post();
     }
     
@@ -362,7 +434,7 @@ public class Workshop {
 		IntVar[] heights = model.intVarArray(activities.size(), 0, 1);
 		for(int i = 0;i<activities.size();i++) {
         	tasks[i] = activities.get(i).getTask();
-        	heights[i] = activities.get(i).getStationsHeights()[station.getNumberId()];
+        	heights[i] = activities.get(i).getStationHeight(station);
         }
         IntVar capacity = model.intVar(1);
         model.cumulative(tasks, heights, capacity).post();
@@ -550,6 +622,22 @@ public class Workshop {
     		}
     	}
     	return activities;
+    }
+    
+    public Activity getActivityFromIdNum(int idNumAct) {
+    	for (Furniture furniture : this.getFurnitures())
+    		for (Activity activity : furniture.getActivities())
+    			if (activity.getNumberId() == idNumAct)
+    				return activity;
+    	throw new Error("Unrecognised idNumber Activity");
+    }
+    
+    public Furniture getFurnitureOfActivity(int idNumAct) {
+    	for (Furniture furniture : this.getFurnitures())
+    		for (Activity activity : furniture.getActivities())
+    			if (activity.getNumberId() == idNumAct)
+    				return furniture;
+    	throw new Error("Unrecognised idNumber Activity");
     }
     
     
