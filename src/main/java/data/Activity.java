@@ -107,7 +107,7 @@ public class Activity {
 //		return durations;
 //	}
 
-	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int[] durations) {
+	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int[] possibleDurations) {
 		this.furniture = furniture;
 		this.possibleWorkers = workers;
 		this.possibleStations = stations;
@@ -119,7 +119,12 @@ public class Activity {
     	int tMaxFin = (int)Duration.between(start, end).toMinutes() - this.furniture.getTimeMinAfter(this);
     	this.tDebut = model.intVar("tDebut_" + this.getId(),tMinDebut, tMaxFin - duration);
 		this.tFin = model.intVar("tFin_" + this.getId(),tMinDebut+duration, tMaxFin);
-		this.durationVar = model.intVar("tDuration_" + this.getId(),this.duration, tMaxFin - tMinDebut);
+		int[] durations = new int[possibleDurations.length+1];
+		for(int i = 0;i<durations.length-1;i++) {
+			durations[i]=this.getDuration()+possibleDurations[i];
+		}
+		durations[possibleDurations.length] = this.getDuration();
+		this.durationVar = model.intVar("tDuration_" + this.getId(),durations);
 		this.task = model.taskVar(tDebut, durationVar, tFin);
 		this.workersHeights = model.intVarArray(workers.length, 0, 1);
 		this.stationsHeights = model.intVarArray(stations.length, 0, 1);
@@ -212,18 +217,29 @@ public class Activity {
     }
     
     public String solToString() {
+    	String wh = "[ ";
+    	for(IntVar h : this.getWorkersHeights()) {
+    		wh += h.getValue()+", ";
+    	}
+    	wh = wh.substring(0, wh.length()-2)+" ]";
+    	String sh = "[ ";
+    	for(IntVar h : this.getStationsHeights()) {
+    		sh += h.getValue()+", ";
+    	}
+    	sh = sh.substring(0, sh.length()-2)+" ]";
     	return "Activity{" +
                 "id='" + id + '\'' +
                 ", type=" + type +
                 ", duration=" + duration +
                 "}\r" +
+                this.getWorker() + "\r"+
                 "tDebut=" + this.gettDebut().getValue() +
                 ", tFin=" + this.gettFin().getValue()+
                 "\r"+
                 "workerID = " + this.getWorker().getValue() + "\r"+
                 "stationID = " + this.getStation().getValue() + "\r"+
-                "worker heights = " + this.getWorkersHeights()+ "\r"+
-                "station heights = " + this.getStationsHeights()+ "\r"+
+                "worker heights = " + wh+ "\r"+
+                "station heights = " + sh+ "\r"+
                 "\n";
     }
 }

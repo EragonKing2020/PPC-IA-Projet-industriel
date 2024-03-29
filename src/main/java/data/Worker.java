@@ -3,16 +3,13 @@ package data;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.chocosolver.solver.Model;
-import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-import org.chocosolver.solver.variables.SetVar;
 
 public class Worker {
     private final String id;
@@ -23,11 +20,7 @@ public class Worker {
 
     private final String[] stationsNames;
     
-    
     private IntVar[][] boolPauseAct;
-    
-    private IntVar nbActivities;
-    
     private HashMap<Activity, Integer> indiceActBoolPauseAct = new HashMap<Activity, Integer>();
 
     @JsonCreator
@@ -60,19 +53,11 @@ public class Worker {
     public String[] getStations() {
         return stationsNames;
     }
-
-	public IntVar getNbActivities() {
-		return nbActivities;
-	}
-
-	public void setVariables(Model model, LinkedList<Activity> activities) {
+    
+    public void setVariables(Model model, LinkedList<Activity> activities) {
     	this.boolPauseAct = model.intVarMatrix(this.getBreaks().length, activities.size(), 0, 1);
     	for (int i = 0; i < activities.size(); i ++)
     		this.indiceActBoolPauseAct.put(activities.get(i), i);
-    }
-    
-    public void createVariables(Model model, int length) {
-    	this.nbActivities = model.intVar(0,length);
     }
     
     private IntVar getBoolPauseActInt(int pause, int activity) {
@@ -92,10 +77,6 @@ public class Worker {
     	for (int i = 0; i < this.boolPauseAct.length; i ++)
     		vars[i] = this.getBoolPauseAct(i, activity);
     	return vars;
-    }
-    
-    public int getDurationBreak(int pause) {
-    	return (int)Duration.between(this.breaks[pause][0], this.breaks[pause][1]).toMinutes();
     }
 
     @Override
