@@ -25,8 +25,6 @@ public class Activity {
 	private int[] possibleWorkers;
     private IntVar station;
     private IntVar[] stationsHeights;
-    private IntVar[][] breaks;
-//    private IntVar[] durations;
     private int[] possibleStations;
     private Task task;
     private Furniture furniture;
@@ -90,22 +88,6 @@ public class Activity {
 	public IntVar getStationHeight(int station) {
 		return stationsHeights[this.getIndiceStation(station)];
 	}
-	
-	public IntVar getBreak(Worker worker, int iPause) {
-		return breaks[this.getIndiceWorker(worker)][iPause];
-	}
-	
-	public IntVar[] getBreaksWorker(Worker worker) {
-		return breaks[this.getIndiceWorker(worker)];
-	}
-	
-	public IntVar[] getBreaksWorker(int worker) {
-		return breaks[this.getIndiceWorker(worker)];
-	}
-
-//	public IntVar[] getDurations() {
-//		return durations;
-//	}
 
 	public void setVariables(Model model, Shift[] shifts, Furniture furniture, int[] workers, int[] stations, int[] possibleDurations) {
 		this.furniture = furniture;
@@ -129,24 +111,6 @@ public class Activity {
 		this.workersHeights = model.intVarArray(workers.length, 0, 1);
 		this.stationsHeights = model.intVarArray(stations.length, 0, 1);
     }
-	
-	public void createBreaks(Model model, int[][] breaksDurations) {
-		this.breaks = new IntVar[this.possibleWorkers.length][breaksDurations[0].length+1];
-		for(int i = 0; i < this.possibleWorkers.length; i ++) {
-			for(int j = 0;j<breaks[0].length-1;j++) {
-				breaks[i][j] = model.intVar("Break_" + this.getId() + "_" + this.possibleWorkers[i] + "," + j,new int[] {0,breaksDurations[this.possibleWorkers[i]][j]});
-			}
-			breaks[i][breaks[i].length-1] = model.intVar(getDuration());
-		}
-//		this.durations = new IntVar[breaks.length];
-//		for(int i = 0;i<durations.length;i++) {
-//			durations[i] = model.sum( id + "duration_"+i, breaks[i]);
-//		}
-	}
-	
-	public IntVar[][] getBreaks() {
-		return breaks;
-	}
 	
 	private int getIndiceWorker(Worker worker) {
 		return getIndiceWorker(worker.getNumberId());

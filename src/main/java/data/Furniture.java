@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 import org.chocosolver.solver.Model;
@@ -69,9 +68,7 @@ public class Furniture {
     		tasks.add(model.taskVar(sequence[0].gettDebut(), model.intVar(0, ub), sequence[sequence.length-1].gettFin()));
     		for(int i = 0;i<sequence.length-1;i++) {
     			model.arithm(sequence[i].gettFin(), "<=", sequence[i+1].gettDebut()).post();
-//    			System.out.println("Activité dans une séquence : " + sequence[i]);
     		}
-//    		System.out.println("Activité dans une séquence : " + sequence[sequence.length-1]);
     	}
     }
     
@@ -85,10 +82,8 @@ public class Furniture {
 
     public Task[] getTasks(Model model, int ub) {
     	LinkedList<Task> tasks = new LinkedList<Task>();
-//    	System.out.println("---- Liste d'activités ----");
         for(Activity activity : activities) {
         	if(!activityIsInSequence(activity))
-//        		System.out.println("Activité sans séquence : " + activity.toString());
         		tasks.add(activity.getTask());
         }
         createSequenceTasks(model,ub,tasks);

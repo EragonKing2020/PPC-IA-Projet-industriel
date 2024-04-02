@@ -13,6 +13,7 @@ class Strategie extends AbstractStrategy<IntVar>{
 	private PoolManager<IntDecision> pool = new PoolManager();
 	private int appels = 0;
 	private LinkedList<IntVar> prevDecision = new LinkedList<IntVar>();
+	private LinkedList<Integer> valDecision = new LinkedList<Integer>();
 	private Workshop workshop;
 	
 	
@@ -78,7 +79,10 @@ class Strategie extends AbstractStrategy<IntVar>{
 		int valNext = 0;
 		
 		int i;
-		for (i = prevDecision.size() - 1; i >= 0 && !prevDecision.getLast().isInstantiated(); i --);
+		for (i = prevDecision.size() - 1; i >= 0 && !prevDecision.getLast().isInstantiatedTo(valDecision.getLast()); i --) {
+			prevDecision.removeLast();
+			valDecision.removeLast();
+		};
 		
 		
 		if (prevDecision.isEmpty() || prevDecision.getLast().getName().substring(0, 7).equals("Station")) {
@@ -89,6 +93,7 @@ class Strategie extends AbstractStrategy<IntVar>{
 			}
 			prevDecision.add(next);
 			valNext = next.getLB();
+			valDecision.add(valNext);
 		}
 		else if (prevDecision.getLast().getName().substring(0, 6).equals("Worker")) {
 			int idNumAct = Integer.parseInt(prevDecision.getLast().getName().substring(8));
@@ -104,6 +109,7 @@ class Strategie extends AbstractStrategy<IntVar>{
 				next = this.getStationAct(prevDecision.getLast().getName().substring(7));
 				prevDecision.add(next);			
 				valNext = next.getLB();
+				valDecision.add(valNext);
 			}
 		}
 		else {
@@ -112,6 +118,7 @@ class Strategie extends AbstractStrategy<IntVar>{
 			next = activity.getWorker();
 			prevDecision.add(next);
 			valNext = next.getLB();
+			valDecision.add(valNext);
 		}
 		if (appels % 10000 == 0) System.out.println(appels);
 		appels ++;
